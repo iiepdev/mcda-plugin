@@ -11,6 +11,7 @@ from rasterriskassessmentplugin.qgis_plugin_tools.tools.custom_logging import (
 )
 from rasterriskassessmentplugin.qgis_plugin_tools.tools.i18n import setup_translation
 from rasterriskassessmentplugin.qgis_plugin_tools.tools.resources import plugin_name
+from rasterriskassessmentplugin.ui.maindialog import MainDialog
 
 
 class Plugin:
@@ -34,7 +35,7 @@ class Plugin:
         self.actions: List[QAction] = []
         self.menu = Plugin.name
 
-        # add later jms self.dlg = MainDialog()
+        self.dlg = MainDialog()
 
     def add_action(
         self,
@@ -125,5 +126,5 @@ class Plugin:
 
     def run(self) -> None:
         """Run method that performs all the real work"""
-        # print("Hello QGIS plugin ftw again")
-        # add later jms self.dlg.show()
+        print("Hello QGIS plugin ftw again")
+        self.dlg.show()
