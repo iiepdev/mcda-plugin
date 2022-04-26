@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>789</width>
-    <height>714</height>
+    <width>787</width>
+    <height>707</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -118,7 +118,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="infrastructure">
     <widget class="QgsCollapsibleGroupBox" name="mGroupBox_areaExposure_2">
@@ -471,24 +471,24 @@
         </widget>
        </item>
        <item row="0" column="2">
-        <widget class="QCheckBox" name="hriBoundariesCBox">
+        <widget class="QCheckBox" name="hri_chck_bx_use_selected_boundary">
          <property name="text">
           <string>Use only selected features</string>
          </property>
         </widget>
        </item>
        <item row="1" column="2">
-        <widget class="QCheckBox" name="hriSchoolsCBox">
+        <widget class="QCheckBox" name="hri_chck_bx_use_selected_schools">
          <property name="text">
           <string>Use only selected features</string>
          </property>
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QgsMapLayerComboBox" name="hriBoundariesMLayerCB"/>
+        <widget class="QgsMapLayerComboBox" name="hri_map_layer_cmb_bx_boundaries"/>
        </item>
        <item row="1" column="1">
-        <widget class="QgsMapLayerComboBox" name="hriSchoolsMLayerCB"/>
+        <widget class="QgsMapLayerComboBox" name="hri_map_layer_cmb_bx_schools"/>
        </item>
       </layout>
      </widget>

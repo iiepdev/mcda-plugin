@@ -10,13 +10,16 @@ from qgis.PyQt.QtWidgets import (
 )
 
 
-# from ..definitions.gui import Panels
+from ..definitions.gui import Panels
 from ..qgis_plugin_tools.tools.resources import load_ui, plugin_name
-from ..qgis_plugin_tools.tools.settings import get_setting, set_setting
 
-# from .about_panel import AboutPanel
-# from .catchment_area_panel import CatchmentAreaPanel
-# from .settings_panel import SettingsPanel
+# from ..qgis_plugin_tools.tools.settings import get_setting, set_setting
+
+from .about_panel import AboutPanel
+from .hazard_panel import HazardRiskIndexPanel
+
+# from .infrastructure_panel import InfrastructurePanel
+
 
 FORM_CLASS = load_ui("main_dialog.ui")
 LOGGER = logging.getLogger(plugin_name())
@@ -31,19 +34,10 @@ class MainDialog(QDialog, FORM_CLASS):  # type: ignore
     def __init__(self) -> None:
         super().__init__()
         self.setupUi(self)
-        """self.buttonbox_main.button(QDialogButtonBox.Ok).setText("Run")
-        self.buttonbox_main.button(QDialogButtonBox.Cancel).setText("Close")
-        self.lineedit_url.setText(get_setting("gh_url"))
-        self.lineedit_apikey.setText(get_setting("api_key"))
-        self.file_widget.setFilePath(get_setting("result_dir"))
-        # only check write to file if path was found
-        if self.file_widget.filePath():
-            self.checkbox_file.setChecked(True)
-
         self._set_window_location()
         self.panels = {
-            Panels.CatchmentAreas: CatchmentAreaPanel(self),
-            Panels.Settings: SettingsPanel(self),
+            # Panels.Infrastructure: Infrastructure
+            Panels.HazardRiskIndex: HazardRiskIndexPanel(self),
             Panels.About: AboutPanel(self),
         }
         for i, panel_enum in enumerate(self.panels):
@@ -58,7 +52,18 @@ class MainDialog(QDialog, FORM_CLASS):  # type: ignore
         for panel in self.panels.values():
             panel.setup_panel()
         # The first panel is shown initially
-        self.menu_widget.setCurrentRow(0)"""
+        self.menu_widget.setCurrentRow(0)
+        """
+       
+        self.buttonbox_main.button(QDialogButtonBox.Ok).setText("Run")
+        self.buttonbox_main.button(QDialogButtonBox.Cancel).setText("Close")
+        self.lineedit_url.setText(get_setting("gh_url"))
+        self.lineedit_apikey.setText(get_setting("api_key"))
+        self.file_widget.setFilePath(get_setting("result_dir"))
+        # only check write to file if path was found
+        if self.file_widget.filePath():
+            self.checkbox_file.setChecked(True)        
+       """
 
     def _set_window_location(self) -> None:
         ag = QDesktopWidget().availableGeometry()

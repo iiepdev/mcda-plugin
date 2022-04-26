@@ -1,5 +1,6 @@
 from typing import Callable, List, Optional
 
+from qgis.gui import QgisInterface
 from qgis.PyQt.QtCore import QCoreApplication, QTranslator
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction, QWidget
@@ -9,8 +10,15 @@ from rasterriskassessmentplugin.qgis_plugin_tools.tools.custom_logging import (
     setup_logger,
     teardown_logger,
 )
-from rasterriskassessmentplugin.qgis_plugin_tools.tools.i18n import setup_translation
+from rasterriskassessmentplugin.qgis_plugin_tools.tools.i18n import (
+    setup_translation,
+    tr,
+)
 from rasterriskassessmentplugin.qgis_plugin_tools.tools.resources import plugin_name
+from rasterriskassessmentplugin.qgis_plugin_tools.tools.settings import (
+    get_setting,
+    set_setting,
+)
 from rasterriskassessmentplugin.ui.maindialog import MainDialog
 
 
@@ -20,6 +28,8 @@ class Plugin:
     name = plugin_name()
 
     def __init__(self) -> None:
+
+        self.iface = iface
         setup_logger(Plugin.name)
 
         # initialize locale
@@ -109,7 +119,7 @@ class Plugin:
             "",
             text=Plugin.name,
             callback=self.run,
-            parent=iface.mainWindow(),
+            parent=self.iface.mainWindow(),
             add_to_toolbar=False,
         )
 
@@ -126,5 +136,5 @@ class Plugin:
 
     def run(self) -> None:
         """Run method that performs all the real work"""
-        print("Hello new QGIS plugin")
+        print("Hello my new QGIS plugin")
         self.dlg.show()
