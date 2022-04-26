@@ -126,5 +126,5 @@ class Plugin:
 
     def run(self) -> None:
         """Run method that performs all the real work"""
-        print("Hello QGIS plugin ftw again")
+        print("Hello new QGIS plugin")
         self.dlg.show()
