@@ -17,8 +17,10 @@ from ..qgis_plugin_tools.tools.resources import load_ui, plugin_name
 
 from .about_panel import AboutPanel
 from .hazard_panel import HazardRiskIndexPanel
-
-# from .infrastructure_panel import InfrastructurePanel
+from .infrastructure_panel import InfrastructurePanel
+from .economic_panel import EconomicSuitabilityPanel
+from .environmental_panel import EnvironmentalSuitabilityPanel
+from .multicriteria_panel import MultiCriteriaSuitabilityPanel
 
 
 FORM_CLASS = load_ui("main_dialog.ui")
@@ -36,9 +38,12 @@ class MainDialog(QDialog, FORM_CLASS):  # type: ignore
         self.setupUi(self)
         self._set_window_location()
         self.panels = {
-            # Panels.Infrastructure: Infrastructure
             Panels.HazardRiskIndex: HazardRiskIndexPanel(self),
             Panels.About: AboutPanel(self),
+            Panels.Infrastructure: InfrastructurePanel(self),
+            Panels.EconomicSuitability: EconomicSuitabilityPanel(self),
+            Panels.EnvironmentalSuitability: EnvironmentalSuitabilityPanel(self),
+            Panels.MultiCriteriaSuitability: MultiCriteriaSuitabilityPanel(self),
         }
         for i, panel_enum in enumerate(self.panels):
             item = self.menu_widget.item(i)

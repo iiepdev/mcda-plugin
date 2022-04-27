@@ -10,16 +10,21 @@ from ..qgis_plugin_tools.tools.version import version
 from .base_panel import BasePanel
 
 
-class EconomicSuitabilityPanel(BasePanel):
+class MultiCriteriaSuitabilityPanel(BasePanel):
     def __init__(self, dialog: QDialog) -> None:
         super().__init__(dialog)
-        self.panel = Panels.EconomicSuitability
+        self.panel = Panels.MultiCriteriaSuitability
 
     def setup_panel(self) -> None:
-        self.dlg.econ_map_layer_cmb_bx_boundary.setFilters(
+        self.dlg.mcda_map_layer_cmb_bx_boundary.setFilters(
             QgsMapLayerProxyModel.PolygonLayer
         )
-        self.dlg.econ_map_layer_cmb_bx_roads.setFilters(QgsMapLayerProxyModel.LineLayer)
-        self.dlg.econ_map_layer_cmb_bx_waterways.setFilters(
-            QgsMapLayerProxyModel.LineLayer
+        self.dlg.mcda_map_layer_cmb_bx_env.setFilters(QgsMapLayerProxyModel.RasterLayer)
+        self.dlg.mcda_map_layer_cmb_bx_econ.setFilters(
+            QgsMapLayerProxyModel.RasterLayer
         )
+        self.dlg.mcda_map_layer_cmb_bx_infra.setFilters(
+            QgsMapLayerProxyModel.RasterLayer
+        )
+
+        # mcda_file_wdgt_save_output
