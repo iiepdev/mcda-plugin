@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>787</width>
-    <height>707</height>
+    <width>791</width>
+    <height>582</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -79,7 +79,7 @@
    </property>
    <item>
     <property name="text">
-     <string>Infrastructure</string>
+     <string>Social Suitability</string>
     </property>
    </item>
    <item>
@@ -118,9 +118,9 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>2</number>
    </property>
-   <widget class="QWidget" name="infrastructure">
+   <widget class="QWidget" name="social_suitability">
     <widget class="QgsCollapsibleGroupBox" name="mGroupBox_areaExposure_2">
      <property name="geometry">
       <rect>
@@ -151,7 +151,7 @@
         </widget>
        </item>
        <item row="2" column="1">
-        <widget class="QgsFieldComboBox" name="infra_fld_cmb_bx_school_var"/>
+        <widget class="QgsFieldComboBox" name="mFieldComboBox"/>
        </item>
        <item row="0" column="0">
         <widget class="QLabel" name="label_pointlayer_2">
@@ -161,14 +161,14 @@
         </widget>
        </item>
        <item row="1" column="2">
-        <widget class="QCheckBox" name="infra_chck_bx_use_selected_schools">
+        <widget class="QCheckBox" name="checkBox_3">
          <property name="text">
           <string>Use only selected features</string>
          </property>
         </widget>
        </item>
        <item row="0" column="2">
-        <widget class="QCheckBox" name="infra_chck_bx_use_selected_boundaries">
+        <widget class="QCheckBox" name="checkBox_4">
          <property name="text">
           <string>Use only selected features</string>
          </property>
@@ -189,13 +189,13 @@
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QgsMapLayerComboBox" name="infra_map_layer_cmb_bx_schools"/>
+        <widget class="QgsMapLayerComboBox" name="mMapLayerComboBox_8"/>
        </item>
        <item row="0" column="1">
-        <widget class="QgsMapLayerComboBox" name="infra_map_layer_cmb_bx_boundaries"/>
+        <widget class="QgsMapLayerComboBox" name="mMapLayerComboBox_9"/>
        </item>
        <item row="3" column="1">
-        <widget class="QgsMapLayerComboBox" name="infra_map_layer_cmb_bx_pop_dens"/>
+        <widget class="QgsMapLayerComboBox" name="mMapLayerComboBox_10"/>
        </item>
       </layout>
      </widget>
@@ -221,37 +221,37 @@
         <height>166</height>
        </rect>
       </property>
-      <layout class="QGridLayout" name="infra_grid_options">
+      <layout class="QGridLayout" name="gridLayoutOptions">
        <item row="3" column="0">
         <widget class="QLabel" name="label_22">
          <property name="text">
-          <string>New schools should ideally located in:</string>
+          <string>New schools should ideally be located in sparsely populated areas: </string>
          </property>
         </widget>
        </item>
        <item row="4" column="0">
         <widget class="QLabel" name="label_20">
          <property name="text">
-          <string>Weight for schools:</string>
+          <string>Weight for Schools</string>
          </property>
         </widget>
        </item>
        <item row="2" column="0">
         <widget class="QLabel" name="label_19">
          <property name="text">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;New schools should be located: &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;New schools should be located further from  existing schools, rather than close to them: &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QgsDoubleSpinBox" name="infra_dbl_spn_bx_min_dist">
+        <widget class="QgsDoubleSpinBox" name="mQgsDoubleSpinBox_6">
          <property name="suffix">
           <string> km</string>
          </property>
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QgsDoubleSpinBox" name="infra_dbl_spn_bx_max_dist">
+        <widget class="QgsDoubleSpinBox" name="mQgsDoubleSpinBox_7">
          <property name="maximumSize">
           <size>
            <width>160</width>
@@ -266,6 +266,13 @@
          </property>
         </widget>
        </item>
+       <item row="3" column="1">
+        <widget class="QCheckBox" name="checkBox_6">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
        <item row="1" column="0">
         <widget class="QLabel" name="label_18">
          <property name="text">
@@ -273,15 +280,15 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="1">
-        <widget class="QgsDoubleSpinBox" name="infra_dbl_spn_bx_school_weight">
-         <property name="suffix">
-          <string> %</string>
-         </property>
-         <property name="decimals">
-          <number>1</number>
+       <item row="2" column="1">
+        <widget class="QCheckBox" name="checkBox_5">
+         <property name="text">
+          <string/>
          </property>
         </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QgsDoubleSpinBox" name="mQgsDoubleSpinBox_8"/>
        </item>
        <item row="0" column="0">
         <widget class="QLabel" name="label_16">
@@ -298,42 +305,7 @@
         </widget>
        </item>
        <item row="5" column="1">
-        <widget class="QgsDoubleSpinBox" name="infra_dbl_spn_bx_pop_weight">
-         <property name="suffix">
-          <string> %</string>
-         </property>
-         <property name="decimals">
-          <number>1</number>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QComboBox" name="infra_location_combo_box">
-         <item>
-          <property name="text">
-           <string>Further from existing schools</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Closer to existing schools</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="3" column="1">
-        <widget class="QComboBox" name="infra_ideal_location_combo_box">
-         <item>
-          <property name="text">
-           <string>Sparsely populated area</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Densely populated area</string>
-          </property>
-         </item>
-        </widget>
+        <widget class="QgsDoubleSpinBox" name="mQgsDoubleSpinBox_9"/>
        </item>
       </layout>
      </widget>
@@ -361,7 +333,7 @@
       </property>
       <layout class="QGridLayout" name="gridLayout_12">
        <item row="0" column="1">
-        <widget class="QgsFileWidget" name="infra_file_wdgt_save_output"/>
+        <widget class="QgsFileWidget" name="mQgsFileWidget_13"/>
        </item>
        <item row="0" column="0">
         <widget class="QLabel" name="label_23">
@@ -384,7 +356,7 @@
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
-       <widget class="QProgressBar" name="infra_progress_bar">
+       <widget class="QProgressBar" name="progressBar_2">
         <property name="value">
          <number>24</number>
         </property>
@@ -409,14 +381,14 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
-         <widget class="QPushButton" name="infra_btn_run">
+         <widget class="QPushButton" name="pushButton_3">
           <property name="text">
            <string>Run</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="infra_btn_close">
+         <widget class="QPushButton" name="pushButton_2">
           <property name="text">
            <string>Close</string>
           </property>
@@ -471,24 +443,24 @@
         </widget>
        </item>
        <item row="0" column="2">
-        <widget class="QCheckBox" name="hri_chck_bx_use_selected_boundary">
+        <widget class="QCheckBox" name="hriBoundariesCBox">
          <property name="text">
           <string>Use only selected features</string>
          </property>
         </widget>
        </item>
        <item row="1" column="2">
-        <widget class="QCheckBox" name="hri_chck_bx_use_selected_schools">
+        <widget class="QCheckBox" name="hriSchoolsCBox">
          <property name="text">
           <string>Use only selected features</string>
          </property>
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QgsMapLayerComboBox" name="hri_map_layer_cmb_bx_boundaries"/>
+        <widget class="QgsMapLayerComboBox" name="hriBoundariesMLayerCB"/>
        </item>
        <item row="1" column="1">
-        <widget class="QgsMapLayerComboBox" name="hri_map_layer_cmb_bx_schools"/>
+        <widget class="QgsMapLayerComboBox" name="hriSchoolsMLayerCB"/>
        </item>
       </layout>
      </widget>
@@ -499,7 +471,7 @@
        <x>10</x>
        <y>120</y>
        <width>471</width>
-       <height>241</height>
+       <height>271</height>
       </rect>
      </property>
      <property name="title">
@@ -509,7 +481,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>70</y>
+        <y>100</y>
         <width>391</width>
         <height>161</height>
        </rect>
@@ -522,23 +494,6 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label_5">
-         <property name="text">
-          <string>Layer 2: </string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="3">
-        <widget class="QgsDoubleSpinBox" name="mQgsDoubleSpinBox_4">
-         <property name="suffix">
-          <string> %</string>
-         </property>
-         <property name="decimals">
-          <number>1</number>
-         </property>
-        </widget>
-       </item>
        <item row="2" column="0">
         <widget class="QLabel" name="label_6">
          <property name="text">
@@ -546,44 +501,21 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="3">
-        <widget class="QgsDoubleSpinBox" name="mQgsDoubleSpinBox_5">
-         <property name="suffix">
-          <string> %</string>
-         </property>
-         <property name="decimals">
-          <number>1</number>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="3">
-        <widget class="QgsDoubleSpinBox" name="mQgsDoubleSpinBox">
-         <property name="maximumSize">
-          <size>
-           <width>78</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="suffix">
-          <string> %</string>
-         </property>
-         <property name="decimals">
-          <number>1</number>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_4">
-         <property name="maximumSize">
-          <size>
-           <width>60</width>
-           <height>16777215</height>
-          </size>
-         </property>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_5">
          <property name="text">
-          <string>Layer 1: </string>
+          <string>Layer 2: </string>
          </property>
         </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QgsFileWidget" name="mQgsFileWidget_6"/>
+       </item>
+       <item row="0" column="2">
+        <widget class="QgsDoubleSpinBox" name="mQgsDoubleSpinBox"/>
+       </item>
+       <item row="1" column="1">
+        <widget class="QgsFileWidget" name="mQgsFileWidget_4"/>
        </item>
        <item row="3" column="0">
         <widget class="QLabel" name="label_7">
@@ -592,47 +524,33 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="3">
-        <widget class="QgsDoubleSpinBox" name="mQgsDoubleSpinBox_3">
-         <property name="suffix">
-          <string> %</string>
-         </property>
-         <property name="decimals">
-          <number>1</number>
+       <item row="0" column="1">
+        <widget class="QgsFileWidget" name="mQgsFileWidget_3"/>
+       </item>
+       <item row="2" column="1">
+        <widget class="QgsFileWidget" name="mQgsFileWidget_5"/>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>Layer 1: </string>
          </property>
         </widget>
        </item>
-       <item row="1" column="3">
-        <widget class="QgsDoubleSpinBox" name="mQgsDoubleSpinBox_2">
-         <property name="suffix">
-          <string> %</string>
-         </property>
-         <property name="decimals">
-          <number>1</number>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="2">
-        <widget class="QgsMapLayerComboBox" name="mMapLayerComboBox_15">
-         <property name="maximumSize">
-          <size>
-           <width>255</width>
-           <height>16777215</height>
-          </size>
-         </property>
-        </widget>
+       <item row="4" column="1">
+        <widget class="QgsFileWidget" name="mQgsFileWidget_7"/>
        </item>
        <item row="1" column="2">
-        <widget class="QgsMapLayerComboBox" name="mMapLayerComboBox_16"/>
+        <widget class="QgsDoubleSpinBox" name="mQgsDoubleSpinBox_2"/>
        </item>
        <item row="2" column="2">
-        <widget class="QgsMapLayerComboBox" name="mMapLayerComboBox_17"/>
+        <widget class="QgsDoubleSpinBox" name="mQgsDoubleSpinBox_3"/>
        </item>
        <item row="3" column="2">
-        <widget class="QgsMapLayerComboBox" name="mMapLayerComboBox_18"/>
+        <widget class="QgsDoubleSpinBox" name="mQgsDoubleSpinBox_4"/>
        </item>
        <item row="4" column="2">
-        <widget class="QgsMapLayerComboBox" name="mMapLayerComboBox_19"/>
+        <widget class="QgsDoubleSpinBox" name="mQgsDoubleSpinBox_5"/>
        </item>
       </layout>
      </widget>
@@ -642,12 +560,48 @@
         <x>10</x>
         <y>30</y>
         <width>311</width>
-        <height>31</height>
+        <height>61</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_10">
-       <item row="0" column="2">
-        <widget class="QgsSpinBox" name="hri_spn_bx_number_of_hazards"/>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_11">
+         <property name="text">
+          <string>Choose the scale for the weights</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <spacer name="horizontalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="1" column="2">
+        <widget class="QComboBox" name="comboBox">
+         <item>
+          <property name="text">
+           <string>Not selected</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0-1</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0-10</string>
+          </property>
+         </item>
+        </widget>
        </item>
        <item row="0" column="0">
         <widget class="QLabel" name="label_3">
@@ -669,6 +623,9 @@
          </property>
         </spacer>
        </item>
+       <item row="0" column="2">
+        <widget class="QgsSpinBox" name="hriNumberOfHazards"/>
+       </item>
       </layout>
      </widget>
     </widget>
@@ -676,7 +633,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>370</y>
+       <y>400</y>
        <width>471</width>
        <height>81</height>
       </rect>
@@ -721,7 +678,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>460</y>
+       <y>490</y>
        <width>471</width>
        <height>100</height>
       </rect>
@@ -744,7 +701,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QProgressBar" name="hri_progress_bar">
+        <widget class="QProgressBar" name="progressBar">
          <property name="maximumSize">
           <size>
            <width>2500</width>
@@ -773,14 +730,14 @@
         </spacer>
        </item>
        <item>
-        <widget class="QPushButton" name="hri_btn_run">
+        <widget class="QPushButton" name="pushButton_4">
          <property name="text">
           <string>Run</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="hri_btn_close">
+        <widget class="QPushButton" name="pushButton">
          <property name="text">
           <string>Close</string>
          </property>
@@ -808,7 +765,7 @@
         </property>
         <layout class="QGridLayout" name="gridLayout_20">
          <item row="0" column="2">
-          <widget class="QCheckBox" name="econ_chck_bx_use_selected_boundaries">
+          <widget class="QCheckBox" name="checkBox_17">
            <property name="text">
             <string>Use only selected features</string>
            </property>
@@ -822,7 +779,7 @@
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="QgsMapLayerComboBox" name="econ_map_layer_cmb_bx_boundary"/>
+          <widget class="QgsMapLayerComboBox" name="mMapLayerComboBox"/>
          </item>
         </layout>
        </widget>
@@ -831,7 +788,7 @@
          <rect>
           <x>10</x>
           <y>70</y>
-          <width>531</width>
+          <width>451</width>
           <height>132</height>
          </rect>
         </property>
@@ -852,7 +809,7 @@
             </spacer>
            </item>
            <item>
-            <widget class="QgsDoubleSpinBox" name="econ_dbl_spn_bx_road_min_dist">
+            <widget class="QgsDoubleSpinBox" name="mQgsDoubleSpinBox_31">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -909,18 +866,12 @@
             </spacer>
            </item>
            <item>
-            <widget class="QgsDoubleSpinBox" name="econ_dbl_spn_bx_road_weight">
+            <widget class="QgsDoubleSpinBox" name="mQgsDoubleSpinBox_33">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
-             </property>
-             <property name="suffix">
-              <string> % </string>
-             </property>
-             <property name="decimals">
-              <number>1</number>
              </property>
             </widget>
            </item>
@@ -949,7 +900,7 @@
             </spacer>
            </item>
            <item>
-            <widget class="QgsDoubleSpinBox" name="econ_dbl_spn_bx_road_max_dist">
+            <widget class="QgsDoubleSpinBox" name="mQgsDoubleSpinBox_32">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -964,10 +915,10 @@
           </layout>
          </item>
          <item row="0" column="2">
-          <widget class="QgsMapLayerComboBox" name="econ_map_layer_cmb_bx_roads"/>
+          <widget class="QgsMapLayerComboBox" name="mMapLayerComboBox_2"/>
          </item>
          <item row="4" column="2">
-          <widget class="QComboBox" name="econ_cmb_bx_near_roads">
+          <widget class="QComboBox" name="comboBox_4">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -998,9 +949,9 @@
        <widget class="QWidget" name="gridLayoutWidget_10">
         <property name="geometry">
          <rect>
-          <x>10</x>
-          <y>220</y>
-          <width>531</width>
+          <x>0</x>
+          <y>240</y>
+          <width>546</width>
           <height>158</height>
          </rect>
         </property>
@@ -1028,7 +979,7 @@
             </spacer>
            </item>
            <item>
-            <widget class="QgsDoubleSpinBox" name="econ_dbl_spn_bx_water_max_dist">
+            <widget class="QgsDoubleSpinBox" name="mQgsDoubleSpinBox_35">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -1065,7 +1016,7 @@
             </spacer>
            </item>
            <item>
-            <widget class="QgsDoubleSpinBox" name="econ_dbl_spn_bx_water_min_dist">
+            <widget class="QgsDoubleSpinBox" name="mQgsDoubleSpinBox_34">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -1087,7 +1038,7 @@
           </widget>
          </item>
          <item row="4" column="2">
-          <widget class="QComboBox" name="econ_cmb_bx_near_water">
+          <widget class="QComboBox" name="comboBox_3">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -1142,25 +1093,19 @@
             </spacer>
            </item>
            <item>
-            <widget class="QgsDoubleSpinBox" name="econ_dbl_spn_bx_waterway_weight">
+            <widget class="QgsDoubleSpinBox" name="mQgsDoubleSpinBox_36">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
-             <property name="suffix">
-              <string> %</string>
-             </property>
-             <property name="decimals">
-              <number>1</number>
-             </property>
             </widget>
            </item>
           </layout>
          </item>
          <item row="0" column="2">
-          <widget class="QgsMapLayerComboBox" name="econ_map_layer_cmb_bx_waterways"/>
+          <widget class="QgsMapLayerComboBox" name="mMapLayerComboBox_3"/>
          </item>
         </layout>
        </widget>
@@ -1168,7 +1113,7 @@
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>390</y>
+          <y>437</y>
           <width>483</width>
           <height>201</height>
          </rect>
@@ -1194,7 +1139,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QgsFileWidget" name="econ_file_wdgt_save_output">
+           <widget class="QgsFileWidget" name="mQgsFileWidget_47">
             <property name="minimumSize">
              <size>
               <width>80</width>
@@ -1216,7 +1161,7 @@
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_23">
           <item>
-           <widget class="QProgressBar" name="econ_progress_bar">
+           <widget class="QProgressBar" name="progressBar_8">
             <property name="value">
              <number>24</number>
             </property>
@@ -1239,14 +1184,14 @@
            </spacer>
           </item>
           <item>
-           <widget class="QPushButton" name="econ_btn_run">
+           <widget class="QPushButton" name="pushButton_17">
             <property name="text">
              <string>Run</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="econ_btn_close">
+           <widget class="QPushButton" name="pushButton_18">
             <property name="text">
              <string>Close</string>
             </property>
@@ -1297,7 +1242,7 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QgsMapLayerComboBox" name="env_map_layer_cmb_bx_boundary"/>
+        <widget class="QgsMapLayerComboBox" name="mMapLayerComboBox_4"/>
        </item>
       </layout>
      </widget>
@@ -1356,24 +1301,10 @@
         </widget>
        </item>
        <item row="1" column="3">
-        <widget class="QgsDoubleSpinBox" name="mQgsDoubleSpinBox_10">
-         <property name="suffix">
-          <string> %</string>
-         </property>
-         <property name="decimals">
-          <number>1</number>
-         </property>
-        </widget>
+        <widget class="QgsDoubleSpinBox" name="mQgsDoubleSpinBox_10"/>
        </item>
        <item row="2" column="3">
-        <widget class="QgsDoubleSpinBox" name="mQgsDoubleSpinBox_11">
-         <property name="suffix">
-          <string> %</string>
-         </property>
-         <property name="decimals">
-          <number>1</number>
-         </property>
-        </widget>
+        <widget class="QgsDoubleSpinBox" name="mQgsDoubleSpinBox_11"/>
        </item>
        <item row="3" column="0">
         <widget class="QLabel" name="label_25">
@@ -1383,23 +1314,16 @@
         </widget>
        </item>
        <item row="3" column="3">
-        <widget class="QgsDoubleSpinBox" name="mQgsDoubleSpinBox_12">
-         <property name="suffix">
-          <string> %</string>
-         </property>
-         <property name="decimals">
-          <number>1</number>
-         </property>
-        </widget>
+        <widget class="QgsDoubleSpinBox" name="mQgsDoubleSpinBox_12"/>
        </item>
        <item row="1" column="2">
-        <widget class="QgsMapLayerComboBox" name="env_map_layer_cmb_bx_hri"/>
+        <widget class="QgsMapLayerComboBox" name="mMapLayerComboBox_5"/>
        </item>
        <item row="2" column="2">
-        <widget class="QgsMapLayerComboBox" name="env_map_layer_cmb_bx_dem"/>
+        <widget class="QgsMapLayerComboBox" name="mMapLayerComboBox_6"/>
        </item>
        <item row="3" column="2">
-        <widget class="QgsMapLayerComboBox" name="env_map_layer_cmb_bx_forest"/>
+        <widget class="QgsMapLayerComboBox" name="mMapLayerComboBox_7"/>
        </item>
       </layout>
      </widget>
@@ -1434,7 +1358,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QgsFileWidget" name="env_file_wdgt_save_output">
+        <widget class="QgsFileWidget" name="mQgsFileWidget_14">
          <property name="minimumSize">
           <size>
            <width>80</width>
@@ -1457,7 +1381,7 @@
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_7">
       <item>
-       <widget class="QProgressBar" name="env_progress_bar">
+       <widget class="QProgressBar" name="progressBar_3">
         <property name="value">
          <number>24</number>
         </property>
@@ -1480,14 +1404,14 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="env_btn_run">
+       <widget class="QPushButton" name="pushButton_6">
         <property name="text">
          <string>Run</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="env_btn_close">
+       <widget class="QPushButton" name="pushButton_7">
         <property name="text">
          <string>Close</string>
         </property>
@@ -1520,7 +1444,7 @@
       </property>
       <layout class="QGridLayout" name="gridLayout_14">
        <item row="0" column="2">
-        <widget class="QCheckBox" name="mcda_chck_bx_use_selected_boundary">
+        <widget class="QCheckBox" name="checkBox_8">
          <property name="text">
           <string>Use only selected features</string>
          </property>
@@ -1534,7 +1458,7 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QgsMapLayerComboBox" name="mcda_map_layer_cmb_bx_boundary"/>
+        <widget class="QgsMapLayerComboBox" name="mMapLayerComboBox_11"/>
        </item>
       </layout>
      </widget>
@@ -1611,50 +1535,29 @@
         </widget>
        </item>
        <item row="1" column="3">
-        <widget class="QgsDoubleSpinBox" name="mcda_dbl_spn_bx_env_weight">
-         <property name="suffix">
-          <string> %</string>
-         </property>
-         <property name="decimals">
-          <number>1</number>
-         </property>
-        </widget>
+        <widget class="QgsDoubleSpinBox" name="mQgsDoubleSpinBox_13"/>
        </item>
        <item row="2" column="3">
-        <widget class="QgsDoubleSpinBox" name="mcda_dbl_spn_bx_econ_weight">
-         <property name="suffix">
-          <string> %</string>
-         </property>
-         <property name="decimals">
-          <number>1</number>
-         </property>
-        </widget>
+        <widget class="QgsDoubleSpinBox" name="mQgsDoubleSpinBox_14"/>
        </item>
        <item row="3" column="0">
         <widget class="QLabel" name="label_38">
          <property name="text">
-          <string>Infrastructure: </string>
+          <string>Social suitability: </string>
          </property>
         </widget>
        </item>
        <item row="3" column="3">
-        <widget class="QgsDoubleSpinBox" name="mcda_dbl_spn_bx_infra_weight">
-         <property name="suffix">
-          <string> %</string>
-         </property>
-         <property name="decimals">
-          <number>1</number>
-         </property>
-        </widget>
+        <widget class="QgsDoubleSpinBox" name="mQgsDoubleSpinBox_15"/>
        </item>
        <item row="1" column="2">
-        <widget class="QgsMapLayerComboBox" name="mcda_map_layer_cmb_bx_env"/>
+        <widget class="QgsMapLayerComboBox" name="mMapLayerComboBox_12"/>
        </item>
        <item row="2" column="2">
-        <widget class="QgsMapLayerComboBox" name="mcda_map_layer_cmb_bx_econ"/>
+        <widget class="QgsMapLayerComboBox" name="mMapLayerComboBox_13"/>
        </item>
        <item row="3" column="2">
-        <widget class="QgsMapLayerComboBox" name="mcda_map_layer_cmb_bx_infra"/>
+        <widget class="QgsMapLayerComboBox" name="mMapLayerComboBox_14"/>
        </item>
       </layout>
      </widget>
@@ -1689,7 +1592,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QgsFileWidget" name="mcda_file_wdgt_save_output">
+        <widget class="QgsFileWidget" name="mQgsFileWidget_45">
          <property name="minimumSize">
           <size>
            <width>80</width>
@@ -1712,7 +1615,7 @@
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_16">
       <item>
-       <widget class="QProgressBar" name="mcda_progress_bar">
+       <widget class="QProgressBar" name="progressBar_7">
         <property name="value">
          <number>24</number>
         </property>
@@ -1735,14 +1638,14 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="mcda_btn_run">
+       <widget class="QPushButton" name="pushButton_15">
         <property name="text">
          <string>Run</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="mcda_btn_close">
+       <widget class="QPushButton" name="pushButton_16">
         <property name="text">
          <string>Close</string>
         </property>
@@ -1898,7 +1801,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="about_btn_close">
+         <widget class="QPushButton" name="pushButton_5">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
