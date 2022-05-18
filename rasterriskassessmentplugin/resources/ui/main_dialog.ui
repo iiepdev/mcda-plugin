@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1026</width>
-    <height>895</height>
+    <width>1028</width>
+    <height>902</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -432,9 +432,9 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>10</y>
+       <y>0</y>
        <width>441</width>
-       <height>101</height>
+       <height>121</height>
       </rect>
      </property>
      <property name="title">
@@ -497,9 +497,9 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>120</y>
+       <y>130</y>
        <width>471</width>
-       <height>141</height>
+       <height>271</height>
       </rect>
      </property>
      <property name="title">
@@ -508,28 +508,15 @@
      <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>70</y>
+        <x>0</x>
+        <y>80</y>
         <width>391</width>
-        <height>61</height>
+        <height>184</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="hri_risk_layer_gridlayout">
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_4">
-         <property name="maximumSize">
-          <size>
-           <width>60</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>Layer 1: </string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="3">
-        <widget class="QgsDoubleSpinBox" name="mQgsDoubleSpinBox">
+       <item row="1" column="2">
+        <widget class="QgsDoubleSpinBox" name="hri_raster_layer_dspnb_1">
          <property name="maximumSize">
           <size>
            <width>78</width>
@@ -544,50 +531,130 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="2">
-        <widget class="QgsMapLayerComboBox" name="mMapLayerComboBox_15">
+       <item row="2" column="2">
+        <widget class="QgsDoubleSpinBox" name="hri_raster_layer_dspnb_2">
          <property name="maximumSize">
           <size>
-           <width>255</width>
+           <width>78</width>
            <height>16777215</height>
           </size>
          </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="layoutWidget">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>30</y>
-        <width>311</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <layout class="QGridLayout" name="gridLayout_10">
-       <item row="0" column="2">
-        <widget class="QgsSpinBox" name="hri_spn_bx_number_of_hazards"/>
-       </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_3">
-         <property name="text">
-          <string>Number of hazard risks to include: </string>
+         <property name="suffix">
+          <string> %</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
          </property>
         </widget>
        </item>
-       <item row="0" column="1">
-        <spacer name="horizontalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
+       <item row="6" column="2">
+        <widget class="QgsDoubleSpinBox" name="hri_raster_layer_dspnb_6">
+         <property name="maximumSize">
           <size>
-           <width>40</width>
-           <height>20</height>
+           <width>78</width>
+           <height>16777215</height>
           </size>
          </property>
-        </spacer>
+         <property name="suffix">
+          <string> %</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="2">
+        <widget class="QgsDoubleSpinBox" name="hri_raster_layer_dspnb_3">
+         <property name="maximumSize">
+          <size>
+           <width>78</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="suffix">
+          <string> %</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QgsMapLayerComboBox" name="hri_raster_layer_cb_1">
+         <property name="allowEmptyLayer">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QgsMapLayerComboBox" name="hri_raster_layer_cb_2">
+         <property name="allowEmptyLayer">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QgsMapLayerComboBox" name="hri_raster_layer_cb_4">
+         <property name="allowEmptyLayer">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QgsMapLayerComboBox" name="hri_raster_layer_cb_6">
+         <property name="allowEmptyLayer">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="2">
+        <widget class="QgsDoubleSpinBox" name="hri_raster_layer_dspnb_4">
+         <property name="maximumSize">
+          <size>
+           <width>78</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="suffix">
+          <string> %</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QgsMapLayerComboBox" name="hri_raster_layer_cb_3">
+         <property name="allowEmptyLayer">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="2">
+        <widget class="QgsDoubleSpinBox" name="hri_raster_layer_dspnb_5">
+         <property name="maximumSize">
+          <size>
+           <width>78</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="suffix">
+          <string> %</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QgsMapLayerComboBox" name="hri_raster_layer_cb_5">
+         <property name="allowEmptyLayer">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QgsSpinBox" name="hri_spn_bx_number_of_hazards"/>
        </item>
       </layout>
      </widget>
@@ -596,7 +663,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>370</y>
+       <y>410</y>
        <width>471</width>
        <height>81</height>
       </rect>
@@ -641,9 +708,9 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>460</y>
+       <y>499</y>
        <width>471</width>
-       <height>100</height>
+       <height>81</height>
       </rect>
      </property>
      <widget class="QWidget" name="horizontalLayoutWidget">
@@ -708,19 +775,6 @@
        </item>
       </layout>
      </widget>
-    </widget>
-    <widget class="QGroupBox" name="groupbox_risk_layers">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>260</y>
-       <width>461</width>
-       <height>111</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>GroupBox</string>
-     </property>
     </widget>
    </widget>
    <widget class="QWidget" name="economic_suitability">

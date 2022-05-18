@@ -58,6 +58,7 @@ class MainDialog(QDialog, FORM_CLASS):  # type: ignore
             panel.setup_panel()
         # The first panel is shown initially
         self.menu_widget.setCurrentRow(0)
+
         """
        
         self.buttonbox_main.button(QDialogButtonBox.Ok).setText("Run")
