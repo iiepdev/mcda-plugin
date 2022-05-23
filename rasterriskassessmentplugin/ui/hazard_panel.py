@@ -7,7 +7,7 @@ from qgis.gui import (
     QgsDoubleSpinBox,
     QgsCollapsibleGroupBox,
 )
-from qgis.core import QgsFieldProxyModel, QgsMapLayerProxyModel
+from qgis.core import QgsFieldProxyModel, QgsMapLayerProxyModel, QgsProject, QgsRaster
 
 from ..definitions.gui import Panels
 from ..qgis_plugin_tools.tools.i18n import tr
@@ -77,7 +77,7 @@ class HazardRiskIndexPanel(BasePanel):
         self.dlg.hri_risk_layer_gridlayout.addWidget(
             QLabel("Number of hazard risks to include", self.dlg), 0, 0, 1, 2
         )
-        for i in range(5):
+        for i in range(6):
             self.dlg.hri_risk_layer_gridlayout.addWidget(
                 QLabel("Layer {}".format(i + 1), self.dlg), i + 1, 0
             )
@@ -135,7 +135,8 @@ class HazardRiskIndexPanel(BasePanel):
         self.dlg.hri_raster_layer_cb_1.layerChanged.connect(
             self.__update_selected_layer
         )
-        # self.hri_btn_run
+
+        self.dlg.hri_btn_run.clicked.connect(self.__run_model)
         self.dlg.hri_btn_close.clicked.connect(self.__close_dialog)
         self.dlg.hri_raster_layer_cb_1.layerChanged.connect(
             self.__update_selected_layer
@@ -177,6 +178,9 @@ class HazardRiskIndexPanel(BasePanel):
             layout.removeWidget(layout.itemAt(i, j))
         for i in range(layout.rowCount() * layout.columnCount()):
             layout.removeWidget(parent, layout.itemAt(i))"""
+
+    def __run_model(self, lyr1, lyr2):
+        pass
 
     def __close_dialog(self):
         self.dlg.hide()

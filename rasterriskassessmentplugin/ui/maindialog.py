@@ -21,6 +21,7 @@ from .infrastructure_panel import InfrastructurePanel
 from .economic_panel import EconomicSuitabilityPanel
 from .environmental_panel import EnvironmentalSuitabilityPanel
 from .multicriteria_panel import MultiCriteriaSuitabilityPanel
+from .help_panel import HelpPanel
 
 
 FORM_CLASS = load_ui("main_dialog.ui")
@@ -44,6 +45,7 @@ class MainDialog(QDialog, FORM_CLASS):  # type: ignore
             Panels.EconomicSuitability: EconomicSuitabilityPanel(self),
             Panels.EnvironmentalSuitability: EnvironmentalSuitabilityPanel(self),
             Panels.MultiCriteriaSuitability: MultiCriteriaSuitabilityPanel(self),
+            Panels.Help: HelpPanel(self),
         }
         for i, panel_enum in enumerate(self.panels):
             item = self.menu_widget.item(i)

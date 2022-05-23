@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1028</width>
-    <height>902</height>
+    <width>1026</width>
+    <height>895</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -104,6 +104,11 @@
    </item>
    <item>
     <property name="text">
+     <string>Help</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
      <string>About</string>
     </property>
    </item>
@@ -118,7 +123,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>5</number>
    </property>
    <widget class="QWidget" name="infrastructure">
     <widget class="QgsCollapsibleGroupBox" name="mGroupBox_areaExposure_2">
@@ -1734,6 +1739,63 @@
          <string>Close</string>
         </property>
        </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="help">
+    <widget class="QWidget" name="">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>80</y>
+       <width>601</width>
+       <height>501</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_8">
+        <item>
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>Documentation for model: </string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="comboBox">
+          <item>
+           <property name="text">
+            <string>Infrastructure</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Hazard Risk Index</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Economic Suitability</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Environmental Suitability</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Multi-criteria Suitability</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QTextBrowser" name="textBrowser"/>
       </item>
      </layout>
     </widget>

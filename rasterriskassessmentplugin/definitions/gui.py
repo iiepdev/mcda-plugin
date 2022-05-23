@@ -15,6 +15,7 @@ class Panels(enum.Enum):
     EconomicSuitability = {"icon": "/mIconRaster.svg"}
     EnvironmentalSuitability = {"icon": "/mIconRaster.svg"}
     MultiCriteriaSuitability = {"icon": "/mActionShowRasterCalculator.png"}
+    Help = {"icon": "/mActionHelpContents.svg"}
     About = {"icon": "/mActionHelpContents.svg"}
 
     @property
