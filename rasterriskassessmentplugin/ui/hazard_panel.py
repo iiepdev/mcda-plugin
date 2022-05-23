@@ -7,7 +7,7 @@ from qgis.gui import (
     QgsDoubleSpinBox,
     QgsCollapsibleGroupBox,
 )
-from qgis.core import QgsFieldProxyModel, QgsMapLayerProxyModel
+from qgis.core import QgsFieldProxyModel, QgsMapLayerProxyModel, QgsProject, QgsRaster
 
 from ..definitions.gui import Panels
 from ..qgis_plugin_tools.tools.i18n import tr
@@ -31,8 +31,6 @@ class HazardRiskIndexPanel(BasePanel):
         self.dlg.hri_progress_bar: QProgressBar
         self.dlg.hri_risk_layer_gridlayout: QGridLayout
         self.dlg.groupbox_rasters: QgsCollapsibleGroupBox
-        # self.dlg.groupbox_risk_layers: QGroupBox
-        # self.dlg.groupbox_risk_layers.addLayout(self.dlg.hri_risk_layer_gridlayout)
         # self.dlg.hri_progress_bar.setMinimum(0)
         self.dlg.hri_progress_bar.setValue(0)
         self.dlg.hri_map_layer_cmb_bx_boundaries.setFilters(
@@ -47,16 +45,104 @@ class HazardRiskIndexPanel(BasePanel):
         self.dlg.hri_spn_bx_number_of_hazards.setMinimum(1)
         self.dlg.hri_spn_bx_number_of_hazards.setMaximum(6)
 
-        self.dlg.hri_spn_bx_number_of_hazards.valueChanged.connect(
-            self.__set_hri_risk_layer_grid
+        # self.dlg.hri_spn_bx_number_of_hazards.valueChanged.connect(
+        #    self.__set_hri_risk_layer_grid
+        # )
+
+        self.dlg.hri_raster_layer_cb_1: QgsMapLayerComboBox()
+        self.dlg.hri_raster_layer_cb_2: QgsMapLayerComboBox()
+        self.dlg.hri_raster_layer_cb_3: QgsMapLayerComboBox()
+        self.dlg.hri_raster_layer_cb_4: QgsMapLayerComboBox()
+        self.dlg.hri_raster_layer_cb_5: QgsMapLayerComboBox()
+        self.dlg.hri_raster_layer_cb_6: QgsMapLayerComboBox()
+        self.dlg.hri_raster_layer_cb_1.setFilters(QgsMapLayerProxyModel.RasterLayer)
+        self.dlg.hri_raster_layer_cb_2.setFilters(QgsMapLayerProxyModel.RasterLayer)
+        self.dlg.hri_raster_layer_cb_3.setFilters(QgsMapLayerProxyModel.RasterLayer)
+        self.dlg.hri_raster_layer_cb_4.setFilters(QgsMapLayerProxyModel.RasterLayer)
+        self.dlg.hri_raster_layer_cb_5.setFilters(QgsMapLayerProxyModel.RasterLayer)
+        self.dlg.hri_raster_layer_cb_6.setFilters(QgsMapLayerProxyModel.RasterLayer)
+        self.dlg.hri_raster_layer_cb_1.setShowCrs(True)
+        self.dlg.hri_raster_layer_cb_2.setShowCrs(True)
+        self.dlg.hri_raster_layer_cb_3.setShowCrs(True)
+        self.dlg.hri_raster_layer_cb_4.setShowCrs(True)
+        self.dlg.hri_raster_layer_cb_5.setShowCrs(True)
+        self.dlg.hri_raster_layer_cb_6.setShowCrs(True)
+        self.dlg.hri_raster_layer_dspnb_1: QgsDoubleSpinBox()
+        self.dlg.hri_raster_layer_dspnb_2: QgsDoubleSpinBox()
+        self.dlg.hri_raster_layer_dspnb_3: QgsDoubleSpinBox()
+        self.dlg.hri_raster_layer_dspnb_4: QgsDoubleSpinBox()
+        self.dlg.hri_raster_layer_dspnb_5: QgsDoubleSpinBox()
+        self.dlg.hri_raster_layer_dspnb_6: QgsDoubleSpinBox()
+
+        self.dlg.hri_risk_layer_gridlayout.addWidget(
+            QLabel("Number of hazard risks to include", self.dlg), 0, 0, 1, 2
         )
+        for i in range(6):
+            self.dlg.hri_risk_layer_gridlayout.addWidget(
+                QLabel("Layer {}".format(i + 1), self.dlg), i + 1, 0
+            )
+        self.dlg.hri_risk_layer_gridlayout.addWidget(
+            self.dlg.hri_spn_bx_number_of_hazards, 0, 2
+        )
+        self.dlg.hri_risk_layer_gridlayout.addWidget(
+            self.dlg.hri_raster_layer_cb_1, 1, 1
+        )
+        self.dlg.hri_risk_layer_gridlayout.addWidget(
+            self.dlg.hri_raster_layer_cb_2, 2, 1
+        )
+        self.dlg.hri_risk_layer_gridlayout.addWidget(
+            self.dlg.hri_raster_layer_cb_3, 3, 1
+        )
+        self.dlg.hri_risk_layer_gridlayout.addWidget(
+            self.dlg.hri_raster_layer_cb_4, 4, 1
+        )
+        self.dlg.hri_risk_layer_gridlayout.addWidget(
+            self.dlg.hri_raster_layer_cb_5, 5, 1
+        )
+        self.dlg.hri_risk_layer_gridlayout.addWidget(
+            self.dlg.hri_raster_layer_cb_6, 6, 1
+        )
+        self.dlg.hri_risk_layer_gridlayout.addWidget(
+            self.dlg.hri_raster_layer_dspnb_1, 1, 2
+        )
+        self.dlg.hri_risk_layer_gridlayout.addWidget(
+            self.dlg.hri_raster_layer_dspnb_2, 2, 2
+        )
+        self.dlg.hri_risk_layer_gridlayout.addWidget(
+            self.dlg.hri_raster_layer_dspnb_3, 3, 2
+        )
+        self.dlg.hri_risk_layer_gridlayout.addWidget(
+            self.dlg.hri_raster_layer_dspnb_4, 4, 2
+        )
+        self.dlg.hri_risk_layer_gridlayout.addWidget(
+            self.dlg.hri_raster_layer_dspnb_5, 5, 2
+        )
+        self.dlg.hri_risk_layer_gridlayout.addWidget(
+            self.dlg.hri_raster_layer_dspnb_6, 6, 2
+        )
+
+        self.dlg.groupbox_rasters.setLayout(self.dlg.hri_risk_layer_gridlayout)
+
+        self.hri_layer_1 = self.dlg.hri_raster_layer_cb_1.currentLayer()
+        self.hri_layer_2 = self.dlg.hri_raster_layer_cb_2.currentLayer()
+        self.hri_layer_3 = self.dlg.hri_raster_layer_cb_3.currentLayer()
+        self.hri_layer_4 = self.dlg.hri_raster_layer_cb_4.currentLayer()
+        self.hri_layer_5 = self.dlg.hri_raster_layer_cb_5.currentLayer()
+        self.hri_layer_6 = self.dlg.hri_raster_layer_cb_6.currentLayer()
 
         self.dlg.hri_map_layer_cmb_bx_boundaries.setShowCrs(True)
         self.dlg.hri_map_layer_cmb_bx_schools.setShowCrs(True)
-        # self.hri_btn_run
-        self.dlg.hri_btn_close.clicked.connect(self.__close_dialog)
+        self.dlg.hri_raster_layer_cb_1.layerChanged.connect(
+            self.__update_selected_layer
+        )
 
-    def __set_hri_risk_layer_grid(self, nr_of_risks):
+        self.dlg.hri_btn_run.clicked.connect(self.__run_model)
+        self.dlg.hri_btn_close.clicked.connect(self.__close_dialog)
+        self.dlg.hri_raster_layer_cb_1.layerChanged.connect(
+            self.__update_selected_layer
+        )
+
+    """def __set_hri_risk_layer_grid(self, nr_of_risks):
 
         print(nr_of_risks)
         self.__clear_gridlayout(self.dlg.hri_risk_layer_gridlayout)
@@ -70,14 +156,19 @@ class HazardRiskIndexPanel(BasePanel):
                 i,
                 1,
             )
-            """self.dlg.hri_risk_layer_gridlayout.addWidget(
+            self.dlg.hri_risk_layer_gridlayout.addWidget(
                 self.dlg.hri_widget_list[i], i, 1
-            )"""
+            )
             self.dlg.hri_risk_layer_gridlayout.addWidget(QgsDoubleSpinBox(), i, 2)
 
-            self.dlg.hri_risk_layer_gridlayout.setRowMinimumHeight(i, 20)
+            self.dlg.hri_risk_layer_gridlayout.setRowMinimumHeight(i, 20)"""
+
+    def __update_selected_layer(self, layer):
+        self.hri_layer_1 = layer
+        print(self.hri_layer_1)
 
     def __clear_gridlayout(self, layout):
+        pass
         # does not work
         # while layout.count() > 0:
         #    layout.itemAt(0).setParent(None)
@@ -87,6 +178,9 @@ class HazardRiskIndexPanel(BasePanel):
             layout.removeWidget(layout.itemAt(i, j))
         for i in range(layout.rowCount() * layout.columnCount()):
             layout.removeWidget(parent, layout.itemAt(i))"""
+
+    def __run_model(self, lyr1, lyr2):
+        pass
 
     def __close_dialog(self):
         self.dlg.hide()
