@@ -1,20 +1,11 @@
 import logging
 
-from qgis.PyQt.QtWidgets import QDialog, QProgressBar, QGridLayout, QLabel, QGroupBox
-from qgis.gui import (
-    QgsMapLayerComboBox,
-    QgsSpinBox,
-    QgsDoubleSpinBox,
-    QgsCollapsibleGroupBox,
-)
-from qgis.core import QgsFieldProxyModel, QgsMapLayerProxyModel, QgsProject, QgsRaster
+from qgis.core import QgsMapLayerProxyModel
+from qgis.PyQt.QtWidgets import QDialog, QLabel
 
 from ..definitions.gui import Panels
-from ..qgis_plugin_tools.tools.i18n import tr
 from ..qgis_plugin_tools.tools.resources import plugin_name
-from ..qgis_plugin_tools.tools.exceptions import QgsPluginException
 from .base_panel import BasePanel
-
 
 LOGGER = logging.getLogger(plugin_name())
 
@@ -26,11 +17,6 @@ class HazardRiskIndexPanel(BasePanel):
 
     def setup_panel(self) -> None:
 
-        self.dlg.hri_map_layer_cmb_bx_boundaries: QgsMapLayerComboBox
-        self.dlg.hri_map_layer_cmb_bx_schools: QgsMapLayerComboBox
-        self.dlg.hri_progress_bar: QProgressBar
-        self.dlg.hri_risk_layer_gridlayout: QGridLayout
-        self.dlg.groupbox_rasters: QgsCollapsibleGroupBox
         # self.dlg.hri_progress_bar.setMinimum(0)
         self.dlg.hri_progress_bar.setValue(0)
         self.dlg.hri_map_layer_cmb_bx_boundaries.setFilters(
@@ -39,7 +25,6 @@ class HazardRiskIndexPanel(BasePanel):
         self.dlg.hri_map_layer_cmb_bx_schools.setFilters(
             QgsMapLayerProxyModel.PointLayer
         )
-        self.dlg.hri_spn_bx_number_of_hazards: QgsSpinBox
         self.dlg.hri_spn_bx_number_of_hazards.setClearValue(1)
         self.dlg.hri_spn_bx_number_of_hazards.clear()
         self.dlg.hri_spn_bx_number_of_hazards.setMinimum(1)
@@ -49,12 +34,6 @@ class HazardRiskIndexPanel(BasePanel):
         #    self.__set_hri_risk_layer_grid
         # )
 
-        self.dlg.hri_raster_layer_cb_1: QgsMapLayerComboBox()
-        self.dlg.hri_raster_layer_cb_2: QgsMapLayerComboBox()
-        self.dlg.hri_raster_layer_cb_3: QgsMapLayerComboBox()
-        self.dlg.hri_raster_layer_cb_4: QgsMapLayerComboBox()
-        self.dlg.hri_raster_layer_cb_5: QgsMapLayerComboBox()
-        self.dlg.hri_raster_layer_cb_6: QgsMapLayerComboBox()
         self.dlg.hri_raster_layer_cb_1.setFilters(QgsMapLayerProxyModel.RasterLayer)
         self.dlg.hri_raster_layer_cb_2.setFilters(QgsMapLayerProxyModel.RasterLayer)
         self.dlg.hri_raster_layer_cb_3.setFilters(QgsMapLayerProxyModel.RasterLayer)
@@ -67,12 +46,6 @@ class HazardRiskIndexPanel(BasePanel):
         self.dlg.hri_raster_layer_cb_4.setShowCrs(True)
         self.dlg.hri_raster_layer_cb_5.setShowCrs(True)
         self.dlg.hri_raster_layer_cb_6.setShowCrs(True)
-        self.dlg.hri_raster_layer_dspnb_1: QgsDoubleSpinBox()
-        self.dlg.hri_raster_layer_dspnb_2: QgsDoubleSpinBox()
-        self.dlg.hri_raster_layer_dspnb_3: QgsDoubleSpinBox()
-        self.dlg.hri_raster_layer_dspnb_4: QgsDoubleSpinBox()
-        self.dlg.hri_raster_layer_dspnb_5: QgsDoubleSpinBox()
-        self.dlg.hri_raster_layer_dspnb_6: QgsDoubleSpinBox()
 
         self.dlg.hri_risk_layer_gridlayout.addWidget(
             QLabel("Number of hazard risks to include", self.dlg), 0, 0, 1, 2

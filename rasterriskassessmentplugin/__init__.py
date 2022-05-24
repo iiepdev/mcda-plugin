@@ -2,9 +2,11 @@ import os
 
 from qgis.gui import QgisInterface
 
-from rasterriskassessmentplugin.qgis_plugin_tools.infrastructure.debugging import setup_debugpy  # noqa F401
-from rasterriskassessmentplugin.qgis_plugin_tools.infrastructure.debugging import setup_ptvsd  # noqa F401
-from rasterriskassessmentplugin.qgis_plugin_tools.infrastructure.debugging import setup_pydevd  # noqa F401
+from rasterriskassessmentplugin.qgis_plugin_tools.infrastructure.debugging import (  # noqa F401
+    setup_debugpy,
+    setup_ptvsd,
+    setup_pydevd,
+)
 
 debugger = os.environ.get("QGIS_PLUGIN_USE_DEBUGGER", "").lower()
 if debugger in {"debugpy", "ptvsd", "pydevd"}:

@@ -1,15 +1,9 @@
-import logging
+from qgis.PyQt.QtWidgets import QDialog
 
-from qgis.PyQt.QtWidgets import QDialog, QTextBrowser
-from qgis.core import QgsFieldProxyModel, QgsMapLayerProxyModel
-
-from ..definitions.gui import Panels
-from ..qgis_plugin_tools.tools.i18n import tr
-from ..qgis_plugin_tools.tools.resources import plugin_name
-from ..qgis_plugin_tools.tools.version import version
-from .base_panel import BasePanel
-from ..core.hri_model import NaturalHazardRisksForSchools
 from ..core.economic_model import EconomicSuitability
+from ..core.hri_model import NaturalHazardRisksForSchools
+from ..definitions.gui import Panels
+from .base_panel import BasePanel
 
 
 class HelpPanel(BasePanel):
@@ -19,10 +13,9 @@ class HelpPanel(BasePanel):
 
     def setup_panel(self) -> None:
 
-        self.dlg.textBrowser: QTextBrowser()
         # self.dlg.hri_help: str()
-        self.dlg.hri_help_string = NaturalHazardRisksForSchools.shortHelpString(self)
-        self.dlg.economic_help_string = EconomicSuitability.shortHelpString(self)
+        self.dlg.hri_help_string = NaturalHazardRisksForSchools.shortHelpString()
+        self.dlg.economic_help_string = EconomicSuitability.shortHelpString()
 
         self.dlg.textBrowser.setPlainText("help")
         self.dlg.textBrowser.setHtml(self.dlg.hri_help_string)

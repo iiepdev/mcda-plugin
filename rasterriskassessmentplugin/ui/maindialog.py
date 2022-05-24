@@ -1,27 +1,18 @@
 import logging
 
-from qgis.core import QgsApplication
-from qgis.PyQt.QtWidgets import (
-    QDesktopWidget,
-    QDialog,
-    QDialogButtonBox,
-    QRadioButton,
-    QWidget,
-)
-
+from qgis.PyQt.QtWidgets import QDesktopWidget, QDialog, QRadioButton, QWidget
 
 from ..definitions.gui import Panels
 from ..qgis_plugin_tools.tools.resources import load_ui, plugin_name
-
-# from ..qgis_plugin_tools.tools.settings import get_setting, set_setting
-
 from .about_panel import AboutPanel
-from .hazard_panel import HazardRiskIndexPanel
-from .infrastructure_panel import InfrastructurePanel
 from .economic_panel import EconomicSuitabilityPanel
 from .environmental_panel import EnvironmentalSuitabilityPanel
-from .multicriteria_panel import MultiCriteriaSuitabilityPanel
+from .hazard_panel import HazardRiskIndexPanel
 from .help_panel import HelpPanel
+from .infrastructure_panel import InfrastructurePanel
+from .multicriteria_panel import MultiCriteriaSuitabilityPanel
+
+# from ..qgis_plugin_tools.tools.settings import get_setting, set_setting
 
 
 FORM_CLASS = load_ui("main_dialog.ui")
@@ -62,7 +53,7 @@ class MainDialog(QDialog, FORM_CLASS):  # type: ignore
         self.menu_widget.setCurrentRow(0)
 
         """
-       
+
         self.buttonbox_main.button(QDialogButtonBox.Ok).setText("Run")
         self.buttonbox_main.button(QDialogButtonBox.Cancel).setText("Close")
         self.lineedit_url.setText(get_setting("gh_url"))
@@ -70,7 +61,7 @@ class MainDialog(QDialog, FORM_CLASS):  # type: ignore
         self.file_widget.setFilePath(get_setting("result_dir"))
         # only check write to file if path was found
         if self.file_widget.filePath():
-            self.checkbox_file.setChecked(True)        
+            self.checkbox_file.setChecked(True)
        """
 
     def _set_window_location(self) -> None:
