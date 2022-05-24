@@ -1,6 +1,6 @@
 from typing import Callable, List, Optional
 
-from qgis.gui import QgisInterface
+# from qgis.gui import QgisInterface
 from qgis.PyQt.QtCore import QCoreApplication, QTranslator
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction, QWidget
@@ -10,15 +10,13 @@ from rasterriskassessmentplugin.qgis_plugin_tools.tools.custom_logging import (
     setup_logger,
     teardown_logger,
 )
-from rasterriskassessmentplugin.qgis_plugin_tools.tools.i18n import (
-    setup_translation,
-    tr,
-)
+from rasterriskassessmentplugin.qgis_plugin_tools.tools.i18n import setup_translation
 from rasterriskassessmentplugin.qgis_plugin_tools.tools.resources import plugin_name
-from rasterriskassessmentplugin.qgis_plugin_tools.tools.settings import (
-    get_setting,
-    set_setting,
-)
+
+# from rasterriskassessmentplugin.qgis_plugin_tools.tools.settings import (
+#     get_setting,
+#     set_setting,
+# )
 from rasterriskassessmentplugin.ui.maindialog import MainDialog
 
 
