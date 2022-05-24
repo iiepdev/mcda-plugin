@@ -4,10 +4,7 @@ profile = "black"
 multi_line = 3
 
 [tool.pytest.ini_options]
-addopts = "-v --tb=short --cov=rasterriskassessmentplugin"
-testpaths = [
-    "tests"
-]
+addopts = "-v"
 
 [tool.coverage.report]
 omit = ["rasterriskassessmentplugin/qgis_plugin_tools/*"]
