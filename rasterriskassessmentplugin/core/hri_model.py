@@ -5,127 +5,30 @@ Group : Final models
 With QGIS : 31600
 """
 
+import os
+import sys
+
 import processing
 from qgis.core import (
-    QgsExpression,
     QgsProcessing,
     QgsProcessingAlgorithm,
     QgsProcessingMultiStepFeedback,
     QgsProcessingParameterCrs,
     QgsProcessingParameterFeatureSink,
-    QgsProcessingParameterNumber,
     QgsProcessingParameterRasterDestination,
-    QgsProcessingParameterRasterLayer,
     QgsProcessingParameterVectorLayer,
 )
+
+# Mac OS PROJ path fix until https://github.com/qgis/QGIS-Mac-Packager/issues/151 is
+# resolved
+if "darwin" in sys.platform:
+    os.environ["PROJ_LIB"] = os.environ["GDAL_DATA"].replace("/gdal", "/proj")
 
 
 class NaturalHazardRisksForSchools(QgsProcessingAlgorithm):
     def initAlgorithm(self, config=None):  # noqa: N802
-        self.addParameter(
-            QgsProcessingParameterNumber(
-                "Numberofriskstocompute",
-                "Number of risks to compute",
-                type=QgsProcessingParameterNumber.Integer,
-                minValue=2,
-                maxValue=6,
-                defaultValue=6,
-            )
-        )
-        self.addParameter(
-            QgsProcessingParameterRasterLayer(
-                "Hazardlayer1", "Hazard layer 1", defaultValue=None
-            )
-        )
-        self.addParameter(
-            QgsProcessingParameterNumber(
-                "WeightforHazardlayer1",
-                "Weight for Hazard layer 1",
-                type=QgsProcessingParameterNumber.Double,
-                minValue=0,
-                maxValue=1,
-                defaultValue=1,
-            )
-        )
-        self.addParameter(
-            QgsProcessingParameterRasterLayer(
-                "Hazardlayer2", "Hazard layer 2", defaultValue=None
-            )
-        )
-        self.addParameter(
-            QgsProcessingParameterNumber(
-                "WeightforHazardlayer2",
-                "Weight for Hazard layer 2",
-                type=QgsProcessingParameterNumber.Double,
-                minValue=0,
-                maxValue=1,
-                defaultValue=1,
-            )
-        )
-        self.addParameter(
-            QgsProcessingParameterRasterLayer(
-                "Hazardlayer3", "Hazard layer 3", optional=True, defaultValue=None
-            )
-        )
-        self.addParameter(
-            QgsProcessingParameterNumber(
-                "WeightforHazardlayer3",
-                "Weight for Hazard layer 3",
-                optional=True,
-                type=QgsProcessingParameterNumber.Double,
-                minValue=0,
-                maxValue=1,
-                defaultValue=1,
-            )
-        )
-        self.addParameter(
-            QgsProcessingParameterRasterLayer(
-                "Hazardlayer4", "Hazard layer 4", optional=True, defaultValue=None
-            )
-        )
-        self.addParameter(
-            QgsProcessingParameterNumber(
-                "WeightforHazardlayer4",
-                "Weight for Hazard layer 4",
-                optional=True,
-                type=QgsProcessingParameterNumber.Double,
-                minValue=0,
-                maxValue=1,
-                defaultValue=1,
-            )
-        )
-        self.addParameter(
-            QgsProcessingParameterRasterLayer(
-                "Hazardlayer5", "Hazard layer 5", optional=True, defaultValue=None
-            )
-        )
-        self.addParameter(
-            QgsProcessingParameterNumber(
-                "WeightforHazardlayer5",
-                "Weight for Hazard layer 5",
-                optional=True,
-                type=QgsProcessingParameterNumber.Double,
-                minValue=0,
-                maxValue=1,
-                defaultValue=1,
-            )
-        )
-        self.addParameter(
-            QgsProcessingParameterRasterLayer(
-                "Hazardlayer6", "Hazard layer 6", optional=True, defaultValue=None
-            )
-        )
-        self.addParameter(
-            QgsProcessingParameterNumber(
-                "WeightforHazardlayer6",
-                "Weight for Hazard layer 6",
-                optional=True,
-                type=QgsProcessingParameterNumber.Double,
-                minValue=0,
-                maxValue=1,
-                defaultValue=1,
-            )
-        )
+        # TODO: add rest of the proper parameters if we want to use the algorithm in
+        # QGIS processing tool?
         self.addParameter(
             QgsProcessingParameterCrs(
                 "ProjectedReferenceSystem",
@@ -155,21 +58,6 @@ class NaturalHazardRisksForSchools(QgsProcessingAlgorithm):
             )
         )
         self.addParameter(
-            QgsProcessingParameterRasterDestination(
-                "Layer1", "Layer 1", createByDefault=True, defaultValue=None
-            )
-        )
-        self.addParameter(
-            QgsProcessingParameterRasterDestination(
-                "Layer2", "Layer 2", createByDefault=True, defaultValue=None
-            )
-        )
-        self.addParameter(
-            QgsProcessingParameterRasterDestination(
-                "Layer3", "Layer 3", createByDefault=True, defaultValue=None
-            )
-        )
-        self.addParameter(
             QgsProcessingParameterFeatureSink(
                 "HazardIndexSchools",
                 "Hazard Index - Schools",
@@ -182,143 +70,85 @@ class NaturalHazardRisksForSchools(QgsProcessingAlgorithm):
     def processAlgorithm(self, parameters, context, model_feedback):  # noqa: N802
         # Use a multi-step feedback, so that individual child algorithm progress
         # reports are adjusted for the overall progress through the model
-        feedback = QgsProcessingMultiStepFeedback(27, model_feedback)
-        results = {}
-        outputs = {}
-
-        # Reproject hazard layer 1
-        alg_params = {
-            "DATA_TYPE": 0,
-            "EXTRA": "",
-            "INPUT": parameters["Hazardlayer1"],
-            "MULTITHREADING": False,
-            "NODATA": None,
-            "OPTIONS": "",
-            "RESAMPLING": 0,
-            "SOURCE_CRS": None,
-            "TARGET_CRS": parameters["ProjectedReferenceSystem"],
-            "TARGET_EXTENT": None,
-            "TARGET_EXTENT_CRS": None,
-            "TARGET_RESOLUTION": None,
-            "OUTPUT": QgsProcessing.TEMPORARY_OUTPUT,
-        }
-        outputs["ReprojectHazardLayer1"] = processing.run(
-            "gdal:warpreproject",
-            alg_params,
-            context=context,
-            feedback=feedback,
-            is_child_algorithm=True,
+        feedback = QgsProcessingMultiStepFeedback(
+            3 * len(parameters["HazardLayers"]) + 7, model_feedback
         )
+        standardized_layers = []
 
-        feedback.setCurrentStep(1)
-        if feedback.isCanceled():
-            return {}
+        for index, hazard_layer in enumerate(parameters["HazardLayers"]):
+            # Reproject hazard layer
+            # Note that nodata must be 0 on all layers!!
+            alg_params = {
+                "DATA_TYPE": 0,
+                "EXTRA": "",
+                "INPUT": hazard_layer,
+                "MULTITHREADING": False,
+                "NODATA": 0,
+                "OPTIONS": "",
+                "RESAMPLING": 0,
+                "SOURCE_CRS": None,
+                "TARGET_CRS": parameters["ProjectedReferenceSystem"],
+                "TARGET_EXTENT": None,
+                "TARGET_EXTENT_CRS": None,
+                "TARGET_RESOLUTION": None,
+                "OUTPUT": QgsProcessing.TEMPORARY_OUTPUT,
+            }
+            reprojected = processing.run(
+                "gdal:warpreproject",
+                alg_params,
+                context=context,
+                feedback=feedback,
+                is_child_algorithm=True,
+            )["OUTPUT"]
 
-        # Has at least 6 hazard risks
-        alg_params = {}
-        outputs["HasAtLeast6HazardRisks"] = processing.run(
-            "native:condition",
-            alg_params,
-            context=context,
-            feedback=feedback,
-            is_child_algorithm=True,
-        )
+            feedback.setCurrentStep(1 + 3 * index)
+            if feedback.isCanceled():
+                return {}
 
-        feedback.setCurrentStep(2)
-        if feedback.isCanceled():
-            return {}
+            # Raster layer statistics
+            alg_params = {
+                "BAND": 1,
+                "INPUT": reprojected,
+            }
+            statistics = processing.run(
+                "native:rasterlayerstatistics",
+                alg_params,
+                context=context,
+                feedback=feedback,
+                is_child_algorithm=True,
+            )
 
-        # Has at least 4 hazard risks
-        alg_params = {}
-        outputs["HasAtLeast4HazardRisks"] = processing.run(
-            "native:condition",
-            alg_params,
-            context=context,
-            feedback=feedback,
-            is_child_algorithm=True,
-        )
+            feedback.setCurrentStep(2 + 3 * index)
+            if feedback.isCanceled():
+                return {}
 
-        feedback.setCurrentStep(3)
-        if feedback.isCanceled():
-            return {}
+            # Standardizing layer
+            min = statistics["MIN"]
+            max = statistics["MAX"]
+            expression = f"(A - {min})/({max} - {min})"
+            alg_params = {
+                "BAND_A": 1,
+                "EXTRA": "",
+                "FORMULA": expression,
+                "INPUT_A": reprojected,
+                "NO_DATA": None,
+                "OPTIONS": "",
+                "RTYPE": 5,
+                "OUTPUT": QgsProcessing.TEMPORARY_OUTPUT,
+            }
+            standardized_layers.append(
+                processing.run(
+                    "gdal:rastercalculator",
+                    alg_params,
+                    context=context,
+                    feedback=feedback,
+                    is_child_algorithm=True,
+                )["OUTPUT"]
+            )
 
-        # Raster layer statistics layer 1
-        alg_params = {"BAND": 1, "INPUT": outputs["ReprojectHazardLayer1"]["OUTPUT"]}
-        outputs["RasterLayerStatisticsLayer1"] = processing.run(
-            "native:rasterlayerstatistics",
-            alg_params,
-            context=context,
-            feedback=feedback,
-            is_child_algorithm=True,
-        )
-
-        feedback.setCurrentStep(4)
-        if feedback.isCanceled():
-            return {}
-
-        # Has at least 3 hazard risks
-        alg_params = {}
-        outputs["HasAtLeast3HazardRisks"] = processing.run(
-            "native:condition",
-            alg_params,
-            context=context,
-            feedback=feedback,
-            is_child_algorithm=True,
-        )
-
-        feedback.setCurrentStep(5)
-        if feedback.isCanceled():
-            return {}
-
-        # Standardizing layer 1
-        alg_params = {
-            "BAND_A": 1,
-            "BAND_B": None,
-            "BAND_C": None,
-            "BAND_D": None,
-            "BAND_E": None,
-            "BAND_F": None,
-            "EXTRA": "",
-            "FORMULA": QgsExpression(
-                "concat('(A - ',to_string(replace(to_string(  @Raster_layer_statistics_layer_1_MIN  ),'.',',')),')/(',to_string(replace(to_string(  @Raster_layer_statistics_layer_1_MAX  ),'.',',')),' - ',to_string(replace(to_string(  @Raster_layer_statistics_layer_1_MIN  ),'.',',')),')*4')"  # noqa
-            ).evaluate(),
-            "INPUT_A": outputs["ReprojectHazardLayer1"]["OUTPUT"],
-            "INPUT_B": None,
-            "INPUT_C": None,
-            "INPUT_D": None,
-            "INPUT_E": None,
-            "INPUT_F": None,
-            "NO_DATA": None,
-            "OPTIONS": "",
-            "RTYPE": 5,
-            "OUTPUT": parameters["Layer1"],
-        }
-        outputs["StandardizingLayer1"] = processing.run(
-            "gdal:rastercalculator",
-            alg_params,
-            context=context,
-            feedback=feedback,
-            is_child_algorithm=True,
-        )
-        results["Layer1"] = outputs["StandardizingLayer1"]["OUTPUT"]
-
-        feedback.setCurrentStep(6)
-        if feedback.isCanceled():
-            return {}
-
-        # Has at least 5 hazard risks
-        alg_params = {}
-        outputs["HasAtLeast5HazardRisks"] = processing.run(
-            "native:condition",
-            alg_params,
-            context=context,
-            feedback=feedback,
-            is_child_algorithm=True,
-        )
-
-        feedback.setCurrentStep(7)
-        if feedback.isCanceled():
-            return {}
+            feedback.setCurrentStep(3 + 3 * index)
+            if feedback.isCanceled():
+                return {}
 
         # Clip
         alg_params = {
@@ -326,412 +156,23 @@ class NaturalHazardRisksForSchools(QgsProcessingAlgorithm):
             "OVERLAY": parameters["Studyarea"],
             "OUTPUT": QgsProcessing.TEMPORARY_OUTPUT,
         }
-        outputs["Clip"] = processing.run(
+        clipped_schools = processing.run(
             "native:clip",
             alg_params,
             context=context,
             feedback=feedback,
             is_child_algorithm=True,
-        )
+        )["OUTPUT"]
 
-        feedback.setCurrentStep(8)
+        feedback.setCurrentStep(3 * index + 4)
         if feedback.isCanceled():
             return {}
 
-        # Reproject hazard layer 2
-        alg_params = {
-            "DATA_TYPE": 0,
-            "EXTRA": "",
-            "INPUT": parameters["Hazardlayer2"],
-            "MULTITHREADING": False,
-            "NODATA": None,
-            "OPTIONS": "",
-            "RESAMPLING": 0,
-            "SOURCE_CRS": None,
-            "TARGET_CRS": parameters["ProjectedReferenceSystem"],
-            "TARGET_EXTENT": None,
-            "TARGET_EXTENT_CRS": None,
-            "TARGET_RESOLUTION": None,
-            "OUTPUT": QgsProcessing.TEMPORARY_OUTPUT,
-        }
-        outputs["ReprojectHazardLayer2"] = processing.run(
-            "gdal:warpreproject",
-            alg_params,
-            context=context,
-            feedback=feedback,
-            is_child_algorithm=True,
-        )
-
-        feedback.setCurrentStep(9)
-        if feedback.isCanceled():
-            return {}
-
-        # Raster layer statistics layer 2
-        alg_params = {"BAND": 1, "INPUT": outputs["ReprojectHazardLayer2"]["OUTPUT"]}
-        outputs["RasterLayerStatisticsLayer2"] = processing.run(
-            "native:rasterlayerstatistics",
-            alg_params,
-            context=context,
-            feedback=feedback,
-            is_child_algorithm=True,
-        )
-
-        feedback.setCurrentStep(10)
-        if feedback.isCanceled():
-            return {}
-
-        # Reproject hazard layer 3
-        alg_params = {
-            "DATA_TYPE": 0,
-            "EXTRA": "",
-            "INPUT": parameters["Hazardlayer3"],
-            "MULTITHREADING": False,
-            "NODATA": None,
-            "OPTIONS": "",
-            "RESAMPLING": 0,
-            "SOURCE_CRS": None,
-            "TARGET_CRS": parameters["ProjectedReferenceSystem"],
-            "TARGET_EXTENT": None,
-            "TARGET_EXTENT_CRS": None,
-            "TARGET_RESOLUTION": None,
-            "OUTPUT": QgsProcessing.TEMPORARY_OUTPUT,
-        }
-        outputs["ReprojectHazardLayer3"] = processing.run(
-            "gdal:warpreproject",
-            alg_params,
-            context=context,
-            feedback=feedback,
-            is_child_algorithm=True,
-        )
-
-        feedback.setCurrentStep(11)
-        if feedback.isCanceled():
-            return {}
-
-        # Standardizing layer 2
-        alg_params = {
-            "BAND_A": 1,
-            "BAND_B": None,
-            "BAND_C": None,
-            "BAND_D": None,
-            "BAND_E": None,
-            "BAND_F": None,
-            "EXTRA": "",
-            "FORMULA": QgsExpression(
-                "concat('(A - ',to_string(replace(to_string(  @Raster_layer_statistics_layer_2_MIN  ),'.',',')),')/(',to_string(replace(to_string(  @Raster_layer_statistics_layer_2_MAX  ),'.',',')),' - ',to_string(replace(to_string(  @Raster_layer_statistics_layer_2_MIN  ),'.',',')),')*4')"  # noqa
-            ).evaluate(),
-            "INPUT_A": outputs["ReprojectHazardLayer2"]["OUTPUT"],
-            "INPUT_B": None,
-            "INPUT_C": None,
-            "INPUT_D": None,
-            "INPUT_E": None,
-            "INPUT_F": None,
-            "NO_DATA": None,
-            "OPTIONS": "",
-            "RTYPE": 5,
-            "OUTPUT": parameters["Layer2"],
-        }
-        outputs["StandardizingLayer2"] = processing.run(
-            "gdal:rastercalculator",
-            alg_params,
-            context=context,
-            feedback=feedback,
-            is_child_algorithm=True,
-        )
-        results["Layer2"] = outputs["StandardizingLayer2"]["OUTPUT"]
-
-        feedback.setCurrentStep(12)
-        if feedback.isCanceled():
-            return {}
-
-        # Raster layer statistics layer 3
-        alg_params = {"BAND": 1, "INPUT": outputs["ReprojectHazardLayer3"]["OUTPUT"]}
-        outputs["RasterLayerStatisticsLayer3"] = processing.run(
-            "native:rasterlayerstatistics",
-            alg_params,
-            context=context,
-            feedback=feedback,
-            is_child_algorithm=True,
-        )
-
-        feedback.setCurrentStep(13)
-        if feedback.isCanceled():
-            return {}
-
-        # Reproject hazard layer 4
-        alg_params = {
-            "DATA_TYPE": 0,
-            "EXTRA": "",
-            "INPUT": parameters["Hazardlayer4"],
-            "MULTITHREADING": False,
-            "NODATA": None,
-            "OPTIONS": "",
-            "RESAMPLING": 0,
-            "SOURCE_CRS": None,
-            "TARGET_CRS": parameters["ProjectedReferenceSystem"],
-            "TARGET_EXTENT": None,
-            "TARGET_EXTENT_CRS": None,
-            "TARGET_RESOLUTION": None,
-            "OUTPUT": QgsProcessing.TEMPORARY_OUTPUT,
-        }
-        outputs["ReprojectHazardLayer4"] = processing.run(
-            "gdal:warpreproject",
-            alg_params,
-            context=context,
-            feedback=feedback,
-            is_child_algorithm=True,
-        )
-
-        feedback.setCurrentStep(14)
-        if feedback.isCanceled():
-            return {}
-
-        # Reproject hazard layer 5
-        alg_params = {
-            "DATA_TYPE": 0,
-            "EXTRA": "",
-            "INPUT": parameters["Hazardlayer5"],
-            "MULTITHREADING": False,
-            "NODATA": None,
-            "OPTIONS": "",
-            "RESAMPLING": 0,
-            "SOURCE_CRS": None,
-            "TARGET_CRS": parameters["ProjectedReferenceSystem"],
-            "TARGET_EXTENT": None,
-            "TARGET_EXTENT_CRS": None,
-            "TARGET_RESOLUTION": None,
-            "OUTPUT": QgsProcessing.TEMPORARY_OUTPUT,
-        }
-        outputs["ReprojectHazardLayer5"] = processing.run(
-            "gdal:warpreproject",
-            alg_params,
-            context=context,
-            feedback=feedback,
-            is_child_algorithm=True,
-        )
-
-        feedback.setCurrentStep(15)
-        if feedback.isCanceled():
-            return {}
-
-        # Raster layer statistics layer 4
-        alg_params = {"BAND": 1, "INPUT": outputs["ReprojectHazardLayer4"]["OUTPUT"]}
-        outputs["RasterLayerStatisticsLayer4"] = processing.run(
-            "native:rasterlayerstatistics",
-            alg_params,
-            context=context,
-            feedback=feedback,
-            is_child_algorithm=True,
-        )
-
-        feedback.setCurrentStep(16)
-        if feedback.isCanceled():
-            return {}
-
-        # Raster layer statistics layer 5
-        alg_params = {"BAND": 1, "INPUT": outputs["ReprojectHazardLayer5"]["OUTPUT"]}
-        outputs["RasterLayerStatisticsLayer5"] = processing.run(
-            "native:rasterlayerstatistics",
-            alg_params,
-            context=context,
-            feedback=feedback,
-            is_child_algorithm=True,
-        )
-
-        feedback.setCurrentStep(17)
-        if feedback.isCanceled():
-            return {}
-
-        # Standardizing layer 3
-        alg_params = {
-            "BAND_A": 1,
-            "BAND_B": None,
-            "BAND_C": None,
-            "BAND_D": None,
-            "BAND_E": None,
-            "BAND_F": None,
-            "EXTRA": "",
-            "FORMULA": QgsExpression(
-                "concat('(A - ',to_string(replace(to_string(  @Raster_layer_statistics_layer_3_MIN  ),'.',',')),')/(',to_string(replace(to_string(  @Raster_layer_statistics_layer_3_MAX  ),'.',',')),' - ',to_string(replace(to_string(  @Raster_layer_statistics_layer_3_MIN  ),'.',',')),')*4')"  # noqa
-            ).evaluate(),
-            "INPUT_A": outputs["ReprojectHazardLayer3"]["OUTPUT"],
-            "INPUT_B": None,
-            "INPUT_C": None,
-            "INPUT_D": None,
-            "INPUT_E": None,
-            "INPUT_F": None,
-            "NO_DATA": None,
-            "OPTIONS": "",
-            "RTYPE": 5,
-            "OUTPUT": parameters["Layer3"],
-        }
-        outputs["StandardizingLayer3"] = processing.run(
-            "gdal:rastercalculator",
-            alg_params,
-            context=context,
-            feedback=feedback,
-            is_child_algorithm=True,
-        )
-        results["Layer3"] = outputs["StandardizingLayer3"]["OUTPUT"]
-
-        feedback.setCurrentStep(18)
-        if feedback.isCanceled():
-            return {}
-
-        # Standardizing layer 4
-        alg_params = {
-            "BAND_A": 1,
-            "BAND_B": None,
-            "BAND_C": None,
-            "BAND_D": None,
-            "BAND_E": None,
-            "BAND_F": None,
-            "EXTRA": "",
-            "FORMULA": QgsExpression(
-                "concat('(A - ',to_string(replace(to_string(  @Raster_layer_statistics_layer_4_MIN  ),'.',',')),')/(',to_string(replace(to_string(  @Raster_layer_statistics_layer_4_MAX  ),'.',',')),' - ',to_string(replace(to_string(  @Raster_layer_statistics_layer_4_MIN  ),'.',',')),')*4')"  # noqa
-            ).evaluate(),
-            "INPUT_A": outputs["ReprojectHazardLayer4"]["OUTPUT"],
-            "INPUT_B": None,
-            "INPUT_C": None,
-            "INPUT_D": None,
-            "INPUT_E": None,
-            "INPUT_F": None,
-            "NO_DATA": None,
-            "OPTIONS": "",
-            "RTYPE": 5,
-            "OUTPUT": QgsProcessing.TEMPORARY_OUTPUT,
-        }
-        outputs["StandardizingLayer4"] = processing.run(
-            "gdal:rastercalculator",
-            alg_params,
-            context=context,
-            feedback=feedback,
-            is_child_algorithm=True,
-        )
-
-        feedback.setCurrentStep(19)
-        if feedback.isCanceled():
-            return {}
-
-        # Standardizing layer 5
-        alg_params = {
-            "BAND_A": 1,
-            "BAND_B": None,
-            "BAND_C": None,
-            "BAND_D": None,
-            "BAND_E": None,
-            "BAND_F": None,
-            "EXTRA": "",
-            "FORMULA": QgsExpression(
-                "concat('(A - ',to_string(replace(to_string(  @Raster_layer_statistics_layer_5_MIN  ),'.',',')),')/(',to_string(replace(to_string(  @Raster_layer_statistics_layer_5_MAX  ),'.',',')),' - ',to_string(replace(to_string(  @Raster_layer_statistics_layer_5_MIN  ),'.',',')),')*4')"  # noqa
-            ).evaluate(),
-            "INPUT_A": outputs["ReprojectHazardLayer5"]["OUTPUT"],
-            "INPUT_B": None,
-            "INPUT_C": None,
-            "INPUT_D": None,
-            "INPUT_E": None,
-            "INPUT_F": None,
-            "NO_DATA": None,
-            "OPTIONS": "",
-            "RTYPE": 5,
-            "OUTPUT": QgsProcessing.TEMPORARY_OUTPUT,
-        }
-        outputs["StandardizingLayer5"] = processing.run(
-            "gdal:rastercalculator",
-            alg_params,
-            context=context,
-            feedback=feedback,
-            is_child_algorithm=True,
-        )
-
-        feedback.setCurrentStep(20)
-        if feedback.isCanceled():
-            return {}
-
-        # Reproject hazard layer 6
-        alg_params = {
-            "DATA_TYPE": 0,
-            "EXTRA": "",
-            "INPUT": parameters["Hazardlayer6"],
-            "MULTITHREADING": False,
-            "NODATA": None,
-            "OPTIONS": "",
-            "RESAMPLING": 0,
-            "SOURCE_CRS": None,
-            "TARGET_CRS": parameters["ProjectedReferenceSystem"],
-            "TARGET_EXTENT": None,
-            "TARGET_EXTENT_CRS": None,
-            "TARGET_RESOLUTION": None,
-            "OUTPUT": QgsProcessing.TEMPORARY_OUTPUT,
-        }
-        outputs["ReprojectHazardLayer6"] = processing.run(
-            "gdal:warpreproject",
-            alg_params,
-            context=context,
-            feedback=feedback,
-            is_child_algorithm=True,
-        )
-
-        feedback.setCurrentStep(21)
-        if feedback.isCanceled():
-            return {}
-
-        # Raster layer statistics layer 6
-        alg_params = {"BAND": 1, "INPUT": outputs["ReprojectHazardLayer6"]["OUTPUT"]}
-        outputs["RasterLayerStatisticsLayer6"] = processing.run(
-            "native:rasterlayerstatistics",
-            alg_params,
-            context=context,
-            feedback=feedback,
-            is_child_algorithm=True,
-        )
-
-        feedback.setCurrentStep(22)
-        if feedback.isCanceled():
-            return {}
-
-        # Standardizing layer 6
-        alg_params = {
-            "BAND_A": 1,
-            "BAND_B": None,
-            "BAND_C": None,
-            "BAND_D": None,
-            "BAND_E": None,
-            "BAND_F": None,
-            "EXTRA": "",
-            "FORMULA": QgsExpression(
-                "concat('(A - ',to_string(replace(to_string(  @Raster_layer_statistics_layer_6_MIN  ),'.',',')),')/(',to_string(replace(to_string(  @Raster_layer_statistics_layer_6_MAX  ),'.',',')),' - ',to_string(replace(to_string(  @Raster_layer_statistics_layer_6_MIN  ),'.',',')),')*4')"  # noqa
-            ).evaluate(),
-            "INPUT_A": outputs["ReprojectHazardLayer6"]["OUTPUT"],
-            "INPUT_B": None,
-            "INPUT_C": None,
-            "INPUT_D": None,
-            "INPUT_E": None,
-            "INPUT_F": None,
-            "NO_DATA": None,
-            "OPTIONS": "",
-            "RTYPE": 5,
-            "OUTPUT": QgsProcessing.TEMPORARY_OUTPUT,
-        }
-        outputs["StandardizingLayer6"] = processing.run(
-            "gdal:rastercalculator",
-            alg_params,
-            context=context,
-            feedback=feedback,
-            is_child_algorithm=True,
-        )
-
-        feedback.setCurrentStep(23)
-        if feedback.isCanceled():
-            return {}
-
-        # Merge
+        # Merge but in separate channels
         alg_params = {
             "DATA_TYPE": 5,
             "EXTRA": "",
-            "INPUT": QgsExpression(
-                "CASE\r\nWHEN  @Numberofriskstocompute =2 THEN array(  @Standardizing_layer_1_OUTPUT , @Standardizing_layer_2_OUTPUT ) \r\nWHEN  @Numberofriskstocompute =3 THEN array(  @Standardizing_layer_1_OUTPUT , @Standardizing_layer_2_OUTPUT , @Standardizing_layer_3_OUTPUT ) \r\nWHEN  @Numberofriskstocompute =4 THEN array(  @Standardizing_layer_1_OUTPUT , @Standardizing_layer_2_OUTPUT , @Standardizing_layer_3_OUTPUT , @Standardizing_layer_4_OUTPUT )\r\nWHEN  @Numberofriskstocompute =5 THEN array(  @Standardizing_layer_1_OUTPUT , @Standardizing_layer_2_OUTPUT , @Standardizing_layer_3_OUTPUT , @Standardizing_layer_4_OUTPUT , @Standardizing_layer_5_OUTPUT )\r\nWHEN  @Numberofriskstocompute =6 THEN array(  @Standardizing_layer_1_OUTPUT , @Standardizing_layer_2_OUTPUT , @Standardizing_layer_3_OUTPUT , @Standardizing_layer_4_OUTPUT , @Standardizing_layer_5_OUTPUT , @Standardizing_layer_6_OUTPUT  ) \r\nEND\r\n"  # noqa
-            ).evaluate(),
+            "INPUT": standardized_layers,
             "NODATA_INPUT": None,
             "NODATA_OUTPUT": None,
             "OPTIONS": "",
@@ -739,76 +180,58 @@ class NaturalHazardRisksForSchools(QgsProcessingAlgorithm):
             "SEPARATE": True,
             "OUTPUT": QgsProcessing.TEMPORARY_OUTPUT,
         }
-        outputs["Merge"] = processing.run(
+        merged = processing.run(
             "gdal:merge",
             alg_params,
             context=context,
             feedback=feedback,
             is_child_algorithm=True,
-        )
+        )["OUTPUT"]
 
-        feedback.setCurrentStep(24)
+        feedback.setCurrentStep(3 * index + 5)
         if feedback.isCanceled():
             return {}
 
         # Raster calculator
+        band_params = {}
+        input_params = {}
+        expression_parts = []
+        alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        for index in range(0, len(parameters["HazardLayers"])):
+            band_params[f"BAND_{alphabet[index]}"] = index + 1
+            input_params[f"INPUT_{alphabet[index]}"] = merged
+            expression_parts.append(f"{alphabet[index]}*{parameters['Weights'][index]}")
+        sum_expression = "+".join(expression_parts)
         alg_params = {
-            "BAND_A": 1,
-            "BAND_B": 2,
-            "BAND_C": QgsExpression(
-                "CASE\r\nWHEN @Numberofriskstocompute =3 OR @Numberofriskstocompute =4 OR @Numberofriskstocompute =5 OR  @Numberofriskstocompute =6 THEN 3\r\nEND"  # noqa
-            ).evaluate(),
-            "BAND_D": QgsExpression(
-                "CASE\r\nWHEN  @Numberofriskstocompute =4 OR @Numberofriskstocompute =5 OR  @Numberofriskstocompute =6 THEN 4\nEND"  # noqa
-            ).evaluate(),
-            "BAND_E": QgsExpression(
-                "CASE\r\nWHEN @Numberofriskstocompute =5 OR  @Numberofriskstocompute =6 THEN 5\nEND"  # noqa
-            ).evaluate(),
-            "BAND_F": QgsExpression(
-                "CASE\r\nWHEN @Numberofriskstocompute =6 THEN 6\r\nEND"
-            ).evaluate(),
+            **band_params,
             "EXTRA": "",
-            "FORMULA": QgsExpression(
-                "CASE\r\nWHEN  @Numberofriskstocompute =2 THEN concat('A*',to_string( @WeightforHazardlayer1),'+B*',to_string( @WeightforHazardlayer2))\r\nWHEN  @Numberofriskstocompute =3 THEN concat('A*',to_string( @WeightforHazardlayer1),'+B*',to_string( @WeightforHazardlayer2), '+C*',to_string( @WeightforHazardlayer3))\r\nWHEN  @Numberofriskstocompute =4 THEN concat('A*',to_string( @WeightforHazardlayer1),'+B*',to_string( @WeightforHazardlayer2), '+C*',to_string( @WeightforHazardlayer3), '+D*',to_string( @WeightforHazardlayer4))\r\nWHEN  @Numberofriskstocompute =5 THEN concat('A*',to_string( @WeightforHazardlayer1),'+B*',to_string( @WeightforHazardlayer2), '+C*',to_string( @WeightforHazardlayer3), '+D*',to_string( @WeightforHazardlayer4), '+E*',to_string( @WeightforHazardlayer5))\r\nWHEN  @Numberofriskstocompute =6 THEN concat('A*',to_string( @WeightforHazardlayer1),'+B*',to_string( @WeightforHazardlayer2), '+C*',to_string( @WeightforHazardlayer3), '+D*',to_string( @WeightforHazardlayer4), '+E*',to_string( @WeightforHazardlayer5), '+F*',to_string( @WeightforHazardlayer6 ))\r\nEND"  # noqa
-            ).evaluate(),
-            "INPUT_A": outputs["Merge"]["OUTPUT"],
-            "INPUT_B": outputs["Merge"]["OUTPUT"],
-            "INPUT_C": QgsExpression(
-                "CASE\r\nWHEN @Numberofriskstocompute =3 OR @Numberofriskstocompute =4 OR @Numberofriskstocompute =5 OR  @Numberofriskstocompute =6 THEN @Merge_OUTPUT \r\nEND"  # noqa
-            ).evaluate(),
-            "INPUT_D": QgsExpression(
-                "CASE\r\nWHEN  @Numberofriskstocompute =4 OR @Numberofriskstocompute =5 OR  @Numberofriskstocompute =6 THEN @Merge_OUTPUT \r\nEND"  # noqa
-            ).evaluate(),
-            "INPUT_E": QgsExpression(
-                "CASE\r\nWHEN  @Numberofriskstocompute =5 OR  @Numberofriskstocompute =6 THEN @Merge_OUTPUT \r\nEND"  # noqa
-            ).evaluate(),
-            "INPUT_F": QgsExpression(
-                "CASE\r\nWHEN  @Numberofriskstocompute = 6 THEN @Merge_OUTPUT \r\nEND"
-            ).evaluate(),
+            "FORMULA": sum_expression,
+            **input_params,
             "NO_DATA": None,
-            "OPTIONS": "",
+            "OPTIONS": "hideNoData",
             "RTYPE": 5,
             "OUTPUT": QgsProcessing.TEMPORARY_OUTPUT,
         }
-        outputs["RasterCalculator"] = processing.run(
+        sum = processing.run(
             "gdal:rastercalculator",
             alg_params,
             context=context,
             feedback=feedback,
             is_child_algorithm=True,
-        )
+        )["OUTPUT"]
 
-        feedback.setCurrentStep(25)
+        feedback.setCurrentStep(3 * index + 6)
         if feedback.isCanceled():
             return {}
 
+        feedback.pushWarning(str(parameters))
         # Clip raster by mask layer
         alg_params = {
             "ALPHA_BAND": False,
             "CROP_TO_CUTLINE": True,
             "DATA_TYPE": 0,
             "EXTRA": "",
-            "INPUT": outputs["RasterCalculator"]["OUTPUT"],
+            "INPUT": sum,
             "KEEP_RESOLUTION": False,
             "MASK": parameters["Studyarea"],
             "MULTITHREADING": False,
@@ -819,37 +242,39 @@ class NaturalHazardRisksForSchools(QgsProcessingAlgorithm):
             "TARGET_CRS": None,
             "X_RESOLUTION": None,
             "Y_RESOLUTION": None,
-            "OUTPUT": parameters["HazardIndex"],
+            "OUTPUT": parameters["HazardIndex"].dataProvider().dataSourceUri()
+            if parameters["HazardIndex"]
+            else QgsProcessing.TEMPORARY_OUTPUT,
         }
-        outputs["ClipRasterByMaskLayer"] = processing.run(
+        hri_result = processing.run(
             "gdal:cliprasterbymasklayer",
             alg_params,
             context=context,
             feedback=feedback,
             is_child_algorithm=True,
-        )
-        results["HazardIndex"] = outputs["ClipRasterByMaskLayer"]["OUTPUT"]
+        )["OUTPUT"]
 
-        feedback.setCurrentStep(26)
+        feedback.setCurrentStep(3 * index + 7)
         if feedback.isCanceled():
             return {}
 
         # Sample raster values
         alg_params = {
             "COLUMN_PREFIX": "HazardIndex",
-            "INPUT": outputs["Clip"]["OUTPUT"],
-            "RASTERCOPY": outputs["RasterCalculator"]["OUTPUT"],
-            "OUTPUT": parameters["HazardIndexSchools"],
+            "INPUT": clipped_schools,
+            "RASTERCOPY": sum,
+            "OUTPUT": parameters["HazardIndexSchools"].dataProvider().dataSourceUri()
+            if parameters["HazardIndexSchools"]
+            else QgsProcessing.TEMPORARY_OUTPUT,
         }
-        outputs["SampleRasterValues"] = processing.run(
+        school_raster_values = processing.run(
             "native:rastersampling",
             alg_params,
             context=context,
             feedback=feedback,
             is_child_algorithm=True,
-        )
-        results["HazardIndexSchools"] = outputs["SampleRasterValues"]["OUTPUT"]
-        return results
+        )["OUTPUT"]
+        return hri_result, school_raster_values
 
     def name(self):
         return "Natural Hazard Risks for Schools"

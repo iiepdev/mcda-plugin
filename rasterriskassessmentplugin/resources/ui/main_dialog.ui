@@ -530,11 +530,15 @@
        <item row="0" column="2">
         <widget class="QgsSpinBox" name="hri_spn_bx_number_of_hazards"/>
        </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="hri_raster_layer_label_1">
+         <property name="text">
+          <string>Layer 1</string>
+         </property>
+        </widget>
+       </item>
        <item row="1" column="1">
         <widget class="QgsMapLayerComboBox" name="hri_raster_layer_cb_1">
-         <property name="allowEmptyLayer">
-          <bool>true</bool>
-         </property>
         </widget>
        </item>
        <item row="1" column="2">
@@ -551,13 +555,23 @@
          <property name="decimals">
           <number>1</number>
          </property>
+         <property name="minimum">
+          <number>0</number>
+         </property>
+         <property name="maximum">
+          <number>100</number>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="hri_raster">
+         <property name="text">
+          <string>Layer 2</string>
+         </property>
         </widget>
        </item>
        <item row="2" column="1">
         <widget class="QgsMapLayerComboBox" name="hri_raster_layer_cb_2">
-         <property name="allowEmptyLayer">
-          <bool>true</bool>
-         </property>
         </widget>
        </item>
        <item row="2" column="2">
@@ -574,13 +588,23 @@
          <property name="decimals">
           <number>1</number>
          </property>
+         <property name="minimum">
+          <number>0</number>
+         </property>
+         <property name="maximum">
+          <number>100</number>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="hri_label_number_of_hazards">
+         <property name="text">
+          <string>Layer 3</string>
+         </property>
         </widget>
        </item>
        <item row="3" column="1">
         <widget class="QgsMapLayerComboBox" name="hri_raster_layer_cb_3">
-         <property name="allowEmptyLayer">
-          <bool>true</bool>
-         </property>
         </widget>
        </item>
        <item row="3" column="2">
@@ -597,13 +621,23 @@
          <property name="decimals">
           <number>1</number>
          </property>
+         <property name="minimum">
+          <number>0</number>
+         </property>
+         <property name="maximum">
+          <number>100</number>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="hri_label_number_of_hazards">
+         <property name="text">
+          <string>Layer 4</string>
+         </property>
         </widget>
        </item>
        <item row="4" column="1">
         <widget class="QgsMapLayerComboBox" name="hri_raster_layer_cb_4">
-         <property name="allowEmptyLayer">
-          <bool>true</bool>
-         </property>
         </widget>
        </item>
        <item row="4" column="2">
@@ -620,13 +654,23 @@
          <property name="decimals">
           <number>1</number>
          </property>
+         <property name="minimum">
+          <number>0</number>
+         </property>
+         <property name="maximum">
+          <number>100</number>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="hri_label_number_of_hazards">
+         <property name="text">
+          <string>Layer 5</string>
+         </property>
         </widget>
        </item>
        <item row="5" column="1">
         <widget class="QgsMapLayerComboBox" name="hri_raster_layer_cb_5">
-         <property name="allowEmptyLayer">
-          <bool>true</bool>
-         </property>
         </widget>
        </item>
        <item row="5" column="2">
@@ -643,13 +687,23 @@
          <property name="decimals">
           <number>1</number>
          </property>
+         <property name="minimum">
+          <number>0</number>
+         </property>
+         <property name="maximum">
+          <number>100</number>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="hri_label_number_of_hazards">
+         <property name="text">
+          <string>Layer 6</string>
+         </property>
         </widget>
        </item>
        <item row="6" column="1">
         <widget class="QgsMapLayerComboBox" name="hri_raster_layer_cb_6">
-         <property name="allowEmptyLayer">
-          <bool>true</bool>
-         </property>
         </widget>
        </item>
        <item row="6" column="2">
@@ -665,6 +719,12 @@
          </property>
          <property name="decimals">
           <number>1</number>
+         </property>
+         <property name="minimum">
+          <number>0</number>
+         </property>
+         <property name="maximum">
+          <number>100</number>
          </property>
         </widget>
        </item>
@@ -701,7 +761,7 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QgsFileWidget" name="hriSaveHriFileWdgt"/>
+        <widget class="QgsFileWidget" name="hri_save_hri_file_widget"/>
        </item>
        <item row="1" column="0">
         <widget class="QLabel" name="label_10">
@@ -711,7 +771,7 @@
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QgsFileWidget" name="hriSaveHriSchoolsFileWdgt"/>
+        <widget class="QgsFileWidget" name="hri_save_hri_schools_file_widget"/>
        </item>
       </layout>
      </widget>
