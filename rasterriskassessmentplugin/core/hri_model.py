@@ -86,31 +86,31 @@ class NaturalHazardRisksForSchools(QgsProcessingAlgorithm):
 
         for index, hazard_layer in enumerate(parameters["HazardLayers"]):
             reprojected = self.__reproject_layer(hazard_layer)
+            if feedback.isCanceled():
+                return {}
 
             feedback.setCurrentStep(1 + 2 * index)
-            if feedback.isCanceled():
-                return {}
             standardized_layers.append(self.__normalize_layer(reprojected))
-
-            feedback.setCurrentStep(2 + 2 * index)
             if feedback.isCanceled():
                 return {}
+
+        feedback.setCurrentStep(2 + 2 * index)
         # calculate raster
         sum = self.__merge_layers(standardized_layers, parameters["Weights"])
+        if feedback.isCanceled():
+            return {}
 
         # clip to area if provided
         feedback.setCurrentStep(2 * index + 3)
-        if feedback.isCanceled():
-            return {}
         if parameters["Studyarea"]:
             hri_result = self.__clip_raster_layer(sum, parameters["Studyarea"])
         else:
             hri_result = sum
+        if feedback.isCanceled():
+            return {}
 
         # sample schools if provided
         feedback.setCurrentStep(2 * index + 4)
-        if feedback.isCanceled():
-            return {}
         if parameters["Schools"]:
             if parameters["Studyarea"]:
                 clipped_schools = self.__clip_vector_layer(

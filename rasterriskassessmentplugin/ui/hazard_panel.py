@@ -40,9 +40,6 @@ class HazardRiskIndexPanel(BasePanel):
         self.hri_result_schools: Optional[QgsVectorLayer] = None
 
     def setup_panel(self) -> None:
-
-        # self.dlg.hri_progress_bar.setMinimum(0)
-        self.dlg.hri_progress_bar.setValue(0)
         self.dlg.hri_map_layer_cmb_bx_boundaries.setFilters(
             QgsMapLayerProxyModel.PolygonLayer
         )
@@ -69,8 +66,19 @@ class HazardRiskIndexPanel(BasePanel):
 
         self.dlg.hri_save_hri_file_widget.setStorageMode(QgsFileWidget.SaveFile)
         self.dlg.hri_save_hri_schools_file_widget.setStorageMode(QgsFileWidget.SaveFile)
-        self.dlg.hri_btn_run.clicked.connect(self.__run_model)
+        self.__set_run_button()
         self.dlg.hri_btn_close.clicked.connect(self.__close_dialog)
+
+    def __set_run_button(self) -> None:
+        LOGGER.info("button set to run")
+        self.dlg.hri_btn_run.setText("Run")
+        self.dlg.hri_btn_run.clicked.connect(self.__run_model)
+        self.dlg.hri_progress_bar.setValue(0.0)
+
+    def __set_cancel_button(self) -> None:
+        LOGGER.info("button set to cancel")
+        self.dlg.hri_btn_run.setText("Cancel")
+        self.dlg.hri_btn_run.clicked.connect(self.__cancel_run)
 
     def __set_combobox(self, combobox: QgsMapLayerComboBox, layer_number: int) -> None:
         combobox.setFilters(QgsMapLayerProxyModel.RasterLayer)
@@ -149,36 +157,40 @@ class HazardRiskIndexPanel(BasePanel):
         ] = self.dlg.hri_save_hri_schools_file_widget.filePath()
         return params
 
+    def __update_progress(self, percentage: float) -> None:
+        self.dlg.hri_progress_bar.setValue(percentage)
+
     def __display_results(self, successful: bool, results: Dict[str, Any]) -> None:
         """
         Display result layers in current QGIS project.
         """
         LOGGER.info("got results")
         LOGGER.info(results)
-        # the raster layer will always be a tiff file (temporary or permanent)
-        self.hri_result = QgsRasterLayer(results["HazardIndex"], "Hazard index")
-        if results["HazardIndexSchools"]:
-            # if result path was not set, the vector layer may only be in memory
-            if self.params["HazardIndexSchools"]:
-                self.hri_result_schools = QgsVectorLayer(
-                    results["HazardIndexSchools"], "Hazard index - schools", "ogr"
-                )
+        if successful:
+            # the raster layer will always be a tiff file (temporary or permanent)
+            self.hri_result = QgsRasterLayer(results["HazardIndex"], "Hazard index")
+            if results["HazardIndexSchools"]:
+                # if result path was not set, the vector layer may only be in memory
+                if self.params["HazardIndexSchools"]:
+                    self.hri_result_schools = QgsVectorLayer(
+                        results["HazardIndexSchools"], "Hazard index - schools", "ogr"
+                    )
+                else:
+                    # Aha! Child algorithm results won't actually be passed on:
+                    # https://gis.stackexchange.com/questions/361353/store-result-of-a-processing-algorithm-as-a-layer-in-qgis-python-script
+                    # If a vector layer is only in memory, we will have to actually dig
+                    # it up from the processing context to pass it on.
+                    self.hri_result_schools = self.context.takeResultLayer(
+                        results["HazardIndexSchools"]
+                    )
             else:
-                # Aha! Child algorithm results won't actually be passed on:
-                # https://gis.stackexchange.com/questions/361353/store-result-of-a-processing-algorithm-as-a-layer-in-qgis-python-script
-                # If a vector layer is only in memory, we will have to actually dig it
-                # up from the processing context to pass it on.
-                self.hri_result_schools = self.context.takeResultLayer(
-                    results["HazardIndexSchools"]
-                )
-        else:
-            self.hri_result_schools = None
-        QgsProject.instance().addMapLayer(self.hri_result, False)
-        root = QgsProject.instance().layerTreeRoot()
-        root.insertChildNode(0, QgsLayerTreeLayer(self.hri_result))
-        if self.hri_result_schools:
-            QgsProject.instance().addMapLayer(self.hri_result_schools, False)
-            root.insertChildNode(0, QgsLayerTreeLayer(self.hri_result_schools))
+                self.hri_result_schools = None
+            QgsProject.instance().addMapLayer(self.hri_result, False)
+            root = QgsProject.instance().layerTreeRoot()
+            root.insertChildNode(0, QgsLayerTreeLayer(self.hri_result))
+            if self.hri_result_schools:
+                QgsProject.instance().addMapLayer(self.hri_result_schools, False)
+                root.insertChildNode(0, QgsLayerTreeLayer(self.hri_result_schools))
 
     def __delete_task(self, task: QgsProcessingAlgRunnerTask) -> None:
         # This notifies PyQt that the C++ task has been destroyed. Otherwise
@@ -190,15 +202,24 @@ class HazardRiskIndexPanel(BasePanel):
     def __run_model(self) -> None:
         # prevent clicking run if task is running
         if not self.task or not self.task.isActive():
+            # change button to cancel while running
+            self.__set_cancel_button()
             self.params = self.__get_params()
             LOGGER.info(self.params)
             self.algorithm.initAlgorithm()
             self.task = QgsProcessingAlgRunnerTask(
                 self.algorithm, self.params, self.context, self.feedback
             )
+            self.task.progressChanged.connect(self.__update_progress)
+            self.task.executed.connect(self.__set_run_button)
             self.task.executed.connect(self.__display_results)
             self.task.destroyed.connect(self.__delete_task)
             QgsApplication.taskManager().addTask(self.task)
+
+    def __cancel_run(self) -> None:
+        LOGGER.info("Cancel pressed")
+        if self.task:
+            self.task.cancel()
 
     def __close_dialog(self) -> None:
         self.dlg.hide()
