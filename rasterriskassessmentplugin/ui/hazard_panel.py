@@ -1,11 +1,13 @@
 import logging
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 from qgis.core import (
     QgsApplication,
+    QgsLayerTreeLayer,
     QgsMapLayerProxyModel,
     QgsProcessingAlgRunnerTask,
     QgsProcessingContext,
+    QgsProject,
     QgsRasterLayer,
     QgsVectorLayer,
 )
@@ -26,6 +28,7 @@ class HazardRiskIndexPanel(BasePanel):
         super().__init__(dialog)
         self.params: Dict[str, Any] = {}
         self.algorithm = NaturalHazardRisksForSchools()
+        self.task: Optional[QgsProcessingAlgRunnerTask] = None
         self.context = QgsProcessingContext()
         self.feedback = LoggerProcessingFeedBack(use_logger=True)
         self.panel = Panels.HazardRiskIndex
@@ -33,8 +36,8 @@ class HazardRiskIndexPanel(BasePanel):
         self.maximum = 6
         self.default_values = 6
         self.current_number_of_hazards = self.default_values
-        self.hri_result = None
-        self.hri_result_schools = None
+        self.hri_result: Optional[QgsRasterLayer] = None
+        self.hri_result_schools: Optional[QgsVectorLayer] = None
 
     def setup_panel(self) -> None:
 
@@ -140,26 +143,50 @@ class HazardRiskIndexPanel(BasePanel):
         params["ProjectedReferenceSystem"] = 4326
         params["Studyarea"] = self.dlg.hri_map_layer_cmb_bx_boundaries.currentLayer()
         params["Schools"] = self.dlg.hri_map_layer_cmb_bx_schools.currentLayer()
-        params["HazardIndex"] = self.hri_result
-        params["HazardIndexSchools"] = self.hri_result_schools
+        params["HazardIndex"] = self.dlg.hri_save_hri_file_widget.filePath()
+        params[
+            "HazardIndexSchools"
+        ] = self.dlg.hri_save_hri_schools_file_widget.filePath()
         return params
 
-    def __run_model(self) -> None:
-        hri_path = self.dlg.hri_save_hri_file_widget.filePath()
-        if hri_path:
-            self.hri_result = QgsRasterLayer(hri_path, "Hazard index")
-        hri_schools_path = self.dlg.hri_save_hri_schools_file_widget.filePath()
-        if hri_schools_path:
+    def __display_results(self, successful: bool, results: Dict[str, Any]) -> None:
+        """
+        Display result layers in current QGIS project.
+        """
+        LOGGER.info("got results")
+        LOGGER.info(results)
+        # the raster layer will always be a tiff file (temporary or permanent)
+        self.hri_result = QgsRasterLayer(results["HazardIndex"], "Hazard index")
+        # if result path was not set, the vector layer may only be in memory
+        if self.params["HazardIndexSchools"]:
             self.hri_result_schools = QgsVectorLayer(
-                hri_schools_path, "Hazard index - schools", "ogr"
+                results["HazardIndexSchools"], "Hazard index - schools", "ogr"
             )
-        self.params = self.__get_params()
-        LOGGER.info(self.params)
-        self.algorithm.initAlgorithm()
-        self.task = QgsProcessingAlgRunnerTask(
-            self.algorithm, self.params, self.context, self.feedback
-        )
-        QgsApplication.taskManager().addTask(self.task)
+        else:
+            # Aha! Child algorithm results won't actually be passed on:
+            # https://gis.stackexchange.com/questions/361353/store-result-of-a-processing-algorithm-as-a-layer-in-qgis-python-script
+            # If a vector layer is only in memory, we will have to actually dig it up
+            # from the processing context to pass it on.
+            self.hri_result_schools = self.context.takeResultLayer(
+                results["HazardIndexSchools"]
+            )
+        QgsProject.instance().addMapLayer(self.hri_result, False)
+        QgsProject.instance().addMapLayer(self.hri_result_schools, False)
+        root = QgsProject.instance().layerTreeRoot()
+        root.insertChildNode(0, QgsLayerTreeLayer(self.hri_result))
+        root.insertChildNode(0, QgsLayerTreeLayer(self.hri_result_schools))
+
+    def __run_model(self) -> None:
+        # prevent clicking run if task is running
+        if not self.task or not self.task.isActive():
+            self.params = self.__get_params()
+            LOGGER.info(self.params)
+            self.algorithm.initAlgorithm()
+            self.task = QgsProcessingAlgRunnerTask(
+                self.algorithm, self.params, self.context, self.feedback
+            )
+            self.task.executed.connect(self.__display_results)
+            QgsApplication.taskManager().addTask(self.task)
 
     def __close_dialog(self) -> None:
         self.dlg.hide()

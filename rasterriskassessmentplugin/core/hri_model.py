@@ -222,7 +222,7 @@ class NaturalHazardRisksForSchools(QgsProcessingAlgorithm):
             "TARGET_CRS": None,
             "X_RESOLUTION": None,
             "Y_RESOLUTION": None,
-            "OUTPUT": self.parameters["HazardIndex"].dataProvider().dataSourceUri()
+            "OUTPUT": self.parameters["HazardIndex"]
             if self.parameters["HazardIndex"]
             else QgsProcessing.TEMPORARY_OUTPUT,
         }
@@ -246,8 +246,6 @@ class NaturalHazardRisksForSchools(QgsProcessingAlgorithm):
             "INPUT": points,
             "RASTERCOPY": layer,
             "OUTPUT": self.parameters["HazardIndexSchools"]
-            .dataProvider()
-            .dataSourceUri()
             if self.parameters["HazardIndexSchools"]
             else QgsProcessing.TEMPORARY_OUTPUT,
         }
