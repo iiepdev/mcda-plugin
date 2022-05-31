@@ -77,7 +77,7 @@ class NaturalHazardRisksForSchools(QgsProcessingAlgorithm):
         # Use a multi-step feedback, so that individual child algorithm progress
         # reports are adjusted for the overall progress through the model
         feedback = QgsProcessingMultiStepFeedback(
-            2 * len(parameters["HazardLayers"]) + 6, model_feedback
+            2 * len(parameters["HazardLayers"]) + 4, model_feedback
         )
         self.feedback: QgsProcessingFeedback = feedback
         self.parameters = parameters
@@ -86,34 +86,41 @@ class NaturalHazardRisksForSchools(QgsProcessingAlgorithm):
 
         for index, hazard_layer in enumerate(parameters["HazardLayers"]):
             reprojected = self.__reproject_layer(hazard_layer)
+
             feedback.setCurrentStep(1 + 2 * index)
             if feedback.isCanceled():
                 return {}
-
             standardized_layers.append(self.__normalize_layer(reprojected))
+
             feedback.setCurrentStep(2 + 2 * index)
             if feedback.isCanceled():
                 return {}
+        # calculate raster
+        sum = self.__merge_layers(standardized_layers, parameters["Weights"])
 
-        clipped_schools = self.__clip_vector_layer(
-            parameters["Schools"], parameters["Studyarea"]
-        )
+        # clip to area if provided
         feedback.setCurrentStep(2 * index + 3)
         if feedback.isCanceled():
             return {}
+        if parameters["Studyarea"]:
+            hri_result = self.__clip_raster_layer(sum, parameters["Studyarea"])
+        else:
+            hri_result = sum
 
-        sum = self.__merge_layers(standardized_layers, parameters["Weights"])
+        # sample schools if provided
         feedback.setCurrentStep(2 * index + 4)
         if feedback.isCanceled():
             return {}
-
-        hri_result = self.__clip_raster_layer(sum, parameters["Studyarea"])
-
-        feedback.setCurrentStep(2 * index + 5)
-        if feedback.isCanceled():
-            return {}
-
-        school_raster_values = self.__sample_layer(hri_result, clipped_schools)
+        if parameters["Schools"]:
+            if parameters["Studyarea"]:
+                clipped_schools = self.__clip_vector_layer(
+                    parameters["Schools"], parameters["Studyarea"]
+                )
+            else:
+                clipped_schools = parameters["Schools"]
+            school_raster_values = self.__sample_layer(hri_result, clipped_schools)
+        else:
+            school_raster_values = None
 
         return {"HazardIndex": hri_result, "HazardIndexSchools": school_raster_values}
 

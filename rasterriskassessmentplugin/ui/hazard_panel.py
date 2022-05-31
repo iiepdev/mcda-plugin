@@ -157,24 +157,35 @@ class HazardRiskIndexPanel(BasePanel):
         LOGGER.info(results)
         # the raster layer will always be a tiff file (temporary or permanent)
         self.hri_result = QgsRasterLayer(results["HazardIndex"], "Hazard index")
-        # if result path was not set, the vector layer may only be in memory
-        if self.params["HazardIndexSchools"]:
-            self.hri_result_schools = QgsVectorLayer(
-                results["HazardIndexSchools"], "Hazard index - schools", "ogr"
-            )
+        if results["HazardIndexSchools"]:
+            # if result path was not set, the vector layer may only be in memory
+            if self.params["HazardIndexSchools"]:
+                self.hri_result_schools = QgsVectorLayer(
+                    results["HazardIndexSchools"], "Hazard index - schools", "ogr"
+                )
+            else:
+                # Aha! Child algorithm results won't actually be passed on:
+                # https://gis.stackexchange.com/questions/361353/store-result-of-a-processing-algorithm-as-a-layer-in-qgis-python-script
+                # If a vector layer is only in memory, we will have to actually dig it
+                # up from the processing context to pass it on.
+                self.hri_result_schools = self.context.takeResultLayer(
+                    results["HazardIndexSchools"]
+                )
         else:
-            # Aha! Child algorithm results won't actually be passed on:
-            # https://gis.stackexchange.com/questions/361353/store-result-of-a-processing-algorithm-as-a-layer-in-qgis-python-script
-            # If a vector layer is only in memory, we will have to actually dig it up
-            # from the processing context to pass it on.
-            self.hri_result_schools = self.context.takeResultLayer(
-                results["HazardIndexSchools"]
-            )
+            self.hri_result_schools = None
         QgsProject.instance().addMapLayer(self.hri_result, False)
-        QgsProject.instance().addMapLayer(self.hri_result_schools, False)
         root = QgsProject.instance().layerTreeRoot()
         root.insertChildNode(0, QgsLayerTreeLayer(self.hri_result))
-        root.insertChildNode(0, QgsLayerTreeLayer(self.hri_result_schools))
+        if self.hri_result_schools:
+            QgsProject.instance().addMapLayer(self.hri_result_schools, False)
+            root.insertChildNode(0, QgsLayerTreeLayer(self.hri_result_schools))
+
+    def __delete_task(self, task: QgsProcessingAlgRunnerTask) -> None:
+        # This notifies PyQt that the C++ task has been destroyed. Otherwise
+        # the Python wrapper will keep pointing to a deleted object.
+        # http://enki-editor.org/2014/08/23/Pyqt_mem_mgmt.html
+        LOGGER.info("task deleted")
+        self.task = None
 
     def __run_model(self) -> None:
         # prevent clicking run if task is running
@@ -186,6 +197,7 @@ class HazardRiskIndexPanel(BasePanel):
                 self.algorithm, self.params, self.context, self.feedback
             )
             self.task.executed.connect(self.__display_results)
+            self.task.destroyed.connect(self.__delete_task)
             QgsApplication.taskManager().addTask(self.task)
 
     def __close_dialog(self) -> None:
