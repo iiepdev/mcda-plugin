@@ -490,10 +490,18 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QgsMapLayerComboBox" name="hri_map_layer_cmb_bx_boundaries"/>
+        <widget class="QgsMapLayerComboBox" name="hri_map_layer_cmb_bx_boundaries">
+         <property name="allowEmptyLayer">
+          <bool>true</bool>
+         </property>
+        </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QgsMapLayerComboBox" name="hri_map_layer_cmb_bx_schools"/>
+        <widget class="QgsMapLayerComboBox" name="hri_map_layer_cmb_bx_schools">
+         <property name="allowEmptyLayer">
+          <bool>true</bool>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
