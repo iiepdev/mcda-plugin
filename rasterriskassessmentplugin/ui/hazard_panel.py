@@ -2,7 +2,9 @@ import logging
 from typing import Any, Dict
 
 from qgis.core import (
+    QgsApplication,
     QgsMapLayerProxyModel,
+    QgsProcessingAlgRunnerTask,
     QgsProcessingContext,
     QgsRasterLayer,
     QgsVectorLayer,
@@ -22,6 +24,10 @@ LOGGER = logging.getLogger(plugin_name())
 class HazardRiskIndexPanel(BasePanel):
     def __init__(self, dialog: QDialog) -> None:
         super().__init__(dialog)
+        self.params: Dict[str, Any] = {}
+        self.algorithm = NaturalHazardRisksForSchools()
+        self.context = QgsProcessingContext()
+        self.feedback = LoggerProcessingFeedBack(use_logger=True)
         self.panel = Panels.HazardRiskIndex
         self.minimum = 2
         self.maximum = 6
@@ -147,14 +153,13 @@ class HazardRiskIndexPanel(BasePanel):
             self.hri_result_schools = QgsVectorLayer(
                 hri_schools_path, "Hazard index - schools", "ogr"
             )
-        algorithm = NaturalHazardRisksForSchools()
-        params = self.__get_params()
-        context = QgsProcessingContext()
-        feedback = LoggerProcessingFeedBack(use_logger=True)
-        algorithm.initAlgorithm()
-        LOGGER.info(params)
-        results = algorithm.processAlgorithm(params, context, feedback)
-        LOGGER.info(results)
+        self.params = self.__get_params()
+        LOGGER.info(self.params)
+        self.algorithm.initAlgorithm()
+        self.task = QgsProcessingAlgRunnerTask(
+            self.algorithm, self.params, self.context, self.feedback
+        )
+        QgsApplication.taskManager().addTask(self.task)
 
     def __close_dialog(self) -> None:
         self.dlg.hide()

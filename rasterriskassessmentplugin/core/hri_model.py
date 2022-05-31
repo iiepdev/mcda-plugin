@@ -7,16 +7,20 @@ With QGIS : 31600
 
 import os
 import sys
+from typing import List
 
 import processing
 from qgis.core import (
     QgsProcessing,
     QgsProcessingAlgorithm,
+    QgsProcessingFeedback,
     QgsProcessingMultiStepFeedback,
     QgsProcessingParameterCrs,
     QgsProcessingParameterFeatureSink,
     QgsProcessingParameterRasterDestination,
     QgsProcessingParameterVectorLayer,
+    QgsRasterLayer,
+    QgsVectorLayer,
 )
 
 # Mac OS PROJ path fix until https://github.com/qgis/QGIS-Mac-Packager/issues/151 is
@@ -67,112 +71,206 @@ class NaturalHazardRisksForSchools(QgsProcessingAlgorithm):
             )
         )
 
-    def processAlgorithm(self, parameters, context, model_feedback):  # noqa: N802
+    def processAlgorithm(  # noqa: N802
+        self, parameters, context, model_feedback
+    ) -> dict:
         # Use a multi-step feedback, so that individual child algorithm progress
         # reports are adjusted for the overall progress through the model
         feedback = QgsProcessingMultiStepFeedback(
-            3 * len(parameters["HazardLayers"]) + 7, model_feedback
+            2 * len(parameters["HazardLayers"]) + 6, model_feedback
         )
-        standardized_layers = []
+        self.feedback: QgsProcessingFeedback = feedback
+        self.parameters = parameters
+        self.context = context
+        standardized_layers: List[QgsRasterLayer] = []
 
         for index, hazard_layer in enumerate(parameters["HazardLayers"]):
-            # Reproject hazard layer
-            # Note that nodata must be 0 on all layers!!
-            alg_params = {
-                "DATA_TYPE": 0,
-                "EXTRA": "",
-                "INPUT": hazard_layer,
-                "MULTITHREADING": False,
-                "NODATA": 0,
-                "OPTIONS": "",
-                "RESAMPLING": 0,
-                "SOURCE_CRS": None,
-                "TARGET_CRS": parameters["ProjectedReferenceSystem"],
-                "TARGET_EXTENT": None,
-                "TARGET_EXTENT_CRS": None,
-                "TARGET_RESOLUTION": None,
-                "OUTPUT": QgsProcessing.TEMPORARY_OUTPUT,
-            }
-            reprojected = processing.run(
-                "gdal:warpreproject",
-                alg_params,
-                context=context,
-                feedback=feedback,
-                is_child_algorithm=True,
-            )["OUTPUT"]
-
-            feedback.setCurrentStep(1 + 3 * index)
+            reprojected = self.__reproject_layer(hazard_layer)
+            feedback.setCurrentStep(1 + 2 * index)
             if feedback.isCanceled():
                 return {}
 
-            # Raster layer statistics
-            alg_params = {
-                "BAND": 1,
-                "INPUT": reprojected,
-            }
-            statistics = processing.run(
-                "native:rasterlayerstatistics",
-                alg_params,
-                context=context,
-                feedback=feedback,
-                is_child_algorithm=True,
-            )
-
-            feedback.setCurrentStep(2 + 3 * index)
+            standardized_layers.append(self.__normalize_layer(reprojected))
+            feedback.setCurrentStep(2 + 2 * index)
             if feedback.isCanceled():
                 return {}
 
-            # Standardizing layer
-            min = statistics["MIN"]
-            max = statistics["MAX"]
-            expression = f"(A - {min})/({max} - {min})"
-            alg_params = {
-                "BAND_A": 1,
-                "EXTRA": "",
-                "FORMULA": expression,
-                "INPUT_A": reprojected,
-                "NO_DATA": None,
-                "OPTIONS": "",
-                "RTYPE": 5,
-                "OUTPUT": QgsProcessing.TEMPORARY_OUTPUT,
-            }
-            standardized_layers.append(
-                processing.run(
-                    "gdal:rastercalculator",
-                    alg_params,
-                    context=context,
-                    feedback=feedback,
-                    is_child_algorithm=True,
-                )["OUTPUT"]
-            )
-
-            feedback.setCurrentStep(3 + 3 * index)
-            if feedback.isCanceled():
-                return {}
-
-        # Clip
-        alg_params = {
-            "INPUT": parameters["Schools"],
-            "OVERLAY": parameters["Studyarea"],
-            "OUTPUT": QgsProcessing.TEMPORARY_OUTPUT,
-        }
-        clipped_schools = processing.run(
-            "native:clip",
-            alg_params,
-            context=context,
-            feedback=feedback,
-            is_child_algorithm=True,
-        )["OUTPUT"]
-
-        feedback.setCurrentStep(3 * index + 4)
+        clipped_schools = self.__clip_vector_layer(
+            parameters["Schools"], parameters["Studyarea"]
+        )
+        feedback.setCurrentStep(2 * index + 3)
         if feedback.isCanceled():
             return {}
 
-        # Merge but in separate channels
+        sum = self.__merge_layers(standardized_layers, parameters["Weights"])
+        feedback.setCurrentStep(2 * index + 4)
+        if feedback.isCanceled():
+            return {}
+
+        hri_result = self.__clip_raster_layer(sum, parameters["Studyarea"])
+
+        feedback.setCurrentStep(2 * index + 5)
+        if feedback.isCanceled():
+            return {}
+
+        school_raster_values = self.__sample_layer(hri_result, clipped_schools)
+
+        return {"HazardIndex": hri_result, "HazardIndexSchools": school_raster_values}
+
+    def __reproject_layer(self, hazard_layer: QgsRasterLayer) -> QgsRasterLayer:
+        """
+        Reproject layer to the HRI CRS. Also set layer nodata value to zero.
+        """
+        alg_params = {
+            "DATA_TYPE": 0,
+            "EXTRA": "",
+            "INPUT": hazard_layer,
+            "MULTITHREADING": False,
+            "NODATA": 0,
+            "OPTIONS": "",
+            "RESAMPLING": 0,
+            "SOURCE_CRS": None,
+            "TARGET_CRS": self.parameters["ProjectedReferenceSystem"],
+            "TARGET_EXTENT": None,
+            "TARGET_EXTENT_CRS": None,
+            "TARGET_RESOLUTION": None,
+            "OUTPUT": QgsProcessing.TEMPORARY_OUTPUT,
+        }
+        return processing.run(
+            "gdal:warpreproject",
+            alg_params,
+            context=self.context,
+            feedback=self.feedback,
+            is_child_algorithm=True,
+        )["OUTPUT"]
+
+    def __normalize_layer(self, hazard_layer: QgsRasterLayer) -> QgsRasterLayer:
+        """
+        Scale layer to 0...1.
+        """
+        alg_params = {
+            "BAND": 1,
+            "INPUT": hazard_layer,
+        }
+        statistics = processing.run(
+            "native:rasterlayerstatistics",
+            alg_params,
+            context=self.context,
+            feedback=self.feedback,
+            is_child_algorithm=True,
+        )
+
+        min = statistics["MIN"]
+        max = statistics["MAX"]
+        expression = f"(A - {min})/({max} - {min})"
+        alg_params = {
+            "BAND_A": 1,
+            "EXTRA": "",
+            "FORMULA": expression,
+            "INPUT_A": hazard_layer,
+            "NO_DATA": None,
+            "OPTIONS": "",
+            "RTYPE": 5,
+            "OUTPUT": QgsProcessing.TEMPORARY_OUTPUT,
+        }
+        return processing.run(
+            "gdal:rastercalculator",
+            alg_params,
+            context=self.context,
+            feedback=self.feedback,
+            is_child_algorithm=True,
+        )["OUTPUT"]
+
+    def __clip_vector_layer(
+        self, input: QgsVectorLayer, overlay: QgsVectorLayer
+    ) -> QgsVectorLayer:
+        """
+        Clip input layer with overlay.
+        """
+        alg_params = {
+            "INPUT": input,
+            "OVERLAY": overlay,
+            "OUTPUT": QgsProcessing.TEMPORARY_OUTPUT,
+        }
+        return processing.run(
+            "native:clip",
+            alg_params,
+            context=self.context,
+            feedback=self.feedback,
+            is_child_algorithm=True,
+        )["OUTPUT"]
+
+    def __clip_raster_layer(
+        self, input: QgsRasterLayer, mask: QgsVectorLayer
+    ) -> QgsRasterLayer:
+        """
+        Clip input layer with mask.
+        """
+        alg_params = {
+            "ALPHA_BAND": False,
+            "CROP_TO_CUTLINE": True,
+            "DATA_TYPE": 0,
+            "EXTRA": "",
+            "INPUT": input,
+            "KEEP_RESOLUTION": False,
+            "MASK": mask,
+            "MULTITHREADING": False,
+            "NODATA": None,
+            "OPTIONS": "",
+            "SET_RESOLUTION": False,
+            "SOURCE_CRS": None,
+            "TARGET_CRS": None,
+            "X_RESOLUTION": None,
+            "Y_RESOLUTION": None,
+            "OUTPUT": self.parameters["HazardIndex"].dataProvider().dataSourceUri()
+            if self.parameters["HazardIndex"]
+            else QgsProcessing.TEMPORARY_OUTPUT,
+        }
+        return processing.run(
+            "gdal:cliprasterbymasklayer",
+            alg_params,
+            context=self.context,
+            feedback=self.feedback,
+            is_child_algorithm=True,
+        )["OUTPUT"]
+
+    def __sample_layer(
+        self, layer: QgsRasterLayer, points: QgsVectorLayer
+    ) -> QgsVectorLayer:
+        """
+        Sample raster layer at vector layer points.
+        """
+        # Sample raster values
+        alg_params = {
+            "COLUMN_PREFIX": "HazardIndex",
+            "INPUT": points,
+            "RASTERCOPY": layer,
+            "OUTPUT": self.parameters["HazardIndexSchools"]
+            .dataProvider()
+            .dataSourceUri()
+            if self.parameters["HazardIndexSchools"]
+            else QgsProcessing.TEMPORARY_OUTPUT,
+        }
+        return processing.run(
+            "native:rastersampling",
+            alg_params,
+            context=self.context,
+            feedback=self.feedback,
+            is_child_algorithm=True,
+        )["OUTPUT"]
+
+    def __merge_layers(
+        self, layers: List[QgsRasterLayer], weights: List[float]
+    ) -> QgsRasterLayer:
+        """
+        Merge raster layers together and calculate their weighted sum.
+        """
+
+        # Merge to separate channels
         alg_params = {
             "DATA_TYPE": 5,
             "EXTRA": "",
-            "INPUT": standardized_layers,
+            "INPUT": layers,
             "NODATA_INPUT": None,
             "NODATA_OUTPUT": None,
             "OPTIONS": "",
@@ -183,24 +281,20 @@ class NaturalHazardRisksForSchools(QgsProcessingAlgorithm):
         merged = processing.run(
             "gdal:merge",
             alg_params,
-            context=context,
-            feedback=feedback,
+            context=self.context,
+            feedback=self.feedback,
             is_child_algorithm=True,
         )["OUTPUT"]
-
-        feedback.setCurrentStep(3 * index + 5)
-        if feedback.isCanceled():
-            return {}
 
         # Raster calculator
         band_params = {}
         input_params = {}
         expression_parts = []
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        for index in range(0, len(parameters["HazardLayers"])):
+        for index in range(0, len(layers)):
             band_params[f"BAND_{alphabet[index]}"] = index + 1
             input_params[f"INPUT_{alphabet[index]}"] = merged
-            expression_parts.append(f"{alphabet[index]}*{parameters['Weights'][index]}")
+            expression_parts.append(f"{alphabet[index]}*{weights[index]}")
         sum_expression = "+".join(expression_parts)
         alg_params = {
             **band_params,
@@ -212,69 +306,13 @@ class NaturalHazardRisksForSchools(QgsProcessingAlgorithm):
             "RTYPE": 5,
             "OUTPUT": QgsProcessing.TEMPORARY_OUTPUT,
         }
-        sum = processing.run(
+        return processing.run(
             "gdal:rastercalculator",
             alg_params,
-            context=context,
-            feedback=feedback,
+            context=self.context,
+            feedback=self.feedback,
             is_child_algorithm=True,
         )["OUTPUT"]
-
-        feedback.setCurrentStep(3 * index + 6)
-        if feedback.isCanceled():
-            return {}
-
-        feedback.pushWarning(str(parameters))
-        # Clip raster by mask layer
-        alg_params = {
-            "ALPHA_BAND": False,
-            "CROP_TO_CUTLINE": True,
-            "DATA_TYPE": 0,
-            "EXTRA": "",
-            "INPUT": sum,
-            "KEEP_RESOLUTION": False,
-            "MASK": parameters["Studyarea"],
-            "MULTITHREADING": False,
-            "NODATA": None,
-            "OPTIONS": "",
-            "SET_RESOLUTION": False,
-            "SOURCE_CRS": None,
-            "TARGET_CRS": None,
-            "X_RESOLUTION": None,
-            "Y_RESOLUTION": None,
-            "OUTPUT": parameters["HazardIndex"].dataProvider().dataSourceUri()
-            if parameters["HazardIndex"]
-            else QgsProcessing.TEMPORARY_OUTPUT,
-        }
-        hri_result = processing.run(
-            "gdal:cliprasterbymasklayer",
-            alg_params,
-            context=context,
-            feedback=feedback,
-            is_child_algorithm=True,
-        )["OUTPUT"]
-
-        feedback.setCurrentStep(3 * index + 7)
-        if feedback.isCanceled():
-            return {}
-
-        # Sample raster values
-        alg_params = {
-            "COLUMN_PREFIX": "HazardIndex",
-            "INPUT": clipped_schools,
-            "RASTERCOPY": sum,
-            "OUTPUT": parameters["HazardIndexSchools"].dataProvider().dataSourceUri()
-            if parameters["HazardIndexSchools"]
-            else QgsProcessing.TEMPORARY_OUTPUT,
-        }
-        school_raster_values = processing.run(
-            "native:rastersampling",
-            alg_params,
-            context=context,
-            feedback=feedback,
-            is_child_algorithm=True,
-        )["OUTPUT"]
-        return hri_result, school_raster_values
 
     def name(self):
         return "Natural Hazard Risks for Schools"
