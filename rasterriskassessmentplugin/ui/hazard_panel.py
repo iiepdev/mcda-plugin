@@ -72,13 +72,9 @@ class HazardRiskIndexPanel(BasePanel):
     def __set_run_button(self) -> None:
         LOGGER.info("button set to run")
         self.dlg.hri_btn_run.setText("Run")
+        self.dlg.hri_btn_run.setEnabled(True)
         self.dlg.hri_btn_run.clicked.connect(self.__run_model)
         self.dlg.hri_progress_bar.setValue(0.0)
-
-    def __set_cancel_button(self) -> None:
-        LOGGER.info("button set to cancel")
-        self.dlg.hri_btn_run.setText("Cancel")
-        self.dlg.hri_btn_run.clicked.connect(self.__cancel_run)
 
     def __set_combobox(self, combobox: QgsMapLayerComboBox, layer_number: int) -> None:
         combobox.setFilters(QgsMapLayerProxyModel.RasterLayer)
@@ -200,25 +196,43 @@ class HazardRiskIndexPanel(BasePanel):
         self.task = None
 
     def __run_model(self) -> None:
+        LOGGER.info("Running...")
         # prevent clicking run if task is running
-        if not self.task or not self.task.isActive():
+        if not self.task:
             # change button to cancel while running
             self.__set_cancel_button()
             self.params = self.__get_params()
             LOGGER.info(self.params)
             self.algorithm.initAlgorithm()
+            # each task needs its own feedback object! Reusing old feedback
+            # will prevent task from being canceled
+            self.feedback = LoggerProcessingFeedBack(use_logger=True)
             self.task = QgsProcessingAlgRunnerTask(
                 self.algorithm, self.params, self.context, self.feedback
             )
             self.task.progressChanged.connect(self.__update_progress)
+            self.task.executed.connect(
+                # no more canceling when setting run button again
+                lambda successful: self.dlg.hri_btn_run.clicked.disconnect(
+                    self.__cancel_run
+                )
+            )
             self.task.executed.connect(self.__set_run_button)
             self.task.executed.connect(self.__display_results)
             self.task.destroyed.connect(self.__delete_task)
             QgsApplication.taskManager().addTask(self.task)
 
+    def __set_cancel_button(self) -> None:
+        self.dlg.hri_btn_run.setText("Cancel")
+        # no more running when pressing cancel
+        self.dlg.hri_btn_run.clicked.disconnect(self.__run_model)
+        self.dlg.hri_btn_run.clicked.connect(self.__cancel_run)
+
     def __cancel_run(self) -> None:
-        LOGGER.info("Cancel pressed")
+        LOGGER.info("Canceling...")
         if self.task:
+            self.dlg.hri_btn_run.setText("Canceling...")
+            self.dlg.hri_btn_run.setEnabled(False)
             self.task.cancel()
 
     def __close_dialog(self) -> None:
