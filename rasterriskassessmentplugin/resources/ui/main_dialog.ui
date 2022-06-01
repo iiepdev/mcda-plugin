@@ -21,7 +21,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>150</width>
+     <width>200</width>
      <height>582</height>
     </rect>
    </property>
@@ -33,13 +33,13 @@
    </property>
    <property name="minimumSize">
     <size>
-     <width>150</width>
-     <height>200</height>
+     <width>220</width>
+     <height>300</height>
     </size>
    </property>
    <property name="maximumSize">
     <size>
-     <width>150</width>
+     <width>220</width>
      <height>16777215</height>
     </size>
    </property>
@@ -50,7 +50,7 @@
        }
        QListWidget::item {
        color: white;
-       padding: 3px;
+       padding: 10px;
        }
        QListWidget::item::selected {
        color: black;
