@@ -5,13 +5,28 @@
   <property name="windowModality">
    <enum>Qt::WindowModal</enum>
   </property>
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1026</width>
-    <height>895</height>
+    <width>800</width>
+    <height>600</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>800</width>
+    <height>600</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>800</width>
+    <height>600</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Raster Risk Assessment Plugin</string>
@@ -21,7 +36,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>200</width>
+     <width>220</width>
      <height>582</height>
     </rect>
    </property>
@@ -116,14 +131,14 @@
   <widget class="QStackedWidget" name="stacked_widget">
    <property name="geometry">
     <rect>
-     <x>158</x>
-     <y>2</y>
-     <width>641</width>
-     <height>641</height>
+     <x>220</x>
+     <y>0</y>
+     <width>581</width>
+     <height>600</height>
     </rect>
    </property>
    <property name="currentIndex">
-    <number>5</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="infrastructure">
     <widget class="QgsCollapsibleGroupBox" name="mGroupBox_areaExposure_2">
@@ -144,7 +159,7 @@
         <x>30</x>
         <y>20</y>
         <width>511</width>
-        <height>131</height>
+        <height>141</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout">
@@ -223,7 +238,7 @@
         <x>20</x>
         <y>30</y>
         <width>531</width>
-        <height>166</height>
+        <height>188</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="infra_grid_options">
@@ -366,7 +381,7 @@
       </property>
       <layout class="QGridLayout" name="gridLayout_12">
        <item row="0" column="1">
-        <widget class="QgsFileWidget" name="infra_file_wdgt_save_output"/>
+        <widget class="QgsFileWidget" name="infra_file_wdgt_save_output" native="true"/>
        </item>
        <item row="0" column="0">
         <widget class="QLabel" name="label_23">
@@ -384,7 +399,7 @@
        <x>0</x>
        <y>500</y>
        <width>551</width>
-       <height>27</height>
+       <height>36</height>
       </rect>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -433,429 +448,669 @@
     </widget>
    </widget>
    <widget class="QWidget" name="hazard_risk_index">
-    <widget class="QgsCollapsibleGroupBox" name="mGroupBox_areaExposure">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>0</y>
-       <width>441</width>
-       <height>121</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>Study area and exposure data</string>
-     </property>
-     <widget class="QWidget" name="layoutWidget">
-      <property name="geometry">
-       <rect>
-        <x>11</x>
-        <y>20</y>
-        <width>411</width>
-        <height>64</height>
-       </rect>
-      </property>
-      <layout class="QGridLayout" name="gridLayout_6">
-       <property name="horizontalSpacing">
-        <number>6</number>
+    <layout class="QVBoxLayout" name="hazard_risk_vlayout">
+     <item>
+      <widget class="QGroupBox" name="mGroupBox_areaExposure">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
        </property>
-       <property name="verticalSpacing">
-        <number>20</number>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>100</height>
+        </size>
        </property>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label_2">
-         <property name="text">
-          <string>School facilities: </string>
+       <property name="title">
+        <string>Study area and exposure data</string>
+       </property>
+       <widget class="QWidget" name="layoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>30</y>
+          <width>541</width>
+          <height>79</height>
+         </rect>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_6">
+         <property name="sizeConstraint">
+          <enum>QLayout::SetFixedSize</enum>
          </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_pointlayer">
-         <property name="text">
-          <string>Boundaries: </string>
+         <property name="horizontalSpacing">
+          <number>6</number>
          </property>
-        </widget>
-       </item>
-       <item row="0" column="2">
-        <widget class="QCheckBox" name="hri_chck_bx_use_selected_boundary">
-         <property name="text">
-          <string>Use only selected features</string>
+         <property name="verticalSpacing">
+          <number>10</number>
          </property>
-        </widget>
-       </item>
-       <item row="1" column="2">
-        <widget class="QCheckBox" name="hri_chck_bx_use_selected_schools">
-         <property name="text">
-          <string>Use only selected features</string>
+         <item row="0" column="2">
+          <widget class="QCheckBox" name="hri_chck_bx_use_selected_boundary">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Use only selected features</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QgsMapLayerComboBox" name="hri_map_layer_cmb_bx_boundaries">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>240</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="allowEmptyLayer" stdset="0">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QCheckBox" name="hri_chck_bx_use_selected_schools">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Use only selected features</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_2">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>School facilities: </string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QgsMapLayerComboBox" name="hri_map_layer_cmb_bx_schools">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>240</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="allowEmptyLayer" stdset="0">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_pointlayer">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Boundaries: </string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="groupbox_rasters">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>300</height>
+        </size>
+       </property>
+       <property name="title">
+        <string>Hazard Risk Layers</string>
+       </property>
+       <widget class="QWidget" name="layoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>30</y>
+          <width>541</width>
+          <height>280</height>
+         </rect>
+        </property>
+        <layout class="QGridLayout" name="hri_risk_layer_gridlayout">
+         <property name="sizeConstraint">
+          <enum>QLayout::SetFixedSize</enum>
          </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QgsMapLayerComboBox" name="hri_map_layer_cmb_bx_boundaries">
-         <property name="allowEmptyLayer">
-          <bool>true</bool>
+         <property name="leftMargin">
+          <number>9</number>
          </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QgsMapLayerComboBox" name="hri_map_layer_cmb_bx_schools">
-         <property name="allowEmptyLayer">
-          <bool>true</bool>
+         <property name="topMargin">
+          <number>9</number>
          </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </widget>
-    <widget class="QgsCollapsibleGroupBox" name="groupbox_rasters">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>130</y>
-       <width>471</width>
-       <height>271</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>Hazard Risk Layers</string>
-     </property>
-     <widget class="QWidget" name="layoutWidget">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>80</y>
-        <width>391</width>
-        <height>184</height>
-       </rect>
-      </property>
-      <layout class="QGridLayout" name="hri_risk_layer_gridlayout">
-       <item row="0" column="0">
-        <widget class="QLabel" name="hri_label_number_of_hazards">
-         <property name="text">
-          <string>Number of hazard risks to include</string>
+         <property name="rightMargin">
+          <number>9</number>
          </property>
-        </widget>
-       </item>
-       <item row="0" column="2">
-        <widget class="QgsSpinBox" name="hri_spn_bx_number_of_hazards"/>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="hri_raster_layer_label_1">
-         <property name="text">
-          <string>Layer 1</string>
+         <property name="bottomMargin">
+          <number>9</number>
          </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QgsMapLayerComboBox" name="hri_raster_layer_cb_1">
-        </widget>
-       </item>
-       <item row="1" column="2">
-        <widget class="QgsDoubleSpinBox" name="hri_raster_layer_dspnb_1">
-         <property name="maximumSize">
-          <size>
-           <width>78</width>
-           <height>16777215</height>
-          </size>
+         <property name="horizontalSpacing">
+          <number>6</number>
          </property>
-         <property name="suffix">
-          <string> %</string>
+         <property name="verticalSpacing">
+          <number>10</number>
          </property>
-         <property name="decimals">
-          <number>1</number>
-         </property>
-         <property name="minimum">
-          <number>0</number>
-         </property>
-         <property name="maximum">
-          <number>100</number>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="hri_raster">
-         <property name="text">
-          <string>Layer 2</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QgsMapLayerComboBox" name="hri_raster_layer_cb_2">
-        </widget>
-       </item>
-       <item row="2" column="2">
-        <widget class="QgsDoubleSpinBox" name="hri_raster_layer_dspnb_2">
-         <property name="maximumSize">
-          <size>
-           <width>78</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="suffix">
-          <string> %</string>
-         </property>
-         <property name="decimals">
-          <number>1</number>
-         </property>
-         <property name="minimum">
-          <number>0</number>
-         </property>
-         <property name="maximum">
-          <number>100</number>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="hri_label_number_of_hazards">
-         <property name="text">
-          <string>Layer 3</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
-        <widget class="QgsMapLayerComboBox" name="hri_raster_layer_cb_3">
-        </widget>
-       </item>
-       <item row="3" column="2">
-        <widget class="QgsDoubleSpinBox" name="hri_raster_layer_dspnb_3">
-         <property name="maximumSize">
-          <size>
-           <width>78</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="suffix">
-          <string> %</string>
-         </property>
-         <property name="decimals">
-          <number>1</number>
-         </property>
-         <property name="minimum">
-          <number>0</number>
-         </property>
-         <property name="maximum">
-          <number>100</number>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="0">
-        <widget class="QLabel" name="hri_label_number_of_hazards">
-         <property name="text">
-          <string>Layer 4</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="1">
-        <widget class="QgsMapLayerComboBox" name="hri_raster_layer_cb_4">
-        </widget>
-       </item>
-       <item row="4" column="2">
-        <widget class="QgsDoubleSpinBox" name="hri_raster_layer_dspnb_4">
-         <property name="maximumSize">
-          <size>
-           <width>78</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="suffix">
-          <string> %</string>
-         </property>
-         <property name="decimals">
-          <number>1</number>
-         </property>
-         <property name="minimum">
-          <number>0</number>
-         </property>
-         <property name="maximum">
-          <number>100</number>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="0">
-        <widget class="QLabel" name="hri_label_number_of_hazards">
-         <property name="text">
-          <string>Layer 5</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="1">
-        <widget class="QgsMapLayerComboBox" name="hri_raster_layer_cb_5">
-        </widget>
-       </item>
-       <item row="5" column="2">
-        <widget class="QgsDoubleSpinBox" name="hri_raster_layer_dspnb_5">
-         <property name="maximumSize">
-          <size>
-           <width>78</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="suffix">
-          <string> %</string>
-         </property>
-         <property name="decimals">
-          <number>1</number>
-         </property>
-         <property name="minimum">
-          <number>0</number>
-         </property>
-         <property name="maximum">
-          <number>100</number>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="0">
-        <widget class="QLabel" name="hri_label_number_of_hazards">
-         <property name="text">
-          <string>Layer 6</string>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="1">
-        <widget class="QgsMapLayerComboBox" name="hri_raster_layer_cb_6">
-        </widget>
-       </item>
-       <item row="6" column="2">
-        <widget class="QgsDoubleSpinBox" name="hri_raster_layer_dspnb_6">
-         <property name="maximumSize">
-          <size>
-           <width>78</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="suffix">
-          <string> %</string>
-         </property>
-         <property name="decimals">
-          <number>1</number>
-         </property>
-         <property name="minimum">
-          <number>0</number>
-         </property>
-         <property name="maximum">
-          <number>100</number>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </widget>
-    <widget class="QgsCollapsibleGroupBox" name="mGroupBox_output">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>410</y>
-       <width>471</width>
-       <height>81</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>Save output layers</string>
-     </property>
-     <widget class="QWidget" name="layoutWidget">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>20</y>
-        <width>431</width>
-        <height>61</height>
-       </rect>
-      </property>
-      <layout class="QGridLayout" name="gridLayout_9">
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_9">
-         <property name="text">
-          <string>Hazard Index: </string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QgsFileWidget" name="hri_save_hri_file_widget"/>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label_10">
-         <property name="text">
-          <string>Hazard Index - Schools: </string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QgsFileWidget" name="hri_save_hri_schools_file_widget"/>
-       </item>
-      </layout>
-     </widget>
-    </widget>
-    <widget class="QgsCollapsibleGroupBox" name="mGroupBox_2">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>499</y>
-       <width>471</width>
-       <height>81</height>
-      </rect>
-     </property>
-     <widget class="QWidget" name="horizontalLayoutWidget">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>30</y>
-        <width>441</width>
-        <height>25</height>
-       </rect>
-      </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_4">
-       <item>
-        <widget class="QLabel" name="label_12">
-         <property name="text">
-          <string>Progress: </string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QProgressBar" name="hri_progress_bar">
-         <property name="maximumSize">
-          <size>
-           <width>2500</width>
-           <height>160</height>
-          </size>
-         </property>
-         <property name="value">
-          <number>0</number>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="horizontalSpacer_5">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="QPushButton" name="hri_btn_run">
-         <property name="text">
-          <string>Run</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="hri_btn_close">
-         <property name="text">
-          <string>Close</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </widget>
+         <item row="0" column="1">
+          <widget class="QLabel" name="hri_label_number_of_hazards">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Number of hazard risks to include:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QgsSpinBox" name="hri_spn_bx_number_of_hazards">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="hri_raster_layer_label_1">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Layer 1</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QgsMapLayerComboBox" name="hri_raster_layer_cb_1">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>390</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QgsDoubleSpinBox" name="hri_raster_layer_dspnb_1">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>78</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="suffix">
+            <string> %</string>
+           </property>
+           <property name="decimals">
+            <number>1</number>
+           </property>
+           <property name="minimum">
+            <double>0.000000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>100.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="hri_raster">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Layer 2</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QgsMapLayerComboBox" name="hri_raster_layer_cb_2">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>390</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="2">
+          <widget class="QgsDoubleSpinBox" name="hri_raster_layer_dspnb_2">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>78</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="suffix">
+            <string> %</string>
+           </property>
+           <property name="decimals">
+            <number>1</number>
+           </property>
+           <property name="minimum">
+            <double>0.000000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>100.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="hri_label_number_of_hazards">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Layer 3</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QgsMapLayerComboBox" name="hri_raster_layer_cb_3">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>390</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="2">
+          <widget class="QgsDoubleSpinBox" name="hri_raster_layer_dspnb_3">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>78</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="suffix">
+            <string> %</string>
+           </property>
+           <property name="decimals">
+            <number>1</number>
+           </property>
+           <property name="minimum">
+            <double>0.000000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>100.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="hri_label_number_of_hazards">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Layer 4</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QgsMapLayerComboBox" name="hri_raster_layer_cb_4">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>390</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="2">
+          <widget class="QgsDoubleSpinBox" name="hri_raster_layer_dspnb_4">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>78</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="suffix">
+            <string> %</string>
+           </property>
+           <property name="decimals">
+            <number>1</number>
+           </property>
+           <property name="minimum">
+            <double>0.000000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>100.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0">
+          <widget class="QLabel" name="hri_label_number_of_hazards">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Layer 5</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="1">
+          <widget class="QgsMapLayerComboBox" name="hri_raster_layer_cb_5">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>390</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="2">
+          <widget class="QgsDoubleSpinBox" name="hri_raster_layer_dspnb_5">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>78</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="suffix">
+            <string> %</string>
+           </property>
+           <property name="decimals">
+            <number>1</number>
+           </property>
+           <property name="minimum">
+            <double>0.000000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>100.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="0">
+          <widget class="QLabel" name="hri_label_number_of_hazards">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Layer 6</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="1">
+          <widget class="QgsMapLayerComboBox" name="hri_raster_layer_cb_6">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>390</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="2">
+          <widget class="QgsDoubleSpinBox" name="hri_raster_layer_dspnb_6">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>78</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="suffix">
+            <string> %</string>
+           </property>
+           <property name="decimals">
+            <number>1</number>
+           </property>
+           <property name="minimum">
+            <double>0.000000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>100.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="mGroupBox_output">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>100</height>
+        </size>
+       </property>
+       <property name="title">
+        <string>Save output layers</string>
+       </property>
+       <widget class="QWidget" name="layoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>30</y>
+          <width>541</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_9">
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_9">
+           <property name="text">
+            <string>Hazard Index: </string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QgsFileWidget" name="hri_save_hri_file_widget" native="true"/>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_10">
+           <property name="text">
+            <string>Hazard Index - Schools: </string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QgsFileWidget" name="hri_save_hri_schools_file_widget" native="true"/>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+     </item>
+     <item>
+      <widget class="QFrame" name="mFrame_2">
+       <widget class="QWidget" name="horizontalLayoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>541</width>
+          <height>32</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <widget class="QLabel" name="label_12">
+           <property name="text">
+            <string>Progress: </string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QProgressBar" name="hri_progress_bar">
+           <property name="maximumSize">
+            <size>
+             <width>2500</width>
+             <height>160</height>
+            </size>
+           </property>
+           <property name="value">
+            <number>0</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_5">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Fixed</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="hri_btn_run">
+           <property name="text">
+            <string>Run</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="hri_btn_close">
+           <property name="text">
+            <string>Close</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+     </item>
+    </layout>
    </widget>
    <widget class="QWidget" name="economic_suitability">
     <layout class="QVBoxLayout" name="verticalLayout_15">
@@ -870,7 +1125,7 @@
           <x>10</x>
           <y>30</y>
           <width>451</width>
-          <height>31</height>
+          <height>33</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_20">
@@ -899,7 +1154,7 @@
           <x>10</x>
           <y>70</y>
           <width>531</width>
-          <height>132</height>
+          <height>167</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_5">
@@ -1068,7 +1323,7 @@
           <x>10</x>
           <y>220</y>
           <width>531</width>
-          <height>158</height>
+          <height>167</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_7">
@@ -1261,7 +1516,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QgsFileWidget" name="econ_file_wdgt_save_output">
+           <widget class="QgsFileWidget" name="econ_file_wdgt_save_output" native="true">
             <property name="minimumSize">
              <size>
               <width>80</width>
@@ -1278,7 +1533,7 @@
            <x>10</x>
            <y>170</y>
            <width>461</width>
-           <height>25</height>
+           <height>32</height>
           </rect>
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_23">
@@ -1345,7 +1600,7 @@
         <x>10</x>
         <y>30</y>
         <width>451</width>
-        <height>31</height>
+        <height>33</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_13">
@@ -1374,7 +1629,7 @@
         <x>10</x>
         <y>70</y>
         <width>451</width>
-        <height>97</height>
+        <height>129</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_2">
@@ -1501,7 +1756,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QgsFileWidget" name="env_file_wdgt_save_output">
+        <widget class="QgsFileWidget" name="env_file_wdgt_save_output" native="true">
          <property name="minimumSize">
           <size>
            <width>80</width>
@@ -1519,7 +1774,7 @@
        <x>10</x>
        <y>350</y>
        <width>471</width>
-       <height>25</height>
+       <height>32</height>
       </rect>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_7">
@@ -1582,7 +1837,7 @@
         <x>10</x>
         <y>30</y>
         <width>451</width>
-        <height>31</height>
+        <height>33</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_14">
@@ -1611,7 +1866,7 @@
         <x>10</x>
         <y>70</y>
         <width>451</width>
-        <height>97</height>
+        <height>129</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_11">
@@ -1756,7 +2011,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QgsFileWidget" name="mcda_file_wdgt_save_output">
+        <widget class="QgsFileWidget" name="mcda_file_wdgt_save_output" native="true">
          <property name="minimumSize">
           <size>
            <width>80</width>
@@ -1774,7 +2029,7 @@
        <x>10</x>
        <y>330</y>
        <width>471</width>
-       <height>25</height>
+       <height>32</height>
       </rect>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_16">
@@ -1819,7 +2074,7 @@
     </widget>
    </widget>
    <widget class="QWidget" name="help">
-    <widget class="QWidget" name="">
+    <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -1881,8 +2136,8 @@
       <rect>
        <x>9</x>
        <y>9</y>
-       <width>326</width>
-       <height>305</height>
+       <width>414</width>
+       <height>335</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
