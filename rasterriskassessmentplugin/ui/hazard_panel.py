@@ -2,11 +2,8 @@ import logging
 from typing import Any, Dict, Optional
 
 from qgis.core import (
-    QgsApplication,
     QgsLayerTreeLayer,
     QgsMapLayerProxyModel,
-    QgsProcessingAlgRunnerTask,
-    QgsProcessingContext,
     QgsProject,
     QgsRasterLayer,
     QgsVectorLayer,
@@ -16,7 +13,6 @@ from qgis.PyQt.QtWidgets import QDialog, QLabel
 
 from ..core.hri_model import NaturalHazardRisksForSchools
 from ..definitions.gui import Panels
-from ..qgis_plugin_tools.tools.logger_processing import LoggerProcessingFeedBack
 from ..qgis_plugin_tools.tools.resources import plugin_name
 from .base_panel import BasePanel
 
@@ -26,12 +22,9 @@ LOGGER = logging.getLogger(plugin_name())
 class HazardRiskIndexPanel(BasePanel):
     def __init__(self, dialog: QDialog) -> None:
         super().__init__(dialog)
-        self.params: Dict[str, Any] = {}
         self.algorithm = NaturalHazardRisksForSchools()
-        self.task: Optional[QgsProcessingAlgRunnerTask] = None
-        self.context = QgsProcessingContext()
-        self.feedback = LoggerProcessingFeedBack(use_logger=True)
         self.panel = Panels.HazardRiskIndex
+        self.name = "hri"
         self.minimum = 2
         self.maximum = 6
         self.default_values = 6
@@ -40,6 +33,7 @@ class HazardRiskIndexPanel(BasePanel):
         self.hri_result_schools: Optional[QgsVectorLayer] = None
 
     def setup_panel(self) -> None:
+        super().setup_panel()
         self.dlg.hri_map_layer_cmb_bx_boundaries.setFilters(
             QgsMapLayerProxyModel.PolygonLayer
         )
@@ -66,15 +60,6 @@ class HazardRiskIndexPanel(BasePanel):
 
         self.dlg.hri_save_hri_file_widget.setStorageMode(QgsFileWidget.SaveFile)
         self.dlg.hri_save_hri_schools_file_widget.setStorageMode(QgsFileWidget.SaveFile)
-        self.__set_run_button()
-        self.dlg.hri_btn_close.clicked.connect(self.__close_dialog)
-
-    def __set_run_button(self) -> None:
-        LOGGER.info("button set to run")
-        self.dlg.hri_btn_run.setText("Run")
-        self.dlg.hri_btn_run.setEnabled(True)
-        self.dlg.hri_btn_run.clicked.connect(self.__run_model)
-        self.dlg.hri_progress_bar.setValue(0)
 
     def __set_combobox(self, combobox: QgsMapLayerComboBox, layer_number: int) -> None:
         combobox.setFilters(QgsMapLayerProxyModel.RasterLayer)
@@ -131,7 +116,7 @@ class HazardRiskIndexPanel(BasePanel):
         total = sum(weights)
         return [value / total for value in weights]
 
-    def __get_params(self) -> dict:
+    def _get_params(self) -> dict:
         params: Dict[str, Any] = {}
         params["HazardLayers"] = []
         params["Weights"] = []
@@ -153,10 +138,7 @@ class HazardRiskIndexPanel(BasePanel):
         ] = self.dlg.hri_save_hri_schools_file_widget.filePath()
         return params
 
-    def __update_progress(self, percentage: float) -> None:
-        self.dlg.hri_progress_bar.setValue(int(percentage))
-
-    def __display_results(self, successful: bool, results: Dict[str, Any]) -> None:
+    def _display_results(self, successful: bool, results: Dict[str, Any]) -> None:
         """
         Display result layers in current QGIS project.
         """
@@ -187,53 +169,3 @@ class HazardRiskIndexPanel(BasePanel):
             if self.hri_result_schools:
                 QgsProject.instance().addMapLayer(self.hri_result_schools, False)
                 root.insertChildNode(0, QgsLayerTreeLayer(self.hri_result_schools))
-
-    def __delete_task(self, task: QgsProcessingAlgRunnerTask) -> None:
-        # This notifies PyQt that the C++ task has been destroyed. Otherwise
-        # the Python wrapper will keep pointing to a deleted object.
-        # http://enki-editor.org/2014/08/23/Pyqt_mem_mgmt.html
-        LOGGER.info("task deleted")
-        self.task = None
-
-    def __run_model(self) -> None:
-        LOGGER.info("Running...")
-        # prevent clicking run if task is running
-        if not self.task:
-            # change button to cancel while running
-            self.__set_cancel_button()
-            self.params = self.__get_params()
-            LOGGER.info(self.params)
-            self.algorithm.initAlgorithm()
-            # each task needs its own feedback object! Reusing old feedback
-            # will prevent task from being canceled
-            self.feedback = LoggerProcessingFeedBack(use_logger=True)
-            self.task = QgsProcessingAlgRunnerTask(
-                self.algorithm, self.params, self.context, self.feedback
-            )
-            self.task.progressChanged.connect(self.__update_progress)
-            self.task.executed.connect(
-                # no more canceling when setting run button again
-                lambda successful: self.dlg.hri_btn_run.clicked.disconnect(
-                    self.__cancel_run
-                )
-            )
-            self.task.executed.connect(self.__set_run_button)
-            self.task.executed.connect(self.__display_results)
-            self.task.destroyed.connect(self.__delete_task)
-            QgsApplication.taskManager().addTask(self.task)
-
-    def __set_cancel_button(self) -> None:
-        self.dlg.hri_btn_run.setText("Cancel")
-        # no more running when pressing cancel
-        self.dlg.hri_btn_run.clicked.disconnect(self.__run_model)
-        self.dlg.hri_btn_run.clicked.connect(self.__cancel_run)
-
-    def __cancel_run(self) -> None:
-        LOGGER.info("Canceling...")
-        if self.task:
-            self.dlg.hri_btn_run.setText("Canceling...")
-            self.dlg.hri_btn_run.setEnabled(False)
-            self.task.cancel()
-
-    def __close_dialog(self) -> None:
-        self.dlg.hide()
