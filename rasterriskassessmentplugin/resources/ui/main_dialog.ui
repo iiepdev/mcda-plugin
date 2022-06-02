@@ -205,6 +205,12 @@
          </item>
          <item row="0" column="1">
           <widget class="QgsMapLayerComboBox" name="hri_map_layer_cmb_bx_boundaries">
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
+            </size>
+           </property>
            <property name="sizePolicy">
             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -250,6 +256,12 @@
          </item>
          <item row="1" column="1">
           <widget class="QgsMapLayerComboBox" name="hri_map_layer_cmb_bx_schools">
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
+            </size>
+           </property>
            <property name="sizePolicy">
             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -373,6 +385,12 @@
          </item>
          <item row="1" column="1">
           <widget class="QgsMapLayerComboBox" name="hri_raster_layer_cb_1">
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
+            </size>
+           </property>
            <property name="sizePolicy">
             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -430,6 +448,12 @@
          </item>
          <item row="2" column="1">
           <widget class="QgsMapLayerComboBox" name="hri_raster_layer_cb_2">
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
+            </size>
+           </property>
            <property name="sizePolicy">
             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -487,6 +511,12 @@
          </item>
          <item row="3" column="1">
           <widget class="QgsMapLayerComboBox" name="hri_raster_layer_cb_3">
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
+            </size>
+           </property>
            <property name="sizePolicy">
             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -544,6 +574,12 @@
          </item>
          <item row="4" column="1">
           <widget class="QgsMapLayerComboBox" name="hri_raster_layer_cb_4">
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
+            </size>
+           </property>
            <property name="sizePolicy">
             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -601,6 +637,12 @@
          </item>
          <item row="5" column="1">
           <widget class="QgsMapLayerComboBox" name="hri_raster_layer_cb_5">
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
+            </size>
+           </property>
            <property name="sizePolicy">
             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -658,6 +700,12 @@
          </item>
          <item row="6" column="1">
           <widget class="QgsMapLayerComboBox" name="hri_raster_layer_cb_6">
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
+            </size>
+           </property>
            <property name="sizePolicy">
             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -886,6 +934,12 @@
          </item>
          <item row="2" column="1">
           <widget class="QgsFieldComboBox" name="infra_fld_cmb_bx_school_var">
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
+            </size>
+           </property>
            <property name="sizePolicy">
             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -949,6 +1003,12 @@
          </item>
          <item row="1" column="1">
           <widget class="QgsMapLayerComboBox" name="infra_map_layer_cmb_bx_schools">
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
+            </size>
+           </property>
            <property name="sizePolicy">
             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -965,6 +1025,12 @@
          </item>
          <item row="0" column="1">
           <widget class="QgsMapLayerComboBox" name="infra_map_layer_cmb_bx_boundaries">
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
+            </size>
+           </property>
            <property name="sizePolicy">
             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -981,6 +1047,12 @@
          </item>
          <item row="3" column="1">
           <widget class="QgsMapLayerComboBox" name="infra_map_layer_cmb_bx_pop_dens">
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
+            </size>
+           </property>
            <property name="sizePolicy">
             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -1159,12 +1231,12 @@
            </property>
            <item>
             <property name="text">
-             <string>Sparsely populated area</string>
+             <string>Densely populated area</string>
             </property>
            </item>
            <item>
             <property name="text">
-             <string>Densely populated area</string>
+             <string>Sparsely populated area</string>
             </property>
            </item>
           </widget>
@@ -1340,6 +1412,12 @@
          </item>
          <item row="0" column="1">
           <widget class="QgsMapLayerComboBox" name="econ_map_layer_cmb_bx_boundary"/>
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
+            </size>
+           </property>
          </item>
         </layout>
        </widget>
@@ -1482,6 +1560,12 @@
          </item>
          <item row="0" column="2">
           <widget class="QgsMapLayerComboBox" name="econ_map_layer_cmb_bx_roads"/>
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
+            </size>
+           </property>
          </item>
          <item row="4" column="2">
           <widget class="QComboBox" name="econ_cmb_bx_near_roads">
@@ -1678,6 +1762,12 @@
          </item>
          <item row="0" column="2">
           <widget class="QgsMapLayerComboBox" name="econ_map_layer_cmb_bx_waterways"/>
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
+            </size>
+           </property>
          </item>
         </layout>
        </widget>
@@ -1815,6 +1905,12 @@
        </item>
        <item row="0" column="1">
         <widget class="QgsMapLayerComboBox" name="env_map_layer_cmb_bx_boundary"/>
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
+            </size>
+           </property>
        </item>
       </layout>
      </widget>
@@ -1911,12 +2007,30 @@
        </item>
        <item row="1" column="2">
         <widget class="QgsMapLayerComboBox" name="env_map_layer_cmb_bx_hri"/>
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
+            </size>
+           </property>
        </item>
        <item row="2" column="2">
         <widget class="QgsMapLayerComboBox" name="env_map_layer_cmb_bx_dem"/>
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
+            </size>
+           </property>
        </item>
        <item row="3" column="2">
         <widget class="QgsMapLayerComboBox" name="env_map_layer_cmb_bx_forest"/>
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
+            </size>
+           </property>
        </item>
       </layout>
      </widget>
@@ -2052,6 +2166,12 @@
        </item>
        <item row="0" column="1">
         <widget class="QgsMapLayerComboBox" name="mcda_map_layer_cmb_bx_boundary"/>
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
+            </size>
+           </property>
        </item>
       </layout>
      </widget>
@@ -2166,12 +2286,30 @@
        </item>
        <item row="1" column="2">
         <widget class="QgsMapLayerComboBox" name="mcda_map_layer_cmb_bx_env"/>
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
+            </size>
+           </property>
        </item>
        <item row="2" column="2">
         <widget class="QgsMapLayerComboBox" name="mcda_map_layer_cmb_bx_econ"/>
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
+            </size>
+           </property>
        </item>
        <item row="3" column="2">
         <widget class="QgsMapLayerComboBox" name="mcda_map_layer_cmb_bx_infra"/>
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
+            </size>
+           </property>
        </item>
       </layout>
      </widget>
