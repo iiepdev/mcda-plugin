@@ -21,7 +21,7 @@ from qgis.core import (
 )
 
 
-class SocialSuitability(QgsProcessingAlgorithm):
+class InfrastructureSuitability(QgsProcessingAlgorithm):
     def initAlgorithm(self, config=None):  # noqa: N802
         self.addParameter(
             QgsProcessingParameterCrs("CRS", "CRS", defaultValue="EPSG:4326")
@@ -463,4 +463,4 @@ class SocialSuitability(QgsProcessingAlgorithm):
         return "Multi-criteria decision analysis"
 
     def createInstance(self):  # noqa: N802
-        return SocialSuitability()
+        return InfrastructureSuitability()
