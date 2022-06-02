@@ -74,7 +74,7 @@ class HazardRiskIndexPanel(BasePanel):
         self.dlg.hri_btn_run.setText("Run")
         self.dlg.hri_btn_run.setEnabled(True)
         self.dlg.hri_btn_run.clicked.connect(self.__run_model)
-        self.dlg.hri_progress_bar.setValue(0.0)
+        self.dlg.hri_progress_bar.setValue(0)
 
     def __set_combobox(self, combobox: QgsMapLayerComboBox, layer_number: int) -> None:
         combobox.setFilters(QgsMapLayerProxyModel.RasterLayer)
@@ -154,7 +154,7 @@ class HazardRiskIndexPanel(BasePanel):
         return params
 
     def __update_progress(self, percentage: float) -> None:
-        self.dlg.hri_progress_bar.setValue(percentage)
+        self.dlg.hri_progress_bar.setValue(int(percentage))
 
     def __display_results(self, successful: bool, results: Dict[str, Any]) -> None:
         """
