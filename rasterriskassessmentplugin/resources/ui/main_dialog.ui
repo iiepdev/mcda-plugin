@@ -1411,13 +1411,14 @@
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="QgsMapLayerComboBox" name="econ_map_layer_cmb_bx_boundary"/>
+          <widget class="QgsMapLayerComboBox" name="econ_map_layer_cmb_bx_boundary">
            <property name="iconSize">
             <size>
              <width>16</width>
              <height>16</height>
             </size>
            </property>
+          </widget>
          </item>
         </layout>
        </widget>
@@ -1559,13 +1560,14 @@
           </layout>
          </item>
          <item row="0" column="2">
-          <widget class="QgsMapLayerComboBox" name="econ_map_layer_cmb_bx_roads"/>
+          <widget class="QgsMapLayerComboBox" name="econ_map_layer_cmb_bx_roads">
            <property name="iconSize">
             <size>
              <width>16</width>
              <height>16</height>
             </size>
            </property>
+          </widget>
          </item>
          <item row="4" column="2">
           <widget class="QComboBox" name="econ_cmb_bx_near_roads">
@@ -1761,13 +1763,14 @@
           </layout>
          </item>
          <item row="0" column="2">
-          <widget class="QgsMapLayerComboBox" name="econ_map_layer_cmb_bx_waterways"/>
+          <widget class="QgsMapLayerComboBox" name="econ_map_layer_cmb_bx_waterways">
            <property name="iconSize">
             <size>
              <width>16</width>
              <height>16</height>
             </size>
            </property>
+          </widget>
          </item>
         </layout>
        </widget>
@@ -1904,13 +1907,14 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QgsMapLayerComboBox" name="env_map_layer_cmb_bx_boundary"/>
-           <property name="iconSize">
-            <size>
-             <width>16</width>
-             <height>16</height>
-            </size>
-           </property>
+        <widget class="QgsMapLayerComboBox" name="env_map_layer_cmb_bx_boundary">
+         <property name="iconSize">
+          <size>
+           <width>16</width>
+           <height>16</height>
+          </size>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -2006,31 +2010,34 @@
         </widget>
        </item>
        <item row="1" column="2">
-        <widget class="QgsMapLayerComboBox" name="env_map_layer_cmb_bx_hri"/>
-           <property name="iconSize">
-            <size>
-             <width>16</width>
-             <height>16</height>
-            </size>
-           </property>
+        <widget class="QgsMapLayerComboBox" name="env_map_layer_cmb_bx_hri">
+         <property name="iconSize">
+          <size>
+           <width>16</width>
+           <height>16</height>
+          </size>
+         </property>
+        </widget>
        </item>
        <item row="2" column="2">
-        <widget class="QgsMapLayerComboBox" name="env_map_layer_cmb_bx_dem"/>
-           <property name="iconSize">
-            <size>
-             <width>16</width>
-             <height>16</height>
-            </size>
-           </property>
+        <widget class="QgsMapLayerComboBox" name="env_map_layer_cmb_bx_dem">
+         <property name="iconSize">
+          <size>
+           <width>16</width>
+           <height>16</height>
+          </size>
+         </property>
+        </widget>
        </item>
        <item row="3" column="2">
-        <widget class="QgsMapLayerComboBox" name="env_map_layer_cmb_bx_forest"/>
-           <property name="iconSize">
-            <size>
-             <width>16</width>
-             <height>16</height>
-            </size>
-           </property>
+        <widget class="QgsMapLayerComboBox" name="env_map_layer_cmb_bx_forest">
+         <property name="iconSize">
+          <size>
+           <width>16</width>
+           <height>16</height>
+          </size>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -2165,13 +2172,14 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QgsMapLayerComboBox" name="mcda_map_layer_cmb_bx_boundary"/>
-           <property name="iconSize">
-            <size>
-             <width>16</width>
-             <height>16</height>
-            </size>
-           </property>
+        <widget class="QgsMapLayerComboBox" name="mcda_map_layer_cmb_bx_boundary">
+         <property name="iconSize">
+          <size>
+           <width>16</width>
+           <height>16</height>
+          </size>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -2285,31 +2293,34 @@
         </widget>
        </item>
        <item row="1" column="2">
-        <widget class="QgsMapLayerComboBox" name="mcda_map_layer_cmb_bx_env"/>
-           <property name="iconSize">
-            <size>
-             <width>16</width>
-             <height>16</height>
-            </size>
-           </property>
+        <widget class="QgsMapLayerComboBox" name="mcda_map_layer_cmb_bx_env">
+         <property name="iconSize">
+          <size>
+           <width>16</width>
+           <height>16</height>
+          </size>
+         </property>
+        </widget>
        </item>
        <item row="2" column="2">
-        <widget class="QgsMapLayerComboBox" name="mcda_map_layer_cmb_bx_econ"/>
-           <property name="iconSize">
-            <size>
-             <width>16</width>
-             <height>16</height>
-            </size>
-           </property>
+        <widget class="QgsMapLayerComboBox" name="mcda_map_layer_cmb_bx_econ">
+         <property name="iconSize">
+          <size>
+           <width>16</width>
+           <height>16</height>
+          </size>
+         </property>
+        </widget>
        </item>
        <item row="3" column="2">
-        <widget class="QgsMapLayerComboBox" name="mcda_map_layer_cmb_bx_infra"/>
-           <property name="iconSize">
-            <size>
-             <width>16</width>
-             <height>16</height>
-            </size>
-           </property>
+        <widget class="QgsMapLayerComboBox" name="mcda_map_layer_cmb_bx_infra">
+         <property name="iconSize">
+          <size>
+           <width>16</width>
+           <height>16</height>
+          </size>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
