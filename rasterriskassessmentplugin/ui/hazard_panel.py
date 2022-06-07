@@ -128,8 +128,8 @@ class HazardRiskIndexPanel(BasePanel):
                 getattr(self.dlg, f"hri_raster_layer_dspnb_{layer_number}").value()
             )
         params["Weights"] = self.__normalize_weights(params["Weights"])
-        # use default 4326 for now
-        params["ProjectedReferenceSystem"] = 4326
+        # Use default 3857 for now (~1 meter around the equator)
+        params["ProjectedReferenceSystem"] = "EPSG:3857"
         params["Studyarea"] = self.dlg.hri_map_layer_cmb_bx_boundaries.currentLayer()
         params["Schools"] = self.dlg.hri_map_layer_cmb_bx_schools.currentLayer()
         params["HazardIndex"] = self.dlg.hri_save_hri_file_widget.filePath()
