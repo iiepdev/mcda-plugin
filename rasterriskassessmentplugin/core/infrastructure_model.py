@@ -135,7 +135,7 @@ class InfrastructureSuitability(BaseModel):
     ) -> Dict[str, Any]:
         # Use a multi-step feedback, so that individual child algorithm progress
         # reports are adjusted for the overall progress through the model
-        feedback = QgsProcessingMultiStepFeedback(7, feedback)
+        feedback = QgsProcessingMultiStepFeedback(6, feedback)
         self.feedback = feedback
         self.parameters = parameters
         self.context = context
@@ -171,12 +171,12 @@ class InfrastructureSuitability(BaseModel):
         if feedback.isCanceled():
             return {}
 
-        feedback.setCurrentStep(3)
-        # this will set sparsely populated to 0, urban to 1, non-populated to 0.
-        # Is this intentional? I thought 0 is not part of the index.
-        filled_population = self._fill_nodata(thresholded_population, 4)
-        if feedback.isCanceled():
-            return {}
+        # feedback.setCurrentStep(3)
+        # # this will set sparsely populated to 0, urban to 1, non-populated to 0.
+        # # Is this intentional? I thought 0 is not part of the index.
+        # filled_population = self._fill_nodata(thresholded_population, 4)
+        # if feedback.isCanceled():
+        #     return {}
 
         # TODO: Why do we need to fix area vector here? HRI didn't do that.
         # # Fix geometries
@@ -196,13 +196,13 @@ class InfrastructureSuitability(BaseModel):
         # if feedback.isCanceled():
         #     return {}
 
-        feedback.setCurrentStep(4)
+        feedback.setCurrentStep(3)
         # Rasterize (vector to raster)
         rasterized_schools = self._rasterize_vector(clipped_schools)
         if feedback.isCanceled():
             return {}
 
-        feedback.setCurrentStep(5)
+        feedback.setCurrentStep(4)
         # School proximity and classification
         school_classification = self._classify_by_distance(
             rasterized_schools,
@@ -215,134 +215,50 @@ class InfrastructureSuitability(BaseModel):
         if feedback.isCanceled():
             return {}
 
-        feedback.setCurrentStep(6)
+        feedback.setCurrentStep(5)
         sum = self._merge_layers(
-            [school_classification, filled_population],
+            [school_classification, thresholded_population],
             [self.parameters["SchoolWeight"], self.parameters["PopWeight"]],
+            write_to_layer=self.parameters["InfrastructureIndex"],
         )
         return {"InfrastructureIndex": sum}
-        # Merge
-        # alg_params = {
-        #     "DATA_TYPE": 5,
-        #     "EXTRA": "",
-        #     "INPUT": QgsExpression(
-        #         "array( @School_classification_OUTPUT ,  @Clip_raster_by_mask_layer_OUTPUT  )"  # noqa
-        #     ).evaluate(),
-        #     "NODATA_INPUT": None,
-        #     "NODATA_OUTPUT": None,
-        #     "OPTIONS": "",
-        #     "PCT": False,
-        #     "SEPARATE": True,
-        #     "OUTPUT": QgsProcessing.TEMPORARY_OUTPUT,
-        # }
-        # outputs["Merge"] = processing.run(
-        #     "gdal:merge",
-        #     alg_params,
-        #     context=context,
-        #     feedback=feedback,
-        #     is_child_algorithm=True,
-        # )
-        # if feedback.isCanceled():
-        #     return {}
-
-        # # Raster calculator
-        # alg_params = {
-        #     "BAND_A": 1,
-        #     "BAND_B": 2,
-        #     "BAND_C": None,
-        #     "BAND_D": None,
-        #     "BAND_E": None,
-        #     "BAND_F": None,
-        #     "EXTRA": "",
-        #     "FORMULA": QgsExpression(
-        #         "concat('A*', to_string(@WeightforRoads) ,' + B*', to_string(@WeightforPopulation) )"  # noqa
-        #     ).evaluate(),
-        #     "INPUT_A": outputs["Merge"]["OUTPUT"],
-        #     "INPUT_B": outputs["Merge"]["OUTPUT"],
-        #     "INPUT_C": None,
-        #     "INPUT_D": None,
-        #     "INPUT_E": None,
-        #     "INPUT_F": None,
-        #     "NO_DATA": None,
-        #     "OPTIONS": "",
-        #     "RTYPE": 5,
-        #     "OUTPUT": QgsProcessing.TEMPORARY_OUTPUT,
-        # }
-        # outputs["RasterCalculator"] = processing.run(
-        #     "gdal:rastercalculator",
-        #     alg_params,
-        #     context=context,
-        #     feedback=feedback,
-        #     is_child_algorithm=True,
-        # )
-
-        # feedback.setCurrentStep(11)
-        # if feedback.isCanceled():
-        #     return {}
-
-        # Clip raster by mask layer
-        # alg_params = {
-        #     "ALPHA_BAND": False,
-        #     "CROP_TO_CUTLINE": True,
-        #     "DATA_TYPE": 0,
-        #     "EXTRA": "",
-        #     "INPUT": outputs["RasterCalculator"]["OUTPUT"],
-        #     "KEEP_RESOLUTION": False,
-        #     "MASK": outputs["ReprojectSiteArea"]["OUTPUT"],
-        #     "MULTITHREADING": False,
-        #     "NODATA": None,
-        #     "OPTIONS": "",
-        #     "SET_RESOLUTION": False,
-        #     "SOURCE_CRS": None,
-        #     "TARGET_CRS": parameters["CRS"],
-        #     "X_RESOLUTION": None,
-        #     "Y_RESOLUTION": None,
-        #     "OUTPUT": parameters["SocialSuitability"],
-        # }
-        # outputs["ClipRasterByMaskLayer"] = processing.run(
-        #     "gdal:cliprasterbymasklayer",
-        #     alg_params,
-        #     context=context,
-        #     feedback=feedback,
-        #     is_child_algorithm=True,
-        # )
-        # results["SocialSuitability"] = outputs["ClipRasterByMaskLayer"]["OUTPUT"]
-        # return results
 
     def _classify_by_threshold(
         self, input: QgsRasterLayer, threshold: int, invert: bool = False
     ) -> QgsRasterLayer:
         """
-        Classify raster to 1-bit by threshold value
+        Classify raster to suitable (1) or unsuitable (4) by threshold value.
         """
+        # returns 0 (below 100) or 1 (above 100). However, nodata values will be
+        # set to default 8bit nodata, i.e. 255!
+        # vs. original algorithm had rtype=4 (Int32), which has nodata value -2147483647
         expression = f"A < {threshold}" if invert else f"A > {threshold}"
-        # TODO: ask if we really mean to map all zeros to four, so we will get 1 OR 4?
-        # Why don't we do it in the expression above, is the nodata solution below
-        # easier?
-        # a) This way, all non-inhabited and sparsely populated areas will get best
-        # index value (1).
-        # b) OR do we mean to set sparsely populated to 1 and BOTH non-inhabited
-        # (no-data) AND densely populated to 4?
+        # invert: False returns 0 (below 100) or 1 (above 100) or 4 (zero density)
+        # invert: True returns 0 (above 100) or 1 (below 100) or 4 (zero density)
+        # 0 will always be the best, i.e. the result is opposite to that intended!!
+        # Nodata will always be the worst.
         alg_params = {
             "BAND_A": 1,
             "EXTRA": "",
             "FORMULA": expression,
             "INPUT_A": input,
-            "NO_DATA": None,  # OR 0?
-            # Current None-setting will result in three index values (0, 1 and 4)
+            "NO_DATA": 0,
+            # None-setting will result in three index values (0, 1 and 4)
             # after setting nodata to 4 in next step.
             # Is this intentional??
             "OPTIONS": "",
             "RTYPE": 0,  # We don't want a huge 32bit geotiff
             "OUTPUT": QgsProcessing.TEMPORARY_OUTPUT,
         }
-        return processing.run(
+        thresholded = processing.run(
             "gdal:rastercalculator",
             alg_params,
             context=self.context,
             feedback=self.feedback,
             is_child_algorithm=True,
         )["OUTPUT"]
+        filled_and_thresholded = self._fill_nodata(thresholded, 4)
+        return filled_and_thresholded
 
     def _fill_nodata(self, input: QgsRasterLayer, value: int) -> QgsRasterLayer:
         """

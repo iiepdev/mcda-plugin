@@ -1,8 +1,11 @@
 import logging
 from typing import Any, Dict, Optional
 
-from qgis.core import (  # QgsLayerTreeLayer,; QgsProject,; QgsRasterLayer,
+from qgis.core import (
+    QgsLayerTreeLayer,
     QgsMapLayerProxyModel,
+    QgsProject,
+    QgsRasterLayer,
     QgsVectorLayer,
 )
 from qgis.gui import QgsFileWidget
@@ -91,14 +94,11 @@ class InfrastructurePanel(BasePanel):
         params[
             "Newschoolsshouldbelocatedfurtherfromexistingschoolsratherthanclosetothem"
         ] = (self.dlg.infra_location_combo_box.currentIndex() == 0)
-        # Use default 3857 for now (~1 meter around the equator)
+        # Use default 3857 until we have crs selection (~1 meter around the equator)
         params["ProjectedReferenceSystem"] = "EPSG:3857"
         params["SchoolWeight"] = self.dlg.infra_dbl_spn_bx_school_weight.value() / 100
         params["PopWeight"] = self.dlg.infra_dbl_spn_bx_pop_weight.value() / 100
-        # params["HazardIndex"] = self.dlg.hri_save_hri_file_widget.filePath()
-        # params[
-        #     "HazardIndexSchools"
-        # ] = self.dlg.hri_save_hri_schools_file_widget.filePath()
+        params["InfrastructureIndex"] = self.dlg.infra_file_wdgt_save_output.filePath()
         LOGGER.info(params)
         return params
 
@@ -106,31 +106,13 @@ class InfrastructurePanel(BasePanel):
         """
         Display result layers in current QGIS project.
         """
-        pass
-        # LOGGER.info("got results")
-        # LOGGER.info(results)
-        # if successful:
-        #     # the raster layer will always be a tiff file (temporary or permanent)
-        #     self.hri_result = QgsRasterLayer(results["HazardIndex"], "Hazard index")
-        #     if results["HazardIndexSchools"]:
-        #         # if result path was not set, the vector layer may only be in memory
-        #         if self.params["HazardIndexSchools"]:
-        #             self.hri_result_schools = QgsVectorLayer(
-        #                 results["HazardIndexSchools"], "Hazard index - schools", "ogr"
-        #             )
-        #         else:
-        #             # Aha! Child algorithm results won't actually be passed on:
-        #             # https://gis.stackexchange.com/questions/361353/store-result-of-a-processing-algorithm-as-a-layer-in-qgis-python-script  # noqa
-        #             # If a vector layer is only in memory, we will have to actually dig  # noqa
-        #             # it up from the processing context to pass it on.
-        #             self.hri_result_schools = self.context.takeResultLayer(
-        #                 results["HazardIndexSchools"]
-        #             )
-        #     else:
-        #         self.hri_result_schools = None
-        #     QgsProject.instance().addMapLayer(self.hri_result, False)
-        #     root = QgsProject.instance().layerTreeRoot()
-        #     root.insertChildNode(0, QgsLayerTreeLayer(self.hri_result))
-        #     if self.hri_result_schools:
-        #         QgsProject.instance().addMapLayer(self.hri_result_schools, False)
-        #         root.insertChildNode(0, QgsLayerTreeLayer(self.hri_result_schools))
+        LOGGER.info("got results")
+        LOGGER.info(results)
+        if successful:
+            # the raster layer will always be a tiff file (temporary or permanent)
+            self.infra_result = QgsRasterLayer(
+                results["InfrastructureIndex"], "Infrastructure index"
+            )
+            QgsProject.instance().addMapLayer(self.infra_result, False)
+            root = QgsProject.instance().layerTreeRoot()
+            root.insertChildNode(0, QgsLayerTreeLayer(self.infra_result))

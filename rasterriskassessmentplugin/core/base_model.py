@@ -62,7 +62,7 @@ class BaseModel(QgsProcessingAlgorithm):
         )["OUTPUT"]
 
     def _clip_raster_to_studyarea(
-        self, input: QgsRasterLayer, write_to_layer: Optional[QgsRasterLayer] = None
+        self, input: QgsRasterLayer, write_to_layer: Optional[str] = None
     ) -> QgsRasterLayer:
         """
         Clip raster layer to algorithm study area.
@@ -149,7 +149,10 @@ class BaseModel(QgsProcessingAlgorithm):
         )["OUTPUT"]
 
     def _merge_layers(
-        self, layers: List[QgsRasterLayer], weights: List[float]
+        self,
+        layers: List[QgsRasterLayer],
+        weights: List[float],
+        write_to_layer: Optional[str] = None,
     ) -> QgsRasterLayer:
         """
         Merge raster layers together and calculate their weighted sum. Note
@@ -197,7 +200,9 @@ class BaseModel(QgsProcessingAlgorithm):
             "NO_DATA": None,
             "OPTIONS": "hideNoData",
             "RTYPE": 5,
-            "OUTPUT": QgsProcessing.TEMPORARY_OUTPUT,
+            "OUTPUT": write_to_layer
+            if write_to_layer
+            else QgsProcessing.TEMPORARY_OUTPUT,
         }
         return processing.run(
             "gdal:rastercalculator",
@@ -242,7 +247,7 @@ class BaseModel(QgsProcessingAlgorithm):
             "INIT": None,
             "INPUT": input_projected,
             "INVERT": False,
-            "NODATA": 0,
+            "NODATA": 0,  # Zero (no schools in pixel) must be nodata in our result!
             "OPTIONS": "",
             "UNITS": 1,  # 100x100 meter resolution with ideal PRS
             "USE_Z": False,
@@ -328,7 +333,7 @@ class BaseModel(QgsProcessingAlgorithm):
             "EXTRA": "",
             "FORMULA": expression,
             "INPUT_A": proximity_layer,
-            "NO_DATA": None,
+            "NO_DATA": None,  # The result will not have nodata pixels
             "OPTIONS": "",
             "RTYPE": 4,
             "OUTPUT": QgsProcessing.TEMPORARY_OUTPUT,
