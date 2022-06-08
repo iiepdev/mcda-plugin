@@ -165,7 +165,7 @@ class InfrastructureSuitability(BaseModel):
         # density to 1-bit bitmap (plus nodata, so we'll use 8bit for now)
         thresholded_population = self._classify_by_threshold(
             projected_population,
-            100,
+            parameters["PopulationThreshold"],
             parameters["Newschoolsshouldideallybelocatedinsparselypopulatedareas"],
         )
         if feedback.isCanceled():

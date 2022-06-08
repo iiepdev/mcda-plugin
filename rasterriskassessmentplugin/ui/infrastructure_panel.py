@@ -2,13 +2,14 @@ import logging
 from typing import Any, Dict, Optional
 
 from qgis.core import (
+    QgsCoordinateReferenceSystem,
     QgsLayerTreeLayer,
     QgsMapLayerProxyModel,
     QgsProject,
     QgsRasterLayer,
     QgsVectorLayer,
 )
-from qgis.gui import QgsFileWidget
+from qgis.gui import QgsFileWidget, QgsProjectionSelectionWidget
 from qgis.PyQt.QtWidgets import QDialog
 
 from ..core.infrastructure_model import InfrastructureSuitability
@@ -17,6 +18,18 @@ from ..qgis_plugin_tools.tools.resources import plugin_name
 from .base_panel import BasePanel
 
 LOGGER = logging.getLogger(plugin_name())
+
+
+# class MetricCrsOnlyProjectionSelectionWidget(QgsProjectionSelectionWidget):
+#     def selectCrs(self):  # noqa
+#         dialog = QgsProjectionSelectionDialog(self)
+#         dialog.setOgcWmsCrsFilter(self._metric_crs_list)
+#         if dialog.exec():
+#             self.setValue(dialog.crs().authid())
+
+#     @property
+#     def _metric_crs_list(self):
+#         return ["EPSG:3857", ]
 
 
 class InfrastructurePanel(BasePanel):
@@ -40,12 +53,15 @@ class InfrastructurePanel(BasePanel):
         )
         self.dlg.infra_map_layer_cmb_bx_boundaries.setShowCrs(True)
         self.dlg.infra_map_layer_cmb_bx_schools.setShowCrs(True)
-        self.dlg.infra_map_layer_cmb_bx_schools.layerChanged.connect(
-            lambda layer: self.dlg.infra_fld_cmb_bx_school_var.setLayer(layer)
+        self.dlg.infra_crs_widget.setShowAccuracyWarnings(True)
+        self.dlg.infra_crs_widget.setOptionVisible(
+            QgsProjectionSelectionWidget.CrsOption.LayerCrs, visible=True
         )
-        self.dlg.infra_fld_cmb_bx_school_var.setLayer(
-            self.dlg.infra_map_layer_cmb_bx_schools.currentLayer()
-        )
+        # would require a whole custom dialog to filter the crs choices :(
+        # self.dlg.infra_crs_widget.dialog.setOgcWmsCrsFilter(self._metric_crs_list)
+        # Use default 3857 until the user selects a better one
+        # (~1 meter around the equator)
+        self.dlg.infra_crs_widget.setCrs(QgsCoordinateReferenceSystem("EPSG:3857"))
 
         self.dlg.infra_dbl_spn_bx_min_dist.setMinimum(0)
         self.dlg.infra_dbl_spn_bx_min_dist.setMaximum(100)
@@ -59,6 +75,10 @@ class InfrastructurePanel(BasePanel):
         self.dlg.infra_dbl_spn_bx_pop_weight.setMaximum(100)
         self.dlg.infra_dbl_spn_bx_pop_weight.setClearValue(50)
         self.dlg.infra_dbl_spn_bx_pop_weight.clear()
+        self.dlg.infra_spinbox_pop_threshold.setMinimum(0)
+        self.dlg.infra_spinbox_pop_threshold.setMaximum(1000)
+        self.dlg.infra_spinbox_pop_threshold.setClearValue(100)
+        self.dlg.infra_spinbox_pop_threshold.clear()
         self.dlg.infra_dbl_spn_bx_school_weight.setMinimum(0)
         self.dlg.infra_dbl_spn_bx_school_weight.setMaximum(100)
         self.dlg.infra_dbl_spn_bx_school_weight.setClearValue(50)
@@ -76,9 +96,9 @@ class InfrastructurePanel(BasePanel):
         params: Dict[str, Any] = {}
         params["Studyarea"] = self.dlg.infra_map_layer_cmb_bx_boundaries.currentLayer()
         params["Schools"] = self.dlg.infra_map_layer_cmb_bx_schools.currentLayer()
-        params[
-            "Identifyingschoolvariable"
-        ] = self.dlg.infra_fld_cmb_bx_school_var.currentField()
+        # params[
+        #     "Identifyingschoolvariable"
+        # ] = self.dlg.infra_fld_cmb_bx_school_var.currentField()
         params[
             "PopulationDensity"
         ] = self.dlg.infra_map_layer_cmb_bx_pop_dens.currentLayer()
@@ -88,14 +108,14 @@ class InfrastructurePanel(BasePanel):
         params["Minimumsuitabledistancetoanotherschool"] = (
             self.dlg.infra_dbl_spn_bx_min_dist.value() * 1000
         )
+        params["PopulationThreshold"] = self.dlg.infra_spinbox_pop_threshold.value()
         params["Newschoolsshouldideallybelocatedinsparselypopulatedareas"] = (
             self.dlg.infra_ideal_location_combo_box.currentIndex() != 0
         )
         params[
             "Newschoolsshouldbelocatedfurtherfromexistingschoolsratherthanclosetothem"
         ] = (self.dlg.infra_location_combo_box.currentIndex() == 0)
-        # Use default 3857 until we have crs selection (~1 meter around the equator)
-        params["ProjectedReferenceSystem"] = "EPSG:3857"
+        params["ProjectedReferenceSystem"] = self.dlg.infra_crs_widget.crs()
         params["SchoolWeight"] = self.dlg.infra_dbl_spn_bx_school_weight.value() / 100
         params["PopWeight"] = self.dlg.infra_dbl_spn_bx_pop_weight.value() / 100
         params["InfrastructureIndex"] = self.dlg.infra_file_wdgt_save_output.filePath()

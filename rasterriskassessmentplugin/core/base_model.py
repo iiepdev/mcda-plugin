@@ -236,13 +236,10 @@ class BaseModel(QgsProcessingAlgorithm):
             f"{extent.xMinimum()},{extent.xMaximum()},{extent.yMinimum()},{extent.yMaximum()}"  # noqa
         )
         alg_params = {
-            "BURN": 0,
+            "BURN": 1,  # Just burn any non-zero value
             "DATA_TYPE": 5,
             "EXTENT": f"{extent.xMinimum()},{extent.xMaximum()},{extent.yMinimum()},{extent.yMaximum()}",  # noqa
             "EXTRA": "",
-            "FIELD": self.parameters[
-                "Identifyingschoolvariable"
-            ],  # why do we want to save the school id??
             "HEIGHT": 100,  # 100x100 meter resolution with ideal PRS
             "INIT": None,
             "INPUT": input_projected,

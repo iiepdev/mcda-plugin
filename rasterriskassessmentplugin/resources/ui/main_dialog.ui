@@ -190,27 +190,8 @@
          <property name="verticalSpacing">
           <number>10</number>
          </property>
-         <item row="0" column="2">
-          <widget class="QCheckBox" name="hri_chck_bx_use_selected_boundary">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string>Use only selected features</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="1">
           <widget class="QgsMapLayerComboBox" name="hri_map_layer_cmb_bx_boundaries">
-           <property name="iconSize">
-            <size>
-             <width>16</width>
-             <height>16</height>
-            </size>
-           </property>
            <property name="sizePolicy">
             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -223,21 +204,14 @@
              <height>0</height>
             </size>
            </property>
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
+            </size>
+           </property>
            <property name="allowEmptyLayer" stdset="0">
             <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="2">
-          <widget class="QCheckBox" name="hri_chck_bx_use_selected_schools">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string>Use only selected features</string>
            </property>
           </widget>
          </item>
@@ -256,12 +230,6 @@
          </item>
          <item row="1" column="1">
           <widget class="QgsMapLayerComboBox" name="hri_map_layer_cmb_bx_schools">
-           <property name="iconSize">
-            <size>
-             <width>16</width>
-             <height>16</height>
-            </size>
-           </property>
            <property name="sizePolicy">
             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -272,6 +240,12 @@
             <size>
              <width>240</width>
              <height>0</height>
+            </size>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
             </size>
            </property>
            <property name="allowEmptyLayer" stdset="0">
@@ -385,12 +359,6 @@
          </item>
          <item row="1" column="1">
           <widget class="QgsMapLayerComboBox" name="hri_raster_layer_cb_1">
-           <property name="iconSize">
-            <size>
-             <width>16</width>
-             <height>16</height>
-            </size>
-           </property>
            <property name="sizePolicy">
             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -401,6 +369,12 @@
             <size>
              <width>390</width>
              <height>0</height>
+            </size>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
             </size>
            </property>
           </widget>
@@ -448,12 +422,6 @@
          </item>
          <item row="2" column="1">
           <widget class="QgsMapLayerComboBox" name="hri_raster_layer_cb_2">
-           <property name="iconSize">
-            <size>
-             <width>16</width>
-             <height>16</height>
-            </size>
-           </property>
            <property name="sizePolicy">
             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -464,6 +432,12 @@
             <size>
              <width>390</width>
              <height>0</height>
+            </size>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
             </size>
            </property>
           </widget>
@@ -511,12 +485,6 @@
          </item>
          <item row="3" column="1">
           <widget class="QgsMapLayerComboBox" name="hri_raster_layer_cb_3">
-           <property name="iconSize">
-            <size>
-             <width>16</width>
-             <height>16</height>
-            </size>
-           </property>
            <property name="sizePolicy">
             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -527,6 +495,12 @@
             <size>
              <width>390</width>
              <height>0</height>
+            </size>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
             </size>
            </property>
           </widget>
@@ -574,12 +548,6 @@
          </item>
          <item row="4" column="1">
           <widget class="QgsMapLayerComboBox" name="hri_raster_layer_cb_4">
-           <property name="iconSize">
-            <size>
-             <width>16</width>
-             <height>16</height>
-            </size>
-           </property>
            <property name="sizePolicy">
             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -590,6 +558,12 @@
             <size>
              <width>390</width>
              <height>0</height>
+            </size>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
             </size>
            </property>
           </widget>
@@ -637,12 +611,6 @@
          </item>
          <item row="5" column="1">
           <widget class="QgsMapLayerComboBox" name="hri_raster_layer_cb_5">
-           <property name="iconSize">
-            <size>
-             <width>16</width>
-             <height>16</height>
-            </size>
-           </property>
            <property name="sizePolicy">
             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -653,6 +621,12 @@
             <size>
              <width>390</width>
              <height>0</height>
+            </size>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
             </size>
            </property>
           </widget>
@@ -700,12 +674,6 @@
          </item>
          <item row="6" column="1">
           <widget class="QgsMapLayerComboBox" name="hri_raster_layer_cb_6">
-           <property name="iconSize">
-            <size>
-             <width>16</width>
-             <height>16</height>
-            </size>
-           </property>
            <property name="sizePolicy">
             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -716,6 +684,12 @@
             <size>
              <width>390</width>
              <height>0</height>
+            </size>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
             </size>
            </property>
           </widget>
@@ -903,7 +877,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>170</height>
+         <height>130</height>
         </size>
        </property>
        <property name="title">
@@ -915,7 +889,7 @@
           <x>10</x>
           <y>25</y>
           <width>541</width>
-          <height>141</height>
+          <height>104</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout">
@@ -932,65 +906,10 @@
            </property>
           </widget>
          </item>
-         <item row="2" column="1">
-          <widget class="QgsFieldComboBox" name="infra_fld_cmb_bx_school_var">
-           <property name="iconSize">
-            <size>
-             <width>16</width>
-             <height>16</height>
-            </size>
-           </property>
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>110</width>
-             <height>0</height>
-            </size>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="0">
           <widget class="QLabel" name="label_pointlayer_2">
            <property name="text">
             <string>Boundaries: </string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="2">
-          <widget class="QCheckBox" name="infra_chck_bx_use_selected_schools">
-           <property name="minimumSize">
-            <size>
-             <width>184</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Use only selected features</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
-          <widget class="QCheckBox" name="infra_chck_bx_use_selected_boundaries">
-           <property name="minimumSize">
-            <size>
-             <width>184</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Use only selected features</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="label_15">
-           <property name="text">
-            <string>Identifying school variable: </string>
            </property>
           </widget>
          </item>
@@ -1003,12 +922,6 @@
          </item>
          <item row="1" column="1">
           <widget class="QgsMapLayerComboBox" name="infra_map_layer_cmb_bx_schools">
-           <property name="iconSize">
-            <size>
-             <width>16</width>
-             <height>16</height>
-            </size>
-           </property>
            <property name="sizePolicy">
             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -1019,18 +932,18 @@
             <size>
              <width>110</width>
              <height>0</height>
+            </size>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
             </size>
            </property>
           </widget>
          </item>
          <item row="0" column="1">
           <widget class="QgsMapLayerComboBox" name="infra_map_layer_cmb_bx_boundaries">
-           <property name="iconSize">
-            <size>
-             <width>16</width>
-             <height>16</height>
-            </size>
-           </property>
            <property name="sizePolicy">
             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -1041,18 +954,18 @@
             <size>
              <width>110</width>
              <height>0</height>
+            </size>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
             </size>
            </property>
           </widget>
          </item>
          <item row="3" column="1">
           <widget class="QgsMapLayerComboBox" name="infra_map_layer_cmb_bx_pop_dens">
-           <property name="iconSize">
-            <size>
-             <width>16</width>
-             <height>16</height>
-            </size>
-           </property>
            <property name="sizePolicy">
             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -1063,6 +976,12 @@
             <size>
              <width>110</width>
              <height>0</height>
+            </size>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
             </size>
            </property>
           </widget>
@@ -1082,7 +1001,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>230</height>
+         <height>300</height>
         </size>
        </property>
        <property name="title">
@@ -1094,32 +1013,66 @@
           <x>10</x>
           <y>30</y>
           <width>541</width>
-          <height>188</height>
+          <height>260</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="infra_grid_options">
-         <item row="3" column="0">
-          <widget class="QLabel" name="label_22">
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_infra_crs">
            <property name="text">
-            <string>New schools should ideally located in:</string>
+            <string>Local projected coordinate system:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QgsProjectionSelectionWidget" name="infra_crs_widget" native="true">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
            </property>
           </widget>
          </item>
          <item row="4" column="0">
+          <widget class="QLabel" name="label_infra_pop_threshold">
+           <property name="text">
+            <string>Lower limit of dense population:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QgsDoubleSpinBox" name="infra_spinbox_pop_threshold">
+           <property name="suffix">
+            <string> people/sq. km.</string>
+           </property>
+           <property name="decimals">
+            <number>0</number>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0">
+          <widget class="QLabel" name="label_22">
+           <property name="text">
+            <string>New schools should ideally be located in:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="0">
           <widget class="QLabel" name="label_20">
            <property name="text">
             <string>Weight for schools:</string>
            </property>
           </widget>
          </item>
-         <item row="2" column="0">
+         <item row="3" column="0">
           <widget class="QLabel" name="label_19">
            <property name="text">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;New schools should be located: &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
           </widget>
          </item>
-         <item row="1" column="1">
+         <item row="2" column="1">
           <widget class="QgsDoubleSpinBox" name="infra_dbl_spn_bx_min_dist">
            <property name="maximumSize">
             <size>
@@ -1132,7 +1085,7 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
+         <item row="1" column="1">
           <widget class="QgsDoubleSpinBox" name="infra_dbl_spn_bx_max_dist">
            <property name="maximumSize">
             <size>
@@ -1148,14 +1101,14 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="0">
+         <item row="2" column="0">
           <widget class="QLabel" name="label_18">
            <property name="text">
             <string>Min.  suitable distance to another school: </string>
            </property>
           </widget>
          </item>
-         <item row="4" column="1">
+         <item row="6" column="1">
           <widget class="QgsDoubleSpinBox" name="infra_dbl_spn_bx_school_weight">
            <property name="maximumSize">
             <size>
@@ -1171,21 +1124,21 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="0">
+         <item row="1" column="0">
           <widget class="QLabel" name="label_16">
            <property name="text">
             <string>Max.  suitable distance to another school: </string>
            </property>
           </widget>
          </item>
-         <item row="5" column="0">
+         <item row="7" column="0">
           <widget class="QLabel" name="label_21">
            <property name="text">
             <string>Weight for population:</string>
            </property>
           </widget>
          </item>
-         <item row="5" column="1">
+         <item row="7" column="1">
           <widget class="QgsDoubleSpinBox" name="infra_dbl_spn_bx_pop_weight">
            <property name="maximumSize">
             <size>
@@ -1201,7 +1154,7 @@
            </property>
           </widget>
          </item>
-         <item row="2" column="1">
+         <item row="3" column="1">
           <widget class="QComboBox" name="infra_location_combo_box">
            <property name="sizePolicy">
             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
@@ -1221,7 +1174,7 @@
            </item>
           </widget>
          </item>
-         <item row="3" column="1">
+         <item row="5" column="1">
           <widget class="QComboBox" name="infra_ideal_location_combo_box">
            <property name="sizePolicy">
             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
@@ -2653,11 +2606,6 @@
    <header>qgsdoublespinbox.h</header>
   </customwidget>
   <customwidget>
-   <class>QgsFieldComboBox</class>
-   <extends>QComboBox</extends>
-   <header>qgsfieldcombobox.h</header>
-  </customwidget>
-  <customwidget>
    <class>QgsFileWidget</class>
    <extends>QWidget</extends>
    <header>qgsfilewidget.h</header>
@@ -2671,6 +2619,11 @@
    <class>QgsSpinBox</class>
    <extends>QSpinBox</extends>
    <header>qgsspinbox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QgsProjectionSelectionWidget</class>
+   <extends>QWidget</extends>
+   <header>qgsprojectionselectionwidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
