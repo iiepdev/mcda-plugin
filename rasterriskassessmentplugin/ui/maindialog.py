@@ -31,12 +31,12 @@ class MainDialog(QDialog, FORM_CLASS):  # type: ignore
         self._set_window_location()
         self.panels = {
             Panels.HazardRiskIndex: HazardRiskIndexPanel(self),
-            Panels.About: AboutPanel(self),
             Panels.Infrastructure: InfrastructurePanel(self),
             Panels.EconomicSuitability: EconomicSuitabilityPanel(self),
             Panels.EnvironmentalSuitability: EnvironmentalSuitabilityPanel(self),
             Panels.MultiCriteriaSuitability: MultiCriteriaSuitabilityPanel(self),
             Panels.Help: HelpPanel(self),
+            Panels.About: AboutPanel(self),
         }
         for i, panel_enum in enumerate(self.panels):
             item = self.menu_widget.item(i)

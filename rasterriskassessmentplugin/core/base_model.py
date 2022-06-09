@@ -27,6 +27,8 @@ class BaseModel(QgsProcessingAlgorithm):
     def __init__(self) -> None:
         super().__init__()
         self.parameters: Dict[str, Any] = {}
+        self.studyarea: Optional[QgsVectorLayer] = None
+        self.projected_reference_system: str = "EPSG:3857"
 
     def initAlgorithm(self, configuration: Dict[str, Any] = ...) -> None:  # noqa: N802
         """
@@ -60,10 +62,27 @@ class BaseModel(QgsProcessingAlgorithm):
         self.feedback = QgsProcessingMultiStepFeedback(steps, feedback)
         self.parameters = parameters
         self.context = context
+        if parameters["ProjectedReferenceSystem"]:
+            self.projected_reference_system = parameters["ProjectedReferenceSystem"]
+        if parameters["Studyarea"]:
+            # In case there are problems (self-intersections) in the area vector, we
+            # want to fix them before proceeding.
+            self.studyarea = self._fix_vector_layer(parameters["Studyarea"])
+            # Also indexing the study area may help in speeding up??
+            # self.studyarea = self._create_spatial_index(self.studyarea)
 
-        # In case there are problems (self-intersections) in the area vector, we
-        # want to fix them before proceeding.
-        self.studyarea = self._fix_vector_layer(parameters["Studyarea"])
+    def _create_spatial_index(self, input: QgsVectorLayer) -> QgsVectorLayer:
+        """
+        Add spatial index to input layer
+        """
+        alg_params = {"INPUT": input}
+        return processing.run(
+            "native:createspatialindex",
+            alg_params,
+            context=self.context,
+            feedback=self.feedback,
+            is_child_algorithm=True,
+        )["OUTPUT"]
 
     def _fix_vector_layer(self, input: QgsVectorLayer) -> QgsVectorLayer:
         """
@@ -171,7 +190,7 @@ class BaseModel(QgsProcessingAlgorithm):
             "OPTIONS": "",
             "RESAMPLING": 0,
             "SOURCE_CRS": None,
-            "TARGET_CRS": self.parameters["ProjectedReferenceSystem"],
+            "TARGET_CRS": crs,
             "TARGET_EXTENT": None,
             "TARGET_EXTENT_CRS": None,
             "TARGET_RESOLUTION": None,
@@ -253,7 +272,7 @@ class BaseModel(QgsProcessingAlgorithm):
         """
         Rasterize input layer within the model study area.
 
-        The vector rasterization assumes the coordinate system will have units
+        The vector rasterization assumes projected_reference_system will have units
         of approximately one meter. The more the coordinate system unit differs
         from meter, the larger the error in all distances.
 
@@ -262,10 +281,10 @@ class BaseModel(QgsProcessingAlgorithm):
         equator. Similarly, the extent has to be calculated in the same crs.
         """
         area_projected = self._reproject_vector_to_crs(
-            self.studyarea, self.parameters["ProjectedReferenceSystem"]
+            self.studyarea, self.projected_reference_system
         )
         input_projected = self._reproject_vector_to_crs(
-            input, self.parameters["ProjectedReferenceSystem"]
+            input, self.projected_reference_system
         )
         extent = area_projected.extent()
         self.feedback.pushInfo(str(extent.area()))

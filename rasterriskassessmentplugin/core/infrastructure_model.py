@@ -188,9 +188,9 @@ class InfrastructureSuitability(BaseModel):
         sum = self._merge_layers(
             [school_classification, thresholded_population],
             [self.parameters["SchoolWeight"], self.parameters["PopWeight"]],
-            write_to_layer=self.parameters["InfrastructureIndex"],
+            write_to_layer=self.parameters["InfrastructureSuitability"],
         )
-        return {"InfrastructureIndex": sum}
+        return {"InfrastructureSuitability": sum}
 
     def _classify_by_threshold(
         self, input: QgsRasterLayer, threshold: int, invert: bool = False
