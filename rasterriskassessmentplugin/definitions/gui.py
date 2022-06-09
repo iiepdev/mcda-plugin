@@ -10,13 +10,16 @@ from ..qgis_plugin_tools.tools.resources import resources_path
 class Panels(enum.Enum):
     """Panels in the Dialog"""
 
-    Infrastructure = {"icon": "/mIconPolygonLayer.svg"}
+    # Note that we cannot use the same icon twice!
+    # The icon serves as the enum here. Reusing an icon
+    # will redefine the enum, not create a new one.
     HazardRiskIndex = {"icon": "/mActionMapSettings.svg"}
-    EconomicSuitability = {"icon": "/mIconRaster.svg"}
+    Infrastructure = {"icon": "/mIconPolygonLayer.svg"}
+    EconomicSuitability = {"icon": "/mIconLineLayer.svg"}
     EnvironmentalSuitability = {"icon": "/mIconRaster.svg"}
     MultiCriteriaSuitability = {"icon": "/mActionShowRasterCalculator.png"}
     Help = {"icon": "/mActionHelpContents.svg"}
-    About = {"icon": "/mActionHelpContents.svg"}
+    About = {"icon": "/mIconInfo.svg"}
 
     @property
     def icon(self) -> QIcon:
