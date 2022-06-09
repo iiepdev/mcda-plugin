@@ -129,6 +129,13 @@ class BasePanel:
         # http://enki-editor.org/2014/08/23/Pyqt_mem_mgmt.html
         self.task = None
 
+    def _normalize_weights(self, weights: list) -> list:
+        """
+        Always sum weights to 1.
+        """
+        total = sum(weights)
+        return [value / total for value in weights]
+
     def _get_params(self) -> dict:
         """Get algorithm parameters from the UI."""
         raise QgsPluginNotImplementedException()
@@ -181,7 +188,7 @@ class BasePanel:
                 lambda successful: self.__btn_run.clicked.disconnect(self.__cancel_run)
             )
             self.task.executed.connect(self.__set_run_button)
-            # Subclass will display the results
+            # Display the results
             self.task.executed.connect(self._display_results)
             self.task.destroyed.connect(self.__delete_task)
             QgsApplication.taskManager().addTask(self.task)
