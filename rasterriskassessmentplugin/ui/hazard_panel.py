@@ -1,13 +1,7 @@
 import logging
 from typing import Any, Dict, Optional
 
-from qgis.core import (
-    QgsLayerTreeLayer,
-    QgsMapLayerProxyModel,
-    QgsProject,
-    QgsRasterLayer,
-    QgsVectorLayer,
-)
+from qgis.core import QgsMapLayerProxyModel, QgsRasterLayer, QgsVectorLayer
 from qgis.gui import QgsDoubleSpinBox, QgsFileWidget, QgsMapLayerComboBox
 from qgis.PyQt.QtWidgets import QDialog, QLabel
 
@@ -137,35 +131,3 @@ class HazardRiskIndexPanel(BasePanel):
             "HazardIndexSchools"
         ] = self.dlg.hri_save_hri_schools_file_widget.filePath()
         return params
-
-    def _display_results(self, successful: bool, results: Dict[str, Any]) -> None:
-        """
-        Display result layers in current QGIS project.
-        """
-        LOGGER.info("got results")
-        LOGGER.info(results)
-        if successful:
-            # the raster layer will always be a tiff file (temporary or permanent)
-            self.hri_result = QgsRasterLayer(results["HazardIndex"], "Hazard index")
-            if results["HazardIndexSchools"]:
-                # if result path was not set, the vector layer may only be in memory
-                if self.params["HazardIndexSchools"]:
-                    self.hri_result_schools = QgsVectorLayer(
-                        results["HazardIndexSchools"], "Hazard index - schools", "ogr"
-                    )
-                else:
-                    # Aha! Child algorithm results won't actually be passed on:
-                    # https://gis.stackexchange.com/questions/361353/store-result-of-a-processing-algorithm-as-a-layer-in-qgis-python-script
-                    # If a vector layer is only in memory, we will have to actually dig
-                    # it up from the processing context to pass it on.
-                    self.hri_result_schools = self.context.takeResultLayer(
-                        results["HazardIndexSchools"]
-                    )
-            else:
-                self.hri_result_schools = None
-            QgsProject.instance().addMapLayer(self.hri_result, False)
-            root = QgsProject.instance().layerTreeRoot()
-            root.insertChildNode(0, QgsLayerTreeLayer(self.hri_result))
-            if self.hri_result_schools:
-                QgsProject.instance().addMapLayer(self.hri_result_schools, False)
-                root.insertChildNode(0, QgsLayerTreeLayer(self.hri_result_schools))

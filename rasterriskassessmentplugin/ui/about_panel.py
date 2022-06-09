@@ -14,6 +14,7 @@ LOGGER = logging.getLogger(plugin_name())
 class AboutPanel(BasePanel):
     def __init__(self, dialog: QDialog) -> None:
         super().__init__(dialog)
+        self.name = "about"
         self.panel = Panels.About
 
     def setup_panel(self) -> None:

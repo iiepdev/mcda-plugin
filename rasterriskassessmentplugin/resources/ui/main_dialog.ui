@@ -1345,7 +1345,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>420</height>
+         <height>440</height>
         </size>
        </property>
        <property name="title">
@@ -1357,10 +1357,133 @@
           <x>10</x>
           <y>30</y>
           <width>541</width>
-          <height>381</height>
+          <height>400</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_20">
+         <item row="6" column="1">
+          <widget class="QComboBox" name="econ_cmb_bx_near_roads">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <item>
+            <property name="text">
+             <string>Further away from roads</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Closer to roads</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="8" column="1">
+          <layout class="QHBoxLayout" name="horizontalLayout_19">
+           <item>
+            <spacer name="horizontalSpacer_18">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QgsDoubleSpinBox" name="econ_dbl_spn_bx_water_min_dist">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="suffix">
+              <string> km</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="4" column="1">
+          <layout class="QHBoxLayout" name="horizontalLayout_17">
+           <item>
+            <spacer name="horizontalSpacer_16">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QgsDoubleSpinBox" name="econ_dbl_spn_bx_road_max_dist">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="suffix">
+              <string> km</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_82">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Roads</string>
+           </property>
+          </widget>
+         </item>
+         <item row="9" column="1">
+          <layout class="QHBoxLayout" name="horizontalLayout_20">
+           <item>
+            <spacer name="horizontalSpacer_19">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QgsDoubleSpinBox" name="econ_dbl_spn_bx_water_max_dist">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="suffix">
+              <string> km</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
          <item row="0" column="1">
           <widget class="QgsMapLayerComboBox" name="econ_map_layer_cmb_bx_boundary">
            <property name="iconSize">
@@ -1371,6 +1494,63 @@
            </property>
           </widget>
          </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="label_84">
+           <property name="text">
+            <string>Max. suitable distance to the road:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="11" column="1">
+          <widget class="QComboBox" name="econ_cmb_bx_near_water">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <item>
+            <property name="text">
+             <string>Further away from waterways</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Closer to waterways</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="7" column="0">
+          <widget class="QLabel" name="label_83">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Waterways</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_89">
+           <property name="text">
+            <string>Local projected coordinate system:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QgsProjectionSelectionWidget" name="econ_crs_widget" native="true">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+          </widget>
+         </item>
          <item row="0" column="0">
           <widget class="QLabel" name="label_78">
            <property name="text">
@@ -1378,7 +1558,85 @@
            </property>
           </widget>
          </item>
-         <item row="2" column="1">
+         <item row="5" column="0">
+          <widget class="QLabel" name="label_85">
+           <property name="text">
+            <string>Weight of the road sub-component:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="10" column="0">
+          <widget class="QLabel" name="label_86">
+           <property name="text">
+            <string>Weight of the waterway sub-component: </string>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="1">
+          <widget class="QgsMapLayerComboBox" name="econ_map_layer_cmb_bx_waterways">
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="10" column="1">
+          <layout class="QHBoxLayout" name="horizontalLayout_21">
+           <item>
+            <spacer name="horizontalSpacer_20">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QgsDoubleSpinBox" name="econ_dbl_spn_bx_water_weight">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="suffix">
+              <string> %</string>
+             </property>
+             <property name="decimals">
+              <number>1</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="11" column="0">
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>Locations that are more suitable: </string>
+           </property>
+          </widget>
+         </item>
+         <item row="8" column="0">
+          <widget class="QLabel" name="label_81">
+           <property name="text">
+            <string>Min. suitable distance to a waterway: </string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_80">
+           <property name="text">
+            <string>Min. suitable distance to the road: </string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
           <layout class="QHBoxLayout" name="horizontalLayout_2">
            <item>
             <spacer name="horizontalSpacer">
@@ -1408,34 +1666,21 @@
            </item>
           </layout>
          </item>
-         <item row="4" column="0">
-          <widget class="QLabel" name="label_85">
+         <item row="6" column="0">
+          <widget class="QLabel" name="label_88">
            <property name="text">
-            <string>Weight of the road sub-component:</string>
+            <string>Locations that are more suitable: </string>
            </property>
           </widget>
          </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="label_80">
+         <item row="9" column="0">
+          <widget class="QLabel" name="label_87">
            <property name="text">
-            <string>Min. suitable distance to the road: </string>
+            <string>Max. suitable distance to a waterway:</string>
            </property>
           </widget>
          </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_82">
-           <property name="font">
-            <font>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>Roads</string>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="1">
+         <item row="5" column="1">
           <layout class="QHBoxLayout" name="horizontalLayout_18">
            <item>
             <spacer name="horizontalSpacer_17">
@@ -1468,236 +1713,8 @@
            </item>
           </layout>
          </item>
-         <item row="3" column="0">
-          <widget class="QLabel" name="label_84">
-           <property name="text">
-            <string>Max. suitable distance to the road:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="1">
-          <layout class="QHBoxLayout" name="horizontalLayout_17">
-           <item>
-            <spacer name="horizontalSpacer_16">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="QgsDoubleSpinBox" name="econ_dbl_spn_bx_road_max_dist">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="suffix">
-              <string> km</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item row="1" column="1">
+         <item row="2" column="1">
           <widget class="QgsMapLayerComboBox" name="econ_map_layer_cmb_bx_roads">
-           <property name="iconSize">
-            <size>
-             <width>16</width>
-             <height>16</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="1">
-          <widget class="QComboBox" name="econ_cmb_bx_near_roads">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <item>
-            <property name="text">
-             <string>Further away from roads</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Closer to roads</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-         <item row="5" column="0">
-          <widget class="QLabel" name="label_88">
-           <property name="text">
-            <string>Locations that are more suitable: </string>
-           </property>
-          </widget>
-         </item>
-         <item row="8" column="0">
-          <widget class="QLabel" name="label_87">
-           <property name="text">
-            <string>Max. suitable distance to a waterway:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="8" column="1">
-          <layout class="QHBoxLayout" name="horizontalLayout_20">
-           <item>
-            <spacer name="horizontalSpacer_19">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="QgsDoubleSpinBox" name="econ_dbl_spn_bx_water_max_dist">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="suffix">
-              <string> km</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item row="7" column="0">
-          <widget class="QLabel" name="label_81">
-           <property name="text">
-            <string>Min. suitable distance to a waterway: </string>
-           </property>
-          </widget>
-         </item>
-         <item row="7" column="1">
-          <layout class="QHBoxLayout" name="horizontalLayout_19">
-           <item>
-            <spacer name="horizontalSpacer_18">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="QgsDoubleSpinBox" name="econ_dbl_spn_bx_water_min_dist">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="suffix">
-              <string> km</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item row="9" column="0">
-          <widget class="QLabel" name="label_86">
-           <property name="text">
-            <string>Weight of the waterway sub-component: </string>
-           </property>
-          </widget>
-         </item>
-         <item row="10" column="1">
-          <widget class="QComboBox" name="econ_cmb_bx_near_water">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <item>
-            <property name="text">
-             <string>Further away from waterways</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Closer to waterways</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-         <item row="10" column="0">
-          <widget class="QLabel" name="label">
-           <property name="text">
-            <string>Locations that are more suitable: </string>
-           </property>
-          </widget>
-         </item>
-         <item row="6" column="0">
-          <widget class="QLabel" name="label_83">
-           <property name="font">
-            <font>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>Waterways</string>
-           </property>
-          </widget>
-         </item>
-         <item row="9" column="1">
-          <layout class="QHBoxLayout" name="horizontalLayout_21">
-           <item>
-            <spacer name="horizontalSpacer_20">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="QgsDoubleSpinBox" name="econ_dbl_spn_bx_waterway_weight">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="suffix">
-              <string> %</string>
-             </property>
-             <property name="decimals">
-              <number>1</number>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item row="6" column="1">
-          <widget class="QgsMapLayerComboBox" name="econ_map_layer_cmb_bx_waterways">
            <property name="iconSize">
             <size>
              <width>16</width>

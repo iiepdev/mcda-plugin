@@ -1,17 +1,25 @@
 """Panel core base class."""
+import logging
 from typing import Any, Dict, Optional
 
 from qgis.core import (
     QgsApplication,
+    QgsLayerTreeLayer,
     QgsProcessingAlgorithm,
     QgsProcessingAlgRunnerTask,
     QgsProcessingContext,
+    QgsProject,
+    QgsRasterLayer,
+    QgsVectorLayer,
 )
 from qgis.PyQt.QtWidgets import QDialog, QProgressBar, QPushButton
 
 from ..definitions.gui import Panels
 from ..qgis_plugin_tools.tools.exceptions import QgsPluginNotImplementedException
 from ..qgis_plugin_tools.tools.logger_processing import LoggerProcessingFeedBack
+from ..qgis_plugin_tools.tools.resources import plugin_name
+
+LOGGER = logging.getLogger(plugin_name())
 
 
 class BasePanel:
@@ -126,8 +134,32 @@ class BasePanel:
         raise QgsPluginNotImplementedException()
 
     def _display_results(self, successful: bool, results: Dict[str, Any]) -> None:
-        """Display result layers in current QGIS project."""
-        raise QgsPluginNotImplementedException()
+        """
+        Display result layers in current QGIS project.
+        """
+        LOGGER.info("got results")
+        LOGGER.info(results)
+        if successful:
+            for layer_name, layer in results.items():
+                if layer:
+                    # the raster layer will always be a tiff file (temporary or
+                    # permanent)
+                    result = QgsRasterLayer(layer, layer_name)
+                    if not result.isValid():
+                        # the result might be a vector layer!
+                        result = QgsVectorLayer(layer, layer_name, "ogr")
+                        if not result.isValid():
+                            # if result path was not set, the vector layer may only be
+                            # in memory
+                            # Child algorithm results won't actually be passed on:
+                            # https://gis.stackexchange.com/questions/361353/store-result-of-a-processing-algorithm-as-a-layer-in-qgis-python-script
+                            # If a vector layer is only in memory, we will have to
+                            # actually dig it up from the processing context to pass
+                            # it on.
+                            result = self.context.takeResultLayer(layer)
+                    QgsProject.instance().addMapLayer(result, False)
+                    root = QgsProject.instance().layerTreeRoot()
+                    root.insertChildNode(0, QgsLayerTreeLayer(result))
 
     def __run_model(self) -> None:
         # prevent clicking run if task is running

@@ -8,6 +8,7 @@ from .base_panel import BasePanel
 class MultiCriteriaSuitabilityPanel(BasePanel):
     def __init__(self, dialog: QDialog) -> None:
         super().__init__(dialog)
+        self.name = "multi"
         self.panel = Panels.MultiCriteriaSuitability
 
     def setup_panel(self) -> None:

@@ -9,6 +9,7 @@ from .base_panel import BasePanel
 class HelpPanel(BasePanel):
     def __init__(self, dialog: QDialog) -> None:
         super().__init__(dialog)
+        self.name = "help"
         self.panel = Panels.Help
 
     def setup_panel(self) -> None:
