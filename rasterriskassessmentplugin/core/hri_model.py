@@ -12,7 +12,6 @@ from qgis.core import (
     QgsProcessing,
     QgsProcessingContext,
     QgsProcessingFeedback,
-    QgsProcessingMultiStepFeedback,
     QgsProcessingParameterCrs,
     QgsProcessingParameterFeatureSink,
     QgsProcessingParameterRasterDestination,
@@ -72,51 +71,46 @@ class NaturalHazardRisksForSchools(BaseModel):
         context: QgsProcessingContext,
         feedback: QgsProcessingFeedback,
     ) -> Dict[str, Any]:
-        # Use a multi-step feedback, so that individual child algorithm progress
-        # reports are adjusted for the overall progress through the model
-        feedback = QgsProcessingMultiStepFeedback(
-            2 * len(parameters["HazardLayers"]) + 4, feedback
+        self.startAlgorithm(
+            parameters, context, feedback, steps=2 * len(parameters["HazardLayers"]) + 4
         )
-        self.feedback = feedback
-        self.parameters = parameters
-        self.context = context
-        standardized_layers: List[QgsRasterLayer] = []
 
+        standardized_layers: List[QgsRasterLayer] = []
         # Why do we only reproject rasters but not vectors here?
         for index, hazard_layer in enumerate(parameters["HazardLayers"]):
             # reproject layers to the same CRS so they can be merged
             reprojected = self._reproject_raster_to_crs(
                 hazard_layer, self.parameters["ProjectedReferenceSystem"], nodata=0
             )
-            if feedback.isCanceled():
+            if self.feedback.isCanceled():
                 return {}
 
-            feedback.setCurrentStep(1 + 2 * index)
+            self.feedback.setCurrentStep(1 + 2 * index)
             standardized_layers.append(self._normalize_layer(reprojected))
-            if feedback.isCanceled():
+            if self.feedback.isCanceled():
                 return {}
 
-        feedback.setCurrentStep(2 + 2 * index)
+        self.feedback.setCurrentStep(2 + 2 * index)
         # calculate raster
         sum = self._merge_layers(standardized_layers, parameters["Weights"])
-        if feedback.isCanceled():
+        if self.feedback.isCanceled():
             return {}
 
         # clip to area if provided
-        feedback.setCurrentStep(2 * index + 3)
-        if parameters["Studyarea"]:
+        self.feedback.setCurrentStep(2 * index + 3)
+        if self.studyarea:
             hri_result = self._clip_raster_to_studyarea(
                 sum, write_to_layer=parameters["HazardIndex"]
             )
         else:
             hri_result = sum
-        if feedback.isCanceled():
+        if self.feedback.isCanceled():
             return {}
 
         # sample schools if provided
-        feedback.setCurrentStep(2 * index + 4)
+        self.feedback.setCurrentStep(2 * index + 4)
         if parameters["Schools"]:
-            if parameters["Studyarea"]:
+            if self.studyarea:
                 clipped_schools = self._clip_vector_to_studyarea(parameters["Schools"])
             else:
                 clipped_schools = parameters["Schools"]
@@ -125,33 +119,6 @@ class NaturalHazardRisksForSchools(BaseModel):
             school_raster_values = None
 
         return {"HazardIndex": hri_result, "HazardIndexSchools": school_raster_values}
-
-    # def __reproject_layer(self, hazard_layer: QgsRasterLayer) -> QgsRasterLayer:
-    #     """
-    #     Reproject layer to the HRI CRS. Also set layer nodata value to zero.
-    #     """
-    #     alg_params = {
-    #         "DATA_TYPE": 0,
-    #         "EXTRA": "",
-    #         "INPUT": hazard_layer,
-    #         "MULTITHREADING": False,
-    #         "NODATA": 0,
-    #         "OPTIONS": "",
-    #         "RESAMPLING": 0,
-    #         "SOURCE_CRS": None,
-    #         "TARGET_CRS": self.parameters["ProjectedReferenceSystem"],
-    #         "TARGET_EXTENT": None,
-    #         "TARGET_EXTENT_CRS": None,
-    #         "TARGET_RESOLUTION": None,
-    #         "OUTPUT": QgsProcessing.TEMPORARY_OUTPUT,
-    #     }
-    #     return processing.run(
-    #         "gdal:warpreproject",
-    #         alg_params,
-    #         context=self.context,
-    #         feedback=self.feedback,
-    #         is_child_algorithm=True,
-    #     )["OUTPUT"]
 
     def _normalize_layer(self, hazard_layer: QgsRasterLayer) -> QgsRasterLayer:
         """
