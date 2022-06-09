@@ -12,7 +12,6 @@ from qgis.core import (
     QgsProcessing,
     QgsProcessingContext,
     QgsProcessingFeedback,
-    QgsProcessingMultiStepFeedback,
     QgsProcessingParameterBoolean,
     QgsProcessingParameterCrs,
     QgsProcessingParameterField,
@@ -133,16 +132,11 @@ class InfrastructureSuitability(BaseModel):
         context: QgsProcessingContext,
         feedback: QgsProcessingFeedback,
     ) -> Dict[str, Any]:
-        # Use a multi-step feedback, so that individual child algorithm progress
-        # reports are adjusted for the overall progress through the model
-        feedback = QgsProcessingMultiStepFeedback(6, feedback)
-        self.feedback = feedback
-        self.parameters = parameters
-        self.context = context
+        self.startAlgorithm(parameters, context, feedback, steps=6)
 
         # first clip to area if provided. This will speed up the raster calculation
         # significantly, and lower the file size.
-        if parameters["Studyarea"]:
+        if self.studyarea:
             clipped_population = self._clip_raster_to_studyarea(
                 parameters["PopulationDensity"]
             )
@@ -150,59 +144,34 @@ class InfrastructureSuitability(BaseModel):
         else:
             clipped_population = parameters["PopulationDensity"]
             clipped_schools = parameters["Schools"]
-        if feedback.isCanceled():
+        if self.feedback.isCanceled():
             return {}
 
-        feedback.setCurrentStep(1)
+        self.feedback.setCurrentStep(1)
         # reproject layers to the same CRS so they can be merged
         projected_population = self._reproject_raster_to_crs(
             clipped_population, self.parameters["ProjectedReferenceSystem"]
         )
-        if feedback.isCanceled():
+        if self.feedback.isCanceled():
             return {}
 
-        feedback.setCurrentStep(2)
+        self.feedback.setCurrentStep(2)
         # density to 1-bit bitmap (plus nodata, so we'll use 8bit for now)
         thresholded_population = self._classify_by_threshold(
             projected_population,
             parameters["PopulationThreshold"],
             parameters["Newschoolsshouldideallybelocatedinsparselypopulatedareas"],
         )
-        if feedback.isCanceled():
+        if self.feedback.isCanceled():
             return {}
 
-        # feedback.setCurrentStep(3)
-        # # this will set sparsely populated to 0, urban to 1, non-populated to 0.
-        # # Is this intentional? I thought 0 is not part of the index.
-        # filled_population = self._fill_nodata(thresholded_population, 4)
-        # if feedback.isCanceled():
-        #     return {}
-
-        # TODO: Why do we need to fix area vector here? HRI didn't do that.
-        # # Fix geometries
-        # alg_params = {
-        #     "INPUT": parameters["SiteAreavector"],
-        #     "OUTPUT": QgsProcessing.TEMPORARY_OUTPUT,
-        # }
-        # outputs["FixGeometries"] = processing.run(
-        #     "native:fixgeometries",
-        #     alg_params,
-        #     context=context,
-        #     feedback=feedback,
-        #     is_child_algorithm=True,
-        # )
-
-        # feedback.setCurrentStep(4)
-        # if feedback.isCanceled():
-        #     return {}
-
-        feedback.setCurrentStep(3)
+        self.feedback.setCurrentStep(3)
         # Rasterize (vector to raster)
         rasterized_schools = self._rasterize_vector(clipped_schools)
-        if feedback.isCanceled():
+        if self.feedback.isCanceled():
             return {}
 
-        feedback.setCurrentStep(4)
+        self.feedback.setCurrentStep(4)
         # School proximity and classification
         school_classification = self._classify_by_distance(
             rasterized_schools,
@@ -212,10 +181,10 @@ class InfrastructureSuitability(BaseModel):
                 "Newschoolsshouldbelocatedfurtherfromexistingschoolsratherthanclosetothem"  # noqa
             ],
         )
-        if feedback.isCanceled():
+        if self.feedback.isCanceled():
             return {}
 
-        feedback.setCurrentStep(5)
+        self.feedback.setCurrentStep(5)
         sum = self._merge_layers(
             [school_classification, thresholded_population],
             [self.parameters["SchoolWeight"], self.parameters["PopWeight"]],

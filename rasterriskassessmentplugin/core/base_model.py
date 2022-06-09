@@ -8,6 +8,7 @@ from qgis.core import (
     QgsProcessingAlgorithm,
     QgsProcessingContext,
     QgsProcessingFeedback,
+    QgsProcessingMultiStepFeedback,
     QgsRasterLayer,
     QgsVectorLayer,
 )
@@ -40,9 +41,45 @@ class BaseModel(QgsProcessingAlgorithm):
         feedback: QgsProcessingFeedback,
     ) -> Dict[str, Any]:
         """
-        Each algorithm must define process.
+        Each algorithm must define a process.
         """
         raise NotImplementedError()
+
+    def startAlgorithm(  # noqa: N802
+        self,
+        parameters: Dict[str, Any],
+        context: QgsProcessingContext,
+        feedback: QgsProcessingFeedback,
+        steps: int,
+    ) -> None:
+        """
+        Here we do things that should be run at the start of any process.
+        """
+        # Use a multi-step feedback, so that individual child algorithm progress
+        # reports are adjusted for the overall progress through the model
+        self.feedback = QgsProcessingMultiStepFeedback(steps, feedback)
+        self.parameters = parameters
+        self.context = context
+
+        # In case there are problems (self-intersections) in the area vector, we
+        # want to fix them before proceeding.
+        self.studyarea = self._fix_vector_layer(parameters["Studyarea"])
+
+    def _fix_vector_layer(self, input: QgsVectorLayer) -> QgsVectorLayer:
+        """
+        Fix self-intersections
+        """
+        alg_params = {
+            "INPUT": input,
+            "OUTPUT": QgsProcessing.TEMPORARY_OUTPUT,
+        }
+        return processing.run(
+            "native:fixgeometries",
+            alg_params,
+            context=self.context,
+            feedback=self.feedback,
+            is_child_algorithm=True,
+        )["OUTPUT"]
 
     def _clip_vector_to_studyarea(self, input: QgsVectorLayer) -> QgsVectorLayer:
         """
@@ -50,7 +87,7 @@ class BaseModel(QgsProcessingAlgorithm):
         """
         alg_params = {
             "INPUT": input,
-            "OVERLAY": self.parameters["Studyarea"],
+            "OVERLAY": self.studyarea,
             "OUTPUT": QgsProcessing.TEMPORARY_OUTPUT,
         }
         return processing.run(
@@ -74,7 +111,7 @@ class BaseModel(QgsProcessingAlgorithm):
             "EXTRA": "",
             "INPUT": input,
             "KEEP_RESOLUTION": False,
-            "MASK": self.parameters["Studyarea"],
+            "MASK": self.studyarea,
             "MULTITHREADING": False,
             "NODATA": None,
             "OPTIONS": "",
@@ -225,7 +262,7 @@ class BaseModel(QgsProcessingAlgorithm):
         equator. Similarly, the extent has to be calculated in the same crs.
         """
         area_projected = self._reproject_vector_to_crs(
-            self.parameters["Studyarea"], self.parameters["ProjectedReferenceSystem"]
+            self.studyarea, self.parameters["ProjectedReferenceSystem"]
         )
         input_projected = self._reproject_vector_to_crs(
             input, self.parameters["ProjectedReferenceSystem"]
