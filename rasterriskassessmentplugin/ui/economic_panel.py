@@ -50,7 +50,6 @@ class EconomicSuitabilityPanel(BasePanel):
         self.dlg.econ_dbl_spn_bx_road_max_dist.setMaximum(10)
         self.dlg.econ_dbl_spn_bx_road_max_dist.setClearValue(0.5)
         self.dlg.econ_dbl_spn_bx_road_max_dist.clear()
-        self.dlg.econ_dbl_spn_bx_road_weight.clear()
         self.dlg.econ_dbl_spn_bx_water_min_dist.setMinimum(0)
         self.dlg.econ_dbl_spn_bx_water_min_dist.setMaximum(1)
         self.dlg.econ_dbl_spn_bx_water_min_dist.setClearValue(0.15)

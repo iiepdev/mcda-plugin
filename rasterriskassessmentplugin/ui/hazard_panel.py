@@ -103,31 +103,29 @@ class HazardRiskIndexPanel(BasePanel):
                 layer_number = int((layout.count() - 2) / 3) + 1
         self.current_number_of_hazards = nr_of_risks
 
-    def __normalize_weights(self, weights: list) -> list:
-        """
-        Always sum weights to 1.
-        """
-        total = sum(weights)
-        return [value / total for value in weights]
-
     def _get_params(self) -> dict:
         params: Dict[str, Any] = {}
-        params["HazardLayers"] = []
+        params["Studyarea"] = self.dlg.hri_map_layer_cmb_bx_boundaries.currentLayer()
+        params["Layers"] = []
         params["Weights"] = []
         for layer_number in range(1, self.current_number_of_hazards + 1):
-            params["HazardLayers"].append(
+            params["Layers"].append(
                 getattr(self.dlg, f"hri_raster_layer_cb_{layer_number}").currentLayer()
             )
             params["Weights"].append(
                 getattr(self.dlg, f"hri_raster_layer_dspnb_{layer_number}").value()
             )
-        params["Weights"] = self.__normalize_weights(params["Weights"])
+        params["Weights"] = self._normalize_weights(params["Weights"])
+        # The input layers may contain wildly different values, so they should
+        # be normalized on a scale 0...1
+        params["NormalizeLayers"] = True
         # Use default 3857 for now (~1 meter around the equator)
         params["ProjectedReferenceSystem"] = "EPSG:3857"
-        params["Studyarea"] = self.dlg.hri_map_layer_cmb_bx_boundaries.currentLayer()
         params["Schools"] = self.dlg.hri_map_layer_cmb_bx_schools.currentLayer()
-        params["HazardIndex"] = self.dlg.hri_save_hri_file_widget.filePath()
-        params[
-            "HazardIndexSchools"
-        ] = self.dlg.hri_save_hri_schools_file_widget.filePath()
+        params["OutputRaster"] = self.dlg.hri_save_hri_file_widget.filePath()
+        params["SampledOutput"] = self.dlg.hri_save_hri_schools_file_widget.filePath()
+        params["LayerNames"] = {
+            "OutputRaster": "Hazard Index",
+            "SampledOutput": "Hazard Index at Schools",
+        }
         return params

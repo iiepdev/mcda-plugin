@@ -144,7 +144,7 @@
     </sizepolicy>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>4</number>
    </property>
    <widget class="QWidget" name="hazard_risk_index">
     <layout class="QVBoxLayout" name="hazard_risk_vlayout">
@@ -2133,287 +2133,354 @@
     </widget>
    </widget>
    <widget class="QWidget" name="mcda">
-    <widget class="QgsCollapsibleGroupBox" name="groupbox_rasters_3">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>0</y>
-       <width>479</width>
-       <height>212</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>Input layers for Multi-criteria Decision Analysis</string>
-     </property>
-     <widget class="QWidget" name="layoutWidget_4">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>30</y>
-        <width>451</width>
-        <height>33</height>
-       </rect>
-      </property>
-      <layout class="QGridLayout" name="gridLayout_14">
-       <item row="0" column="2">
-        <widget class="QCheckBox" name="mcda_chck_bx_use_selected_boundary">
-         <property name="text">
-          <string>Use only selected features</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_33">
-         <property name="text">
-          <string>Study area boundary: </string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QgsMapLayerComboBox" name="mcda_map_layer_cmb_bx_boundary">
-         <property name="iconSize">
-          <size>
-           <width>16</width>
-           <height>16</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="gridLayoutWidget_4">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>70</y>
-        <width>451</width>
-        <height>129</height>
-       </rect>
-      </property>
-      <layout class="QGridLayout" name="gridLayout_11">
-       <item row="0" column="2">
-        <widget class="QLabel" name="label_34">
-         <property name="maximumSize">
-          <size>
-           <width>1000</width>
-           <height>160</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>Layer</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label_27">
-         <property name="text">
-          <string>Economic suitability:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_35">
-         <property name="font">
-          <font>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>Components</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label_36">
-         <property name="text">
-          <string>Environmental suitability: </string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="3">
-        <widget class="QLabel" name="label_37">
-         <property name="font">
-          <font>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>Weight</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="3">
-        <widget class="QgsDoubleSpinBox" name="mcda_dbl_spn_bx_env_weight">
-         <property name="suffix">
-          <string> %</string>
-         </property>
-         <property name="decimals">
-          <number>1</number>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="3">
-        <widget class="QgsDoubleSpinBox" name="mcda_dbl_spn_bx_econ_weight">
-         <property name="suffix">
-          <string> %</string>
-         </property>
-         <property name="decimals">
-          <number>1</number>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="label_38">
-         <property name="text">
-          <string>Infrastructure: </string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="3">
-        <widget class="QgsDoubleSpinBox" name="mcda_dbl_spn_bx_infra_weight">
-         <property name="suffix">
-          <string> %</string>
-         </property>
-         <property name="decimals">
-          <number>1</number>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="2">
-        <widget class="QgsMapLayerComboBox" name="mcda_map_layer_cmb_bx_env">
-         <property name="iconSize">
-          <size>
-           <width>16</width>
-           <height>16</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="2">
-        <widget class="QgsMapLayerComboBox" name="mcda_map_layer_cmb_bx_econ">
-         <property name="iconSize">
-          <size>
-           <width>16</width>
-           <height>16</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="2">
-        <widget class="QgsMapLayerComboBox" name="mcda_map_layer_cmb_bx_infra">
-         <property name="iconSize">
-          <size>
-           <width>16</width>
-           <height>16</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </widget>
-    <widget class="QgsCollapsibleGroupBox" name="mGroupBox_11">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>210</y>
-       <width>479</width>
-       <height>111</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>Output layer</string>
-     </property>
-     <widget class="QWidget" name="layoutWidget_14">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>30</y>
-        <width>391</width>
-        <height>42</height>
-       </rect>
-      </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_15">
+    <layout class="QVBoxLayout" name="economic_vlayout">
+     <item>
+      <widget class="QGroupBox" name="groupbox_rasters_3">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>200</height>
+        </size>
+       </property>
+       <property name="title">
+        <string>Input layers for Multi-criteria Decision Analysis</string>
+       </property>
+       <widget class="QWidget" name="gridLayoutWidget_4">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>23</y>
+          <width>541</width>
+          <height>171</height>
+         </rect>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_11">
+         <item row="0" column="1">
+          <widget class="QgsMapLayerComboBox" name="mcda_map_layer_cmb_bx_boundary">
+           <property name="minimumSize">
+            <size>
+             <width>300</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_33">
+           <property name="text">
+            <string>Study area boundary: </string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLabel" name="label_34">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Layer</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_27">
+           <property name="text">
+            <string>Economic suitability:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_35">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Components</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_36">
+           <property name="text">
+            <string>Environmental suitability: </string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QLabel" name="label_37">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Weight</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="2">
+          <widget class="QgsDoubleSpinBox" name="mcda_dbl_spn_bx_env_weight">
+           <property name="minimumSize">
+            <size>
+             <width>40</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="suffix">
+            <string> %</string>
+           </property>
+           <property name="decimals">
+            <number>1</number>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="2">
+          <widget class="QgsDoubleSpinBox" name="mcda_dbl_spn_bx_econ_weight">
+           <property name="minimumSize">
+            <size>
+             <width>40</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="suffix">
+            <string> %</string>
+           </property>
+           <property name="decimals">
+            <number>1</number>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="label_38">
+           <property name="text">
+            <string>Infrastructure: </string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="2">
+          <widget class="QgsDoubleSpinBox" name="mcda_dbl_spn_bx_infra_weight">
+           <property name="minimumSize">
+            <size>
+             <width>40</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="suffix">
+            <string> %</string>
+           </property>
+           <property name="decimals">
+            <number>1</number>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QgsMapLayerComboBox" name="mcda_map_layer_cmb_bx_env">
+           <property name="minimumSize">
+            <size>
+             <width>300</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QgsMapLayerComboBox" name="mcda_map_layer_cmb_bx_econ">
+           <property name="minimumSize">
+            <size>
+             <width>300</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QgsMapLayerComboBox" name="mcda_map_layer_cmb_bx_infra">
+           <property name="minimumSize">
+            <size>
+             <width>300</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="mGroupBox_11">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>70</height>
+        </size>
+       </property>
+       <property name="title">
+        <string>Output layer</string>
+       </property>
+       <widget class="QWidget" name="layoutWidget_14">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>541</width>
+          <height>42</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_15">
+         <item>
+          <widget class="QLabel" name="label_77">
+           <property name="text">
+            <string>Save to file: </string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QgsFileWidget" name="mcda_file_wdgt_save_output" native="true">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>35</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+     </item>
+     <item>
+      <spacer name="verticalSpacer_5">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_16">
        <item>
-        <widget class="QLabel" name="label_77">
+        <widget class="QLabel" name="label_41">
          <property name="text">
-          <string>Save to file: </string>
+          <string>Progress:</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QgsFileWidget" name="mcda_file_wdgt_save_output" native="true">
-         <property name="minimumSize">
+        <widget class="QProgressBar" name="mcda_progress_bar">
+         <property name="value">
+          <number>24</number>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_15">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
           <size>
-           <width>80</width>
-           <height>35</height>
+           <width>20</width>
+           <height>20</height>
           </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QPushButton" name="mcda_btn_run">
+         <property name="text">
+          <string>Run</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="mcda_btn_close">
+         <property name="text">
+          <string>Close</string>
          </property>
         </widget>
        </item>
       </layout>
-     </widget>
-    </widget>
-    <widget class="QWidget" name="horizontalLayoutWidget_5">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>330</y>
-       <width>471</width>
-       <height>32</height>
-      </rect>
-     </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_16">
-      <item>
-       <widget class="QProgressBar" name="mcda_progress_bar">
-        <property name="value">
-         <number>24</number>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <spacer name="horizontalSpacer_15">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Fixed</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>24</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
-       <widget class="QPushButton" name="mcda_btn_run">
-        <property name="text">
-         <string>Run</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="mcda_btn_close">
-        <property name="text">
-         <string>Close</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
+     </item>
+    </layout>
    </widget>
    <widget class="QWidget" name="help">
     <widget class="QWidget" name="layoutWidget">
