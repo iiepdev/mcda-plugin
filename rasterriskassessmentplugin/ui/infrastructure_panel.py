@@ -73,7 +73,7 @@ class InfrastructurePanel(BasePanel):
         self.dlg.infra_dbl_spn_bx_max_dist.clear()
         self.dlg.infra_dbl_spn_bx_pop_weight.setMinimum(0)
         self.dlg.infra_dbl_spn_bx_pop_weight.setMaximum(100)
-        self.dlg.infra_dbl_spn_bx_pop_weight.setClearValue(50)
+        self.dlg.infra_dbl_spn_bx_pop_weight.setClearValue(40)
         self.dlg.infra_dbl_spn_bx_pop_weight.clear()
         self.dlg.infra_spinbox_pop_threshold.setMinimum(0)
         self.dlg.infra_spinbox_pop_threshold.setMaximum(1000)
@@ -81,7 +81,7 @@ class InfrastructurePanel(BasePanel):
         self.dlg.infra_spinbox_pop_threshold.clear()
         self.dlg.infra_dbl_spn_bx_school_weight.setMinimum(0)
         self.dlg.infra_dbl_spn_bx_school_weight.setMaximum(100)
-        self.dlg.infra_dbl_spn_bx_school_weight.setClearValue(50)
+        self.dlg.infra_dbl_spn_bx_school_weight.setClearValue(60)
         self.dlg.infra_dbl_spn_bx_school_weight.clear()
         self.dlg.infra_dbl_spn_bx_pop_weight.valueChanged.connect(
             lambda value: self.dlg.infra_dbl_spn_bx_school_weight.setValue(100 - value)
