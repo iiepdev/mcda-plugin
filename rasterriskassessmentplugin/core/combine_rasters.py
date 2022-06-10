@@ -108,43 +108,6 @@ class CombineRasters(BaseModel):
             parameters["LayerNames"]["SampledOutput"]: school_raster_values,
         }
 
-    def _normalize_layer(self, layer: QgsRasterLayer) -> QgsRasterLayer:
-        """
-        Scale layer to 0...1.
-        """
-        alg_params = {
-            "BAND": 1,
-            "INPUT": layer,
-        }
-        statistics = processing.run(
-            "native:rasterlayerstatistics",
-            alg_params,
-            context=self.context,
-            feedback=self.feedback,
-            is_child_algorithm=True,
-        )
-
-        min = statistics["MIN"]
-        max = statistics["MAX"]
-        expression = f"(A - {min})/({max} - {min})"
-        alg_params = {
-            "BAND_A": 1,
-            "EXTRA": "",
-            "FORMULA": expression,
-            "INPUT_A": layer,
-            "NO_DATA": None,
-            "OPTIONS": "",
-            "RTYPE": 5,
-            "OUTPUT": QgsProcessing.TEMPORARY_OUTPUT,
-        }
-        return processing.run(
-            "gdal:rastercalculator",
-            alg_params,
-            context=self.context,
-            feedback=self.feedback,
-            is_child_algorithm=True,
-        )["OUTPUT"]
-
     def _sample_layer(
         self, layer: QgsRasterLayer, points: QgsVectorLayer
     ) -> QgsVectorLayer:

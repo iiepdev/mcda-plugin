@@ -7,7 +7,6 @@ With QGIS : 31600
 
 from typing import Any, Dict
 
-import processing
 from qgis.core import (
     QgsProcessing,
     QgsProcessingContext,
@@ -19,7 +18,6 @@ from qgis.core import (
     QgsProcessingParameterRasterDestination,
     QgsProcessingParameterRasterLayer,
     QgsProcessingParameterVectorLayer,
-    QgsRasterLayer,
 )
 
 from .base_model import BaseModel
@@ -191,61 +189,6 @@ class InfrastructureSuitability(BaseModel):
             write_to_layer=self.parameters["InfrastructureSuitability"],
         )
         return {"InfrastructureSuitability": sum}
-
-    def _classify_by_threshold(
-        self, input: QgsRasterLayer, threshold: int, invert: bool = False
-    ) -> QgsRasterLayer:
-        """
-        Classify raster to suitable (1) or unsuitable (4) by threshold value.
-        """
-        # returns 0 (below 100) or 1 (above 100). However, nodata values will be
-        # set to default 8bit nodata, i.e. 255!
-        # vs. original algorithm had rtype=4 (Int32), which has nodata value -2147483647
-        expression = f"A < {threshold}" if invert else f"A > {threshold}"
-        # invert: False returns 0 (below 100) or 1 (above 100) or 4 (zero density)
-        # invert: True returns 0 (above 100) or 1 (below 100) or 4 (zero density)
-        # 0 will always be the best, i.e. the result is opposite to that intended!!
-        # Nodata will always be the worst.
-        alg_params = {
-            "BAND_A": 1,
-            "EXTRA": "",
-            "FORMULA": expression,
-            "INPUT_A": input,
-            "NO_DATA": 0,
-            # None-setting will result in three index values (0, 1 and 4)
-            # after setting nodata to 4 in next step.
-            # Is this intentional??
-            "OPTIONS": "",
-            "RTYPE": 0,  # We don't want a huge 32bit geotiff
-            "OUTPUT": QgsProcessing.TEMPORARY_OUTPUT,
-        }
-        thresholded = processing.run(
-            "gdal:rastercalculator",
-            alg_params,
-            context=self.context,
-            feedback=self.feedback,
-            is_child_algorithm=True,
-        )["OUTPUT"]
-        filled_and_thresholded = self._fill_nodata(thresholded, 4)
-        return filled_and_thresholded
-
-    def _fill_nodata(self, input: QgsRasterLayer, value: int) -> QgsRasterLayer:
-        """
-        Fill nodata values with desired value.
-        """
-        alg_params = {
-            "BAND": 1,
-            "FILL_VALUE": value,
-            "INPUT": input,
-            "OUTPUT": QgsProcessing.TEMPORARY_OUTPUT,
-        }
-        return processing.run(
-            "native:fillnodata",
-            alg_params,
-            context=self.context,
-            feedback=self.feedback,
-            is_child_algorithm=True,
-        )["OUTPUT"]
 
     def name(self):
         return "Social suitability"
