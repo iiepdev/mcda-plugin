@@ -1,17 +1,25 @@
 """Panel core base class."""
+import logging
 from typing import Any, Dict, Optional
 
 from qgis.core import (
     QgsApplication,
+    QgsLayerTreeLayer,
     QgsProcessingAlgorithm,
     QgsProcessingAlgRunnerTask,
     QgsProcessingContext,
+    QgsProject,
+    QgsRasterLayer,
+    QgsVectorLayer,
 )
 from qgis.PyQt.QtWidgets import QDialog, QProgressBar, QPushButton
 
 from ..definitions.gui import Panels
 from ..qgis_plugin_tools.tools.exceptions import QgsPluginNotImplementedException
 from ..qgis_plugin_tools.tools.logger_processing import LoggerProcessingFeedBack
+from ..qgis_plugin_tools.tools.resources import plugin_name
+
+LOGGER = logging.getLogger(plugin_name())
 
 
 class BasePanel:
@@ -121,13 +129,44 @@ class BasePanel:
         # http://enki-editor.org/2014/08/23/Pyqt_mem_mgmt.html
         self.task = None
 
+    def _normalize_weights(self, weights: list) -> list:
+        """
+        Always sum weights to 1.
+        """
+        total = sum(weights)
+        return [value / total for value in weights]
+
     def _get_params(self) -> dict:
         """Get algorithm parameters from the UI."""
         raise QgsPluginNotImplementedException()
 
     def _display_results(self, successful: bool, results: Dict[str, Any]) -> None:
-        """Display result layers in current QGIS project."""
-        raise QgsPluginNotImplementedException()
+        """
+        Display result layers in current QGIS project.
+        """
+        LOGGER.info("got results")
+        LOGGER.info(results)
+        if successful:
+            for layer_name, layer in results.items():
+                if layer:
+                    # the raster layer will always be a tiff file (temporary or
+                    # permanent)
+                    result = QgsRasterLayer(layer, layer_name)
+                    if not result.isValid():
+                        # the result might be a vector layer!
+                        result = QgsVectorLayer(layer, layer_name, "ogr")
+                        if not result.isValid():
+                            # if result path was not set, the vector layer may only be
+                            # in memory
+                            # Child algorithm results won't actually be passed on:
+                            # https://gis.stackexchange.com/questions/361353/store-result-of-a-processing-algorithm-as-a-layer-in-qgis-python-script
+                            # If a vector layer is only in memory, we will have to
+                            # actually dig it up from the processing context to pass
+                            # it on.
+                            result = self.context.takeResultLayer(layer)
+                    QgsProject.instance().addMapLayer(result, False)
+                    root = QgsProject.instance().layerTreeRoot()
+                    root.insertChildNode(0, QgsLayerTreeLayer(result))
 
     def __run_model(self) -> None:
         # prevent clicking run if task is running
@@ -149,7 +188,7 @@ class BasePanel:
                 lambda successful: self.__btn_run.clicked.disconnect(self.__cancel_run)
             )
             self.task.executed.connect(self.__set_run_button)
-            # Subclass will display the results
+            # Display the results
             self.task.executed.connect(self._display_results)
             self.task.destroyed.connect(self.__delete_task)
             QgsApplication.taskManager().addTask(self.task)

@@ -8,6 +8,7 @@ from .base_panel import BasePanel
 class EnvironmentalSuitabilityPanel(BasePanel):
     def __init__(self, dialog: QDialog) -> None:
         super().__init__(dialog)
+        self.name = "env"
         self.panel = Panels.EnvironmentalSuitability
 
     def setup_panel(self) -> None:

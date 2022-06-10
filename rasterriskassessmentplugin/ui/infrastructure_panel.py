@@ -1,14 +1,7 @@
 import logging
-from typing import Any, Dict, Optional
+from typing import Any, Dict
 
-from qgis.core import (
-    QgsCoordinateReferenceSystem,
-    QgsLayerTreeLayer,
-    QgsMapLayerProxyModel,
-    QgsProject,
-    QgsRasterLayer,
-    QgsVectorLayer,
-)
+from qgis.core import QgsCoordinateReferenceSystem, QgsMapLayerProxyModel
 from qgis.gui import QgsFileWidget, QgsProjectionSelectionWidget
 from qgis.PyQt.QtWidgets import QDialog
 
@@ -38,7 +31,6 @@ class InfrastructurePanel(BasePanel):
         self.algorithm = InfrastructureSuitability()
         self.panel = Panels.Infrastructure
         self.name = "infra"
-        self.infra_result: Optional[QgsVectorLayer] = None
 
     def setup_panel(self) -> None:
         super().setup_panel()
@@ -53,6 +45,7 @@ class InfrastructurePanel(BasePanel):
         )
         self.dlg.infra_map_layer_cmb_bx_boundaries.setShowCrs(True)
         self.dlg.infra_map_layer_cmb_bx_schools.setShowCrs(True)
+        self.dlg.infra_map_layer_cmb_bx_pop_dens.setShowCrs(True)
         self.dlg.infra_crs_widget.setShowAccuracyWarnings(True)
         self.dlg.infra_crs_widget.setOptionVisible(
             QgsProjectionSelectionWidget.CrsOption.LayerCrs, visible=True
@@ -118,21 +111,8 @@ class InfrastructurePanel(BasePanel):
         params["ProjectedReferenceSystem"] = self.dlg.infra_crs_widget.crs()
         params["SchoolWeight"] = self.dlg.infra_dbl_spn_bx_school_weight.value() / 100
         params["PopWeight"] = self.dlg.infra_dbl_spn_bx_pop_weight.value() / 100
-        params["InfrastructureIndex"] = self.dlg.infra_file_wdgt_save_output.filePath()
+        params[
+            "InfrastructureSuitability"
+        ] = self.dlg.infra_file_wdgt_save_output.filePath()
         LOGGER.info(params)
         return params
-
-    def _display_results(self, successful: bool, results: Dict[str, Any]) -> None:
-        """
-        Display result layers in current QGIS project.
-        """
-        LOGGER.info("got results")
-        LOGGER.info(results)
-        if successful:
-            # the raster layer will always be a tiff file (temporary or permanent)
-            self.infra_result = QgsRasterLayer(
-                results["InfrastructureIndex"], "Infrastructure index"
-            )
-            QgsProject.instance().addMapLayer(self.infra_result, False)
-            root = QgsProject.instance().layerTreeRoot()
-            root.insertChildNode(0, QgsLayerTreeLayer(self.infra_result))
