@@ -175,9 +175,15 @@ class InfrastructureSuitability(BaseModel):
             rasterized_schools,
             parameters["Minimumsuitabledistancetoanotherschool"],
             parameters["MaxDistancefromExistingSchools"],
-            parameters[
+            further_is_better=parameters[
                 "Newschoolsshouldbelocatedfurtherfromexistingschoolsratherthanclosetothem"  # noqa
             ],
+            # if schools further away are favored, too_far areas should have class 1
+            too_far_classification=1
+            if parameters[
+                "Newschoolsshouldbelocatedfurtherfromexistingschoolsratherthanclosetothem"  # noqa
+            ]
+            else 4,
         )
         if self.feedback.isCanceled():
             return {}

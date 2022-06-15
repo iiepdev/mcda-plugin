@@ -391,11 +391,13 @@ class BaseModel(QgsProcessingAlgorithm):
         min_distance: float,
         max_distance: float,
         further_is_better: bool = False,
+        too_close_classification: int = 4,
+        too_far_classification: int = 4,
     ) -> QgsRasterLayer:
         """
         Returns area classification raster around location raster input. Input
         layer is assumed to be in a projected CRS with units in meters. Points within
-        min_distance or outside max_distance will be given classification 4.
+        min_distance or outside max_distance will be given fixed classification.
 
         input: Raster layer in a projected CRS to classify.
         min_distance: Minimum acceptable distance in meters for classification 1-3.
@@ -406,24 +408,14 @@ class BaseModel(QgsProcessingAlgorithm):
         # concentric buffers around input non-zero pixels will have different
         # suitability values
         too_close = f"(A <= {min_distance})"
-        self.feedback.pushInfo(too_close)
         close = f"(A > {min_distance})*(A <= {max_distance/3})"
-        self.feedback.pushInfo(close)
         medium = f"(A > {max_distance/3})*(A < 2*{max_distance}/3)"
-        self.feedback.pushInfo(medium)
         far = f"(A >= 2*{max_distance/3})*(A < {max_distance})"
-        self.feedback.pushInfo(far)
         too_far = f"(A >= {max_distance})"
-        self.feedback.pushInfo(too_far)
         if further_is_better:
-            expression = (
-                f"4*{too_close} + 3*{close} + 2*{medium} + 1*{far} + 4*{too_far}"
-            )
+            expression = f"{too_close_classification}*{too_close} + 3*{close} + 2*{medium} + 1*{far} + {too_far_classification}*{too_far}"  # noqa
         else:
-            expression = (
-                f"4*{too_close} + 1*{close} + 2*{medium} + 3*{far} + 4*{too_far}"
-            )
-        self.feedback.pushInfo(expression)
+            expression = f"{too_close_classification}*{too_close} + 1*{close} + 2*{medium} + 3*{far} + {too_far_classification}*{too_far}"  # noqa
         alg_params = {
             "BAND_A": 1,
             "EXTRA": "",
