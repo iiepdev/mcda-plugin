@@ -297,7 +297,7 @@ class BaseModel(QgsProcessingAlgorithm):
             "FORMULA": sum_expression,
             **input_params,
             "NO_DATA": None,
-            "OPTIONS": "hideNoData",
+            "OPTIONS": "",
             "RTYPE": 5,
             "OUTPUT": write_to_layer
             if write_to_layer
