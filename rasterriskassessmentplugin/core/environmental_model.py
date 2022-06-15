@@ -6,6 +6,7 @@ With QGIS : 31600
 """
 from typing import Any, Dict
 
+import processing
 from qgis.core import (
     QgsProcessing,
     QgsProcessingContext,
@@ -15,6 +16,7 @@ from qgis.core import (
     QgsProcessingParameterRasterDestination,
     QgsProcessingParameterRasterLayer,
     QgsProcessingParameterVectorLayer,
+    QgsRasterLayer,
 )
 
 from .base_model import BaseModel
@@ -95,7 +97,7 @@ class EnvironmentalSuitability(BaseModel):
         context: QgsProcessingContext,
         feedback: QgsProcessingFeedback,
     ) -> Dict[str, Any]:
-        self.startAlgorithm(parameters, context, feedback, steps=5)
+        self.startAlgorithm(parameters, context, feedback, steps=6)
 
         # Reproject
         dem = self._reproject_raster_to_crs(
@@ -111,8 +113,10 @@ class EnvironmentalSuitability(BaseModel):
             return {}
 
         self.feedback.setCurrentStep(1)
-        # Forest classification
-        thresholded_forest = self._classify_by_threshold(forest, 1, True)
+        # Forest classification (4 if forest is too dense, otherwise 1)
+        classified_forest = self._classify_by_threshold(
+            forest, 1, invert=True, nodata_suitability=1
+        )
         if self.feedback.isCanceled():
             return {}
 
@@ -120,157 +124,88 @@ class EnvironmentalSuitability(BaseModel):
         # We want to divide hri equally to classes 1, 2, 3 and 4
         # Standardize from min...max to 0...4, rounding up
         # Allow no pixels exactly zero (round up to 1).
-        hri = self._classify_by_value(hri)
+        classified_hri = self._classify_by_value(hri)
         if self.feedback.isCanceled():
             return {}
 
-        return {"EnvironmentalSuitability": [thresholded_forest, dem]}
-        # # Slope
-        # alg_params = {
-        #     "AS_PERCENT": False,
-        #     "BAND": 1,
-        #     "COMPUTE_EDGES": False,
-        #     "EXTRA": "",
-        #     "INPUT": outputs["WarpSlope"]["OUTPUT"],
-        #     "OPTIONS": "",
-        #     "SCALE": 1,
-        #     "ZEVENBERGEN": False,
-        #     "OUTPUT": QgsProcessing.TEMPORARY_OUTPUT,
-        # }
-        # outputs["Slope"] = processing.run(
-        #     "gdal:slope",
-        #     alg_params,
-        #     context=context,
-        #     feedback=feedback,
-        #     is_child_algorithm=True,
-        # )
+        self.feedback.setCurrentStep(3)
+        # Slope classification
+        slope_index = self._classify_by_slope(dem)
+        if self.feedback.isCanceled():
+            return {}
 
-        # feedback.setCurrentStep(7)
-        # if feedback.isCanceled():
-        #     return {}
+        self.feedback.setCurrentStep(4)
+        # calculate raster
+        sum = self._merge_layers(
+            [slope_index, classified_forest, classified_hri],
+            [
+                parameters["WeightforElevation"],
+                parameters["WeightforVegetation"],
+                parameters["WeightforMultiHazardRisk"],
+            ],
+        )
+        if self.feedback.isCanceled():
+            return {}
 
-        # # Slope classification
-        # alg_params = {
-        #     "BAND_A": 1,
-        #     "BAND_B": None,
-        #     "BAND_C": None,
-        #     "BAND_D": None,
-        #     "BAND_E": None,
-        #     "BAND_F": None,
-        #     "EXTRA": "",
-        #     "FORMULA": "1*(A<1) + 2*(A>=1)*(A<10) + 3*(A>=10)*(A<20) + 4*(A>=20)",
-        #     "INPUT_A": outputs["Slope"]["OUTPUT"],
-        #     "INPUT_B": None,
-        #     "INPUT_C": None,
-        #     "INPUT_D": None,
-        #     "INPUT_E": None,
-        #     "INPUT_F": None,
-        #     "NO_DATA": None,
-        #     "OPTIONS": "",
-        #     "RTYPE": 1,
-        #     "OUTPUT": QgsProcessing.TEMPORARY_OUTPUT,
-        # }
-        # outputs["SlopeClassification"] = processing.run(
-        #     "gdal:rastercalculator",
-        #     alg_params,
-        #     context=context,
-        #     feedback=feedback,
-        #     is_child_algorithm=True,
-        # )
+        self.feedback.setCurrentStep(5)
+        # clip to area if provided
+        if self.studyarea:
+            result = self._clip_raster_to_studyarea(
+                sum, write_to_layer=parameters["EnvironmentalSuitability"]
+            )
+        else:
+            result = sum
+        return {"EnvironmentalSuitability": result}
 
-        # feedback.setCurrentStep(10)
-        # if feedback.isCanceled():
-        #     return {}
+    def _calculate_slope(self, dem: QgsRasterLayer) -> QgsRasterLayer:
+        """
+        Calculate slope from dem raster layer. The layer has to be in
+        a metric projected coordinate system.
+        """
+        alg_params = {
+            "AS_PERCENT": False,
+            "BAND": 1,
+            "COMPUTE_EDGES": False,
+            "EXTRA": "",
+            "INPUT": dem,
+            "OPTIONS": "",
+            "SCALE": 1,
+            "ZEVENBERGEN": False,
+            "OUTPUT": QgsProcessing.TEMPORARY_OUTPUT,
+        }
+        return processing.run(
+            "gdal:slope",
+            alg_params,
+            context=self.context,
+            feedback=self.feedback,
+            is_child_algorithm=True,
+        )["OUTPUT"]
 
-        # # Merge
-        # alg_params = {
-        #     "DATA_TYPE": 4,
-        #     "EXTRA": "",
-        #     "INPUT": QgsExpression(
-        #         "array( @Forest_classification_OUTPUT , @Hazard_classification_OUTPUT , @Slope_classification_OUTPUT )"  # noqa
-        #     ).evaluate(),
-        #     "NODATA_INPUT": None,
-        #     "NODATA_OUTPUT": None,
-        #     "OPTIONS": "",
-        #     "PCT": True,
-        #     "SEPARATE": True,
-        #     "OUTPUT": QgsProcessing.TEMPORARY_OUTPUT,
-        # }
-        # outputs["Merge"] = processing.run(
-        #     "gdal:merge",
-        #     alg_params,
-        #     context=context,
-        #     feedback=feedback,
-        #     is_child_algorithm=True,
-        # )
-
-        # feedback.setCurrentStep(11)
-        # if feedback.isCanceled():
-        #     return {}
-
-        # # Raster calculator
-        # alg_params = {
-        #     "BAND_A": 1,
-        #     "BAND_B": 2,
-        #     "BAND_C": 3,
-        #     "BAND_D": None,
-        #     "BAND_E": None,
-        #     "BAND_F": None,
-        #     "EXTRA": "",
-        #     "FORMULA": QgsExpression(
-        #         "concat('A*', to_string(@WeightforVegetation) ,' + B*', to_string(@WeightforMultiHazardRisk) ,' + C*',  to_string(@WeightforElevation) )"  # noqa
-        #     ).evaluate(),
-        #     "INPUT_A": outputs["Merge"]["OUTPUT"],
-        #     "INPUT_B": outputs["Merge"]["OUTPUT"],
-        #     "INPUT_C": outputs["Merge"]["OUTPUT"],
-        #     "INPUT_D": None,
-        #     "INPUT_E": None,
-        #     "INPUT_F": None,
-        #     "NO_DATA": None,
-        #     "OPTIONS": "",
-        #     "RTYPE": 5,
-        #     "OUTPUT": QgsProcessing.TEMPORARY_OUTPUT,
-        # }
-        # outputs["RasterCalculator"] = processing.run(
-        #     "gdal:rastercalculator",
-        #     alg_params,
-        #     context=context,
-        #     feedback=feedback,
-        #     is_child_algorithm=True,
-        # )
-
-        # feedback.setCurrentStep(12)
-        # if feedback.isCanceled():
-        #     return {}
-
-        # # Clip raster by mask layer
-        # alg_params = {
-        #     "ALPHA_BAND": False,
-        #     "CROP_TO_CUTLINE": True,
-        #     "DATA_TYPE": 0,
-        #     "EXTRA": "",
-        #     "INPUT": outputs["RasterCalculator"]["OUTPUT"],
-        #     "KEEP_RESOLUTION": False,
-        #     "MASK": outputs["FixGeometries"]["OUTPUT"],
-        #     "MULTITHREADING": False,
-        #     "NODATA": None,
-        #     "OPTIONS": "",
-        #     "SET_RESOLUTION": False,
-        #     "SOURCE_CRS": None,
-        #     "TARGET_CRS": parameters["CRS"],
-        #     "X_RESOLUTION": None,
-        #     "Y_RESOLUTION": None,
-        #     "OUTPUT": parameters["EnvironmentalSuitability"],
-        # }
-        # outputs["ClipRasterByMaskLayer"] = processing.run(
-        #     "gdal:cliprasterbymasklayer",
-        #     alg_params,
-        #     context=context,
-        #     feedback=feedback,
-        #     is_child_algorithm=True,
-        # )
-        # results["EnvironmentalSuitability"] = outputs["ClipRasterByMaskLayer"]["OUTPUT"]  # noqa
-        # return results
+    def _classify_by_slope(self, dem: QgsRasterLayer) -> QgsRasterLayer:
+        """
+        Classify DEM layer from suitable (1) to unsuitable (4) and in between,
+        based on the slope in the model. The layer has to be in
+        a metric projected coordinate system.
+        """
+        slope = self._calculate_slope(dem)
+        expression = "1*(A<1) + 2*(A>=1)*(A<10) + 3*(A>=10)*(A<20) + 4*(A>=20)"
+        alg_params = {
+            "BAND_A": 1,
+            "EXTRA": "",
+            "FORMULA": expression,
+            "INPUT_A": slope,
+            "NO_DATA": None,
+            "OPTIONS": "",
+            "RTYPE": 1,
+            "OUTPUT": QgsProcessing.TEMPORARY_OUTPUT,
+        }
+        return processing.run(
+            "gdal:rastercalculator",
+            alg_params,
+            context=self.context,
+            feedback=self.feedback,
+            is_child_algorithm=True,
+        )["OUTPUT"]
 
     def name(self):
         return "Environmental suitability"

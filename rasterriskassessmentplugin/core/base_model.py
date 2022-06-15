@@ -453,28 +453,35 @@ class BaseModel(QgsProcessingAlgorithm):
         )["OUTPUT"]
 
     def _classify_by_threshold(
-        self, input: QgsRasterLayer, threshold: int, invert: bool = False
+        self,
+        input: QgsRasterLayer,
+        threshold: int,
+        invert: bool = False,
+        nodata_suitability: int = 4,
     ) -> QgsRasterLayer:
         """
-        Classify raster to suitable (1) or unsuitable (4) by threshold value.
+        Classify raster to suitable (1) or unsuitable (4) by threshold value. Also
+        the suitability value for nodata pixels can be set. By default, nodata
+        pixels are considered unsuitable.
         """
         # returns 0 (below 100) or 1 (above 100). However, nodata values will be
         # set to default 8bit nodata, i.e. 255!
         # vs. original algorithm had rtype=4 (Int32), which has nodata value -2147483647
-        expression = f"A < {threshold}" if invert else f"A > {threshold}"
+        # expression = f"A < {threshold}" if invert else f"A > {threshold}"
         # invert: False returns 0 (below 100) or 1 (above 100) or 4 (zero density)
         # invert: True returns 0 (above 100) or 1 (below 100) or 4 (zero density)
         # 0 will always be the best, i.e. the result is opposite to that intended!!
         # Nodata will always be the worst.
+        if invert:
+            expression = f"(A < {threshold}) + 4*(A >= {threshold})"
+        else:
+            expression = f"(A >= {threshold}) + 4*(A < {threshold})"
         alg_params = {
             "BAND_A": 1,
             "EXTRA": "",
             "FORMULA": expression,
             "INPUT_A": input,
             "NO_DATA": 0,
-            # None-setting will result in three index values (0, 1 and 4)
-            # after setting nodata to 4 in next step.
-            # Is this intentional??
             "OPTIONS": "",
             "RTYPE": 0,  # We don't want a huge 32bit geotiff
             "OUTPUT": QgsProcessing.TEMPORARY_OUTPUT,
@@ -486,7 +493,7 @@ class BaseModel(QgsProcessingAlgorithm):
             feedback=self.feedback,
             is_child_algorithm=True,
         )["OUTPUT"]
-        filled_and_thresholded = self._fill_nodata(thresholded, 4)
+        filled_and_thresholded = self._fill_nodata(thresholded, nodata_suitability)
         return filled_and_thresholded
 
     def _classify_by_value(self, layer: QgsRasterLayer) -> QgsRasterLayer:
