@@ -204,6 +204,49 @@ class BaseModel(QgsProcessingAlgorithm):
             is_child_algorithm=True,
         )["OUTPUT"]
 
+    def _get_layer_statistics(self, layer: QgsRasterLayer) -> Dict[str, float]:
+        """
+        Get raster layer statistics.
+        """
+        alg_params = {
+            "BAND": 1,
+            "INPUT": layer,
+        }
+        statistics = processing.run(
+            "native:rasterlayerstatistics",
+            alg_params,
+            context=self.context,
+            feedback=self.feedback,
+            is_child_algorithm=True,
+        )
+        return statistics
+
+    def _normalize_layer(self, layer: QgsRasterLayer) -> QgsRasterLayer:
+        """
+        Scale layer to 0...1.
+        """
+        statistics = self._get_layer_statistics(layer)
+        min = statistics["MIN"]
+        max = statistics["MAX"]
+        expression = f"(A - {min})/({max} - {min})"
+        alg_params = {
+            "BAND_A": 1,
+            "EXTRA": "",
+            "FORMULA": expression,
+            "INPUT_A": layer,
+            "NO_DATA": None,
+            "OPTIONS": "",
+            "RTYPE": 5,
+            "OUTPUT": QgsProcessing.TEMPORARY_OUTPUT,
+        }
+        return processing.run(
+            "gdal:rastercalculator",
+            alg_params,
+            context=self.context,
+            feedback=self.feedback,
+            is_child_algorithm=True,
+        )["OUTPUT"]
+
     def _merge_layers(
         self,
         layers: List[QgsRasterLayer],
@@ -254,7 +297,7 @@ class BaseModel(QgsProcessingAlgorithm):
             "FORMULA": sum_expression,
             **input_params,
             "NO_DATA": None,
-            "OPTIONS": "hideNoData",
+            "OPTIONS": "",
             "RTYPE": 5,
             "OUTPUT": write_to_layer
             if write_to_layer
@@ -348,11 +391,13 @@ class BaseModel(QgsProcessingAlgorithm):
         min_distance: float,
         max_distance: float,
         further_is_better: bool = False,
+        too_close_classification: int = 4,
+        too_far_classification: int = 4,
     ) -> QgsRasterLayer:
         """
         Returns area classification raster around location raster input. Input
         layer is assumed to be in a projected CRS with units in meters. Points within
-        min_distance or outside max_distance will be given classification 4.
+        min_distance or outside max_distance will be given fixed classification.
 
         input: Raster layer in a projected CRS to classify.
         min_distance: Minimum acceptable distance in meters for classification 1-3.
@@ -363,24 +408,14 @@ class BaseModel(QgsProcessingAlgorithm):
         # concentric buffers around input non-zero pixels will have different
         # suitability values
         too_close = f"(A <= {min_distance})"
-        self.feedback.pushInfo(too_close)
         close = f"(A > {min_distance})*(A <= {max_distance/3})"
-        self.feedback.pushInfo(close)
         medium = f"(A > {max_distance/3})*(A < 2*{max_distance}/3)"
-        self.feedback.pushInfo(medium)
         far = f"(A >= 2*{max_distance/3})*(A < {max_distance})"
-        self.feedback.pushInfo(far)
         too_far = f"(A >= {max_distance})"
-        self.feedback.pushInfo(too_far)
         if further_is_better:
-            expression = (
-                f"4*{too_close} + 3*{close} + 2*{medium} + 1*{far} + 4*{too_far}"
-            )
+            expression = f"{too_close_classification}*{too_close} + 3*{close} + 2*{medium} + 1*{far} + {too_far_classification}*{too_far}"  # noqa
         else:
-            expression = (
-                f"4*{too_close} + 1*{close} + 2*{medium} + 3*{far} + 4*{too_far}"
-            )
-        self.feedback.pushInfo(expression)
+            expression = f"{too_close_classification}*{too_close} + 1*{close} + 2*{medium} + 3*{far} + {too_far_classification}*{too_far}"  # noqa
         alg_params = {
             "BAND_A": 1,
             "EXTRA": "",
@@ -389,6 +424,100 @@ class BaseModel(QgsProcessingAlgorithm):
             "NO_DATA": None,  # The result will not have nodata pixels
             "OPTIONS": "",
             "RTYPE": 4,
+            "OUTPUT": QgsProcessing.TEMPORARY_OUTPUT,
+        }
+        return processing.run(
+            "gdal:rastercalculator",
+            alg_params,
+            context=self.context,
+            feedback=self.feedback,
+            is_child_algorithm=True,
+        )["OUTPUT"]
+
+    def _fill_nodata(self, input: QgsRasterLayer, value: int) -> QgsRasterLayer:
+        """
+        Fill nodata values with desired value.
+        """
+        alg_params = {
+            "BAND": 1,
+            "FILL_VALUE": value,
+            "INPUT": input,
+            "OUTPUT": QgsProcessing.TEMPORARY_OUTPUT,
+        }
+        return processing.run(
+            "native:fillnodata",
+            alg_params,
+            context=self.context,
+            feedback=self.feedback,
+            is_child_algorithm=True,
+        )["OUTPUT"]
+
+    def _classify_by_threshold(
+        self,
+        input: QgsRasterLayer,
+        threshold: int,
+        invert: bool = False,
+        nodata_suitability: int = 4,
+    ) -> QgsRasterLayer:
+        """
+        Classify raster to suitable (1) or unsuitable (4) by threshold value. Also
+        the suitability value for nodata pixels can be set. By default, nodata
+        pixels are considered unsuitable.
+        """
+        # returns 0 (below 100) or 1 (above 100). However, nodata values will be
+        # set to default 8bit nodata, i.e. 255!
+        # vs. original algorithm had rtype=4 (Int32), which has nodata value -2147483647
+        # expression = f"A < {threshold}" if invert else f"A > {threshold}"
+        # invert: False returns 0 (below 100) or 1 (above 100) or 4 (zero density)
+        # invert: True returns 0 (above 100) or 1 (below 100) or 4 (zero density)
+        # 0 will always be the best, i.e. the result is opposite to that intended!!
+        # Nodata will always be the worst.
+        if invert:
+            expression = f"(A < {threshold}) + 4*(A >= {threshold})"
+        else:
+            expression = f"(A >= {threshold}) + 4*(A < {threshold})"
+        alg_params = {
+            "BAND_A": 1,
+            "EXTRA": "",
+            "FORMULA": expression,
+            "INPUT_A": input,
+            "NO_DATA": 0,
+            "OPTIONS": "",
+            "RTYPE": 0,  # We don't want a huge 32bit geotiff
+            "OUTPUT": QgsProcessing.TEMPORARY_OUTPUT,
+        }
+        thresholded = processing.run(
+            "gdal:rastercalculator",
+            alg_params,
+            context=self.context,
+            feedback=self.feedback,
+            is_child_algorithm=True,
+        )["OUTPUT"]
+        filled_and_thresholded = self._fill_nodata(thresholded, nodata_suitability)
+        return filled_and_thresholded
+
+    def _classify_by_value(self, layer: QgsRasterLayer) -> QgsRasterLayer:
+        """
+        Classify raster from suitable (1) to unsuitable (4) and in between,
+        dividing positive value range to four parts.
+        """
+        # First we need layer statistics
+        statistics = self._get_layer_statistics(layer)
+        min = statistics["MIN"]
+        max = statistics["MAX"]
+        scale = 4
+        # Use the ceiling function to get the scale 1 to 4.
+        # However, index values of exactly zero must be handled separately to
+        # map to 1.
+        expression = f"ceil({scale}*(A - {min})/({max} - {min}))*(A > 0) + (A == 0)"
+        alg_params = {
+            "BAND_A": 1,
+            "EXTRA": "",
+            "FORMULA": expression,
+            "INPUT_A": layer,
+            "NO_DATA": None,
+            "OPTIONS": "",
+            "RTYPE": 5,
             "OUTPUT": QgsProcessing.TEMPORARY_OUTPUT,
         }
         return processing.run(

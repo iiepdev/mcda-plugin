@@ -1908,14 +1908,14 @@
           </widget>
          </item>
          <item row="1" column="0">
-          <widget class="QLabel" name="label_infra_crs">
+          <widget class="QLabel" name="label_env_crs">
            <property name="text">
             <string>Local projected coordinate system:</string>
            </property>
           </widget>
          </item>
          <item row="1" column="1">
-          <widget class="QgsProjectionSelectionWidget" name="infra_crs_widget" native="true">
+          <widget class="QgsProjectionSelectionWidget" name="env_crs_widget" native="true">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -2029,7 +2029,7 @@
           </widget>
          </item>
          <item row="1" column="3">
-          <widget class="QgsDoubleSpinBox" name="mQgsDoubleSpinBox_10">
+          <widget class="QgsDoubleSpinBox" name="env_dbl_spn_bx_hri_weight">
            <property name="suffix">
             <string> %</string>
            </property>
@@ -2039,7 +2039,7 @@
           </widget>
          </item>
          <item row="2" column="3">
-          <widget class="QgsDoubleSpinBox" name="mQgsDoubleSpinBox_11">
+          <widget class="QgsDoubleSpinBox" name="env_dbl_spn_bx_dem_weight">
            <property name="suffix">
             <string> %</string>
            </property>
@@ -2056,7 +2056,7 @@
           </widget>
          </item>
          <item row="3" column="3">
-          <widget class="QgsDoubleSpinBox" name="mQgsDoubleSpinBox_12">
+          <widget class="QgsDoubleSpinBox" name="env_dbl_spn_bx_forest_weight">
            <property name="suffix">
             <string> %</string>
            </property>
