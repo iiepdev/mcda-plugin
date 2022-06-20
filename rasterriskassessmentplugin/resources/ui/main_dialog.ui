@@ -144,7 +144,7 @@
     </sizepolicy>
    </property>
    <property name="currentIndex">
-    <number>4</number>
+    <number>3</number>
    </property>
    <widget class="QWidget" name="hazard_risk_index">
     <layout class="QVBoxLayout" name="hazard_risk_vlayout">
@@ -2003,14 +2003,14 @@
          <item row="0" column="3">
           <widget class="QLabel" name="label_29">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
            <property name="minimumSize">
             <size>
-             <width>0</width>
+             <width>60</width>
              <height>20</height>
             </size>
            </property>
@@ -2030,6 +2030,18 @@
          </item>
          <item row="1" column="3">
           <widget class="QgsDoubleSpinBox" name="env_dbl_spn_bx_hri_weight">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>60</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="suffix">
             <string> %</string>
            </property>
@@ -2040,6 +2052,18 @@
          </item>
          <item row="2" column="3">
           <widget class="QgsDoubleSpinBox" name="env_dbl_spn_bx_dem_weight">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>60</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="suffix">
             <string> %</string>
            </property>
@@ -2057,6 +2081,18 @@
          </item>
          <item row="3" column="3">
           <widget class="QgsDoubleSpinBox" name="env_dbl_spn_bx_forest_weight">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>60</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="suffix">
             <string> %</string>
            </property>
@@ -2067,6 +2103,12 @@
          </item>
          <item row="1" column="2">
           <widget class="QgsMapLayerComboBox" name="env_map_layer_cmb_bx_hri">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="minimumSize">
             <size>
              <width>260</width>
@@ -2083,6 +2125,12 @@
          </item>
          <item row="2" column="2">
           <widget class="QgsMapLayerComboBox" name="env_map_layer_cmb_bx_dem">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="minimumSize">
             <size>
              <width>260</width>
@@ -2099,6 +2147,12 @@
          </item>
          <item row="3" column="2">
           <widget class="QgsMapLayerComboBox" name="env_map_layer_cmb_bx_forest">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="minimumSize">
             <size>
              <width>260</width>
@@ -2359,14 +2413,14 @@
          <item row="1" column="2">
           <widget class="QLabel" name="label_37">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
            <property name="minimumSize">
             <size>
-             <width>40</width>
+             <width>60</width>
              <height>20</height>
             </size>
            </property>
@@ -2386,10 +2440,16 @@
          </item>
          <item row="2" column="2">
           <widget class="QgsDoubleSpinBox" name="mcda_dbl_spn_bx_env_weight">
-           <property name="minimumSize">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
             <size>
-             <width>40</width>
-             <height>0</height>
+             <width>60</width>
+             <height>16777215</height>
             </size>
            </property>
            <property name="suffix">
@@ -2402,10 +2462,16 @@
          </item>
          <item row="3" column="2">
           <widget class="QgsDoubleSpinBox" name="mcda_dbl_spn_bx_econ_weight">
-           <property name="minimumSize">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
             <size>
-             <width>40</width>
-             <height>0</height>
+             <width>60</width>
+             <height>16777215</height>
             </size>
            </property>
            <property name="suffix">
@@ -2425,10 +2491,16 @@
          </item>
          <item row="4" column="2">
           <widget class="QgsDoubleSpinBox" name="mcda_dbl_spn_bx_infra_weight">
-           <property name="minimumSize">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
             <size>
-             <width>40</width>
-             <height>0</height>
+             <width>60</width>
+             <height>16777215</height>
             </size>
            </property>
            <property name="suffix">
@@ -2441,9 +2513,15 @@
          </item>
          <item row="2" column="1">
           <widget class="QgsMapLayerComboBox" name="mcda_map_layer_cmb_bx_env">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="minimumSize">
             <size>
-             <width>300</width>
+             <width>260</width>
              <height>0</height>
             </size>
            </property>
@@ -2457,9 +2535,15 @@
          </item>
          <item row="3" column="1">
           <widget class="QgsMapLayerComboBox" name="mcda_map_layer_cmb_bx_econ">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="minimumSize">
             <size>
-             <width>300</width>
+             <width>260</width>
              <height>0</height>
             </size>
            </property>
@@ -2473,9 +2557,15 @@
          </item>
          <item row="4" column="1">
           <widget class="QgsMapLayerComboBox" name="mcda_map_layer_cmb_bx_infra">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="minimumSize">
             <size>
-             <width>300</width>
+             <width>260</width>
              <height>0</height>
             </size>
            </property>
