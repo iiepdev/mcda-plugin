@@ -23,3 +23,11 @@ class Mcda(CombineRasters):
 
     def createInstance(self):  # noqa: N802
         return Mcda()
+
+    @classmethod
+    def shortHelpString(cls):  # noqa: N802
+        return """<html><body><h2>Algorithm description</h2>
+<p> Help menu to be added... </p>
+<h2>Input parameters</h2>
+<h2>Outputs</h2>
+<br><p align="right">Algorithm author: Development unit at IIEP-UNESCO (development@iiep.unesco.org)</p><p align="right">Help author: Development unit at IIEP-UNESCO (development@iiep.unesco.org)</p><p align="right">Algorithm version: 1.0</p></body></html>"""  # noqa

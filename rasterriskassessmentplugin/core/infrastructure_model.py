@@ -210,3 +210,7 @@ class InfrastructureSuitability(BaseModel):
 
     def createInstance(self):  # noqa: N802
         return InfrastructureSuitability()
+
+    @classmethod
+    def shortHelpString(cls):  # noqa: N802
+        return ""
