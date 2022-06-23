@@ -21,9 +21,6 @@ class Mcda(CombineRasters):
     def groupId(self):  # noqa: N802
         return "Multi-criteria decision analysis"
 
-    def createInstance(self):  # noqa: N802
-        return Mcda()
-
     @classmethod
     def shortHelpString(cls):  # noqa: N802
         return """<html><body><h2>Algorithm description</h2>
@@ -31,3 +28,6 @@ class Mcda(CombineRasters):
 <h2>Input parameters</h2>
 <h2>Outputs</h2>
 <br><p align="right">Algorithm author: Development unit at IIEP-UNESCO (development@iiep.unesco.org)</p><p align="right">Help author: Development unit at IIEP-UNESCO (development@iiep.unesco.org)</p><p align="right">Algorithm version: 1.0</p></body></html>"""  # noqa
+
+    def createInstance(self):  # noqa: N802
+        return Mcda()
