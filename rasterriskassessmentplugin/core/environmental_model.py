@@ -222,30 +222,50 @@ class EnvironmentalSuitability(BaseModel):
     @classmethod
     def shortHelpString(cls):  # noqa: N802
         return """<html><body><h2>Algorithm description</h2>
-<p>This algorithm creates a composite environmental suitability index for educational infrastructure in a particular region. It considers the suitability of a location depending on the hazard index of the area, the slope, and the existence of very dense forests (or other environments that might not be considered to be the most adequate for school construction, such as desert or tundra). The user can define custom weights for each input. The result produces a raster ranging from 1 to 4, where 1 is Less suitable and 4 is More suitable.</p>
+<p>This algorithm creates a composite environmental suitability 
+index for educational infrastructure in a particular region. It 
+considers the suitability of a location depending on the hazard 
+index of the area, the slope, and the existence of very dense 
+forests (or other environments that might not be considered to 
+be the most adequate for school construction, such as desert or 
+tundra). The user can define custom weights for each input. The 
+result produces a raster ranging from 1 to 4, where 1 is Less 
+suitable and 4 is More suitable.</p>
 <h2>Input parameters</h2>
 <h3>Multi-Hazard Risk</h3>
-<p>Raster layer ranging from 1 (Less risky) to 4 (More risky), produced by the Hazard index algorithm.</p>
+<p>Raster layer ranging from 1 (Less risky) to 4 (More risky), 
+produced by the Hazard index algorithm.</p>
 <h3>Weight for Multi-Hazard Risk</h3>
-<p>Make sure that the sum of "Weight for Multi-Hazard Risk", "Weight for Elevation", and "Weight for Vegetation" is equal to 100%.</p>
+<p>Make sure that the sum of "Weight for Multi-Hazard Risk", 
+"Weight for Elevation", and "Weight for Vegetation" is equal 
+to 100%.</p>
 <h3>Digital Elevation Model</h3>
 <p>Raster containing the elevation in meters for the area of interest.</p>
 <h3>Weight for Elevation</h3>
-<p>Make sure that the sum of "Weight for Multi-Hazard Risk", "Weight for Elevation", and "Weight for Vegetation" is equal to 100%.</p>
+<p>Make sure that the sum of "Weight for Multi-Hazard Risk", 
+"Weight for Elevation", and "Weight for Vegetation" is equal to 100%.</p>
 <h3>Forest/ Vegetation</h3>
-<p>Binary raster layer indicating the areas unsuitable for school construction because of the presence of dense forest (marked with 1) or areas without dense forest (marked with 0). Note that this parameter can be used for other types of deemed unsuitable terrains (e.g., sandy deserts, tundra).</p>
+<p>Binary raster layer indicating the areas unsuitable for school construction 
+because of the presence of dense forest (marked with 1) or areas without 
+dense forest (marked with 0). Note that this parameter can be used for other 
+types of deemed unsuitable terrains (e.g., sandy deserts, tundra).</p>
 <h3>Weight for Vegetation</h3>
-<p>Make sure that the sum of "Weight for Multi-Hazard Risk", "Weight for Elevation", and "Weight for Vegetation" is equal to 100%.</p>
+<p>Make sure that the sum of "Weight for Multi-Hazard Risk", 
+"Weight for Elevation", and "Weight for Vegetation" is equal to 100%.</p>
 <h3>Site Area (vector)</h3>
 <p>A polygon vector layer delimiting the area of analysis.</p>
 <h3>Environmental suitability</h3>
 <p>Raster layer ranging from 1 (More suitable) to 4 (Less suitable).</p>
 <h3>Projected reference system</h3>
-<p>Select a local projected reference system. Note that failing to do so might lead to inaccuracies when calculations are performed far from the equator. </p>
+<p>Select a local projected reference system. Note that failing to do so 
+might lead to inaccuracies when calculations are performed far from the 
+equator. </p>
 <h2>Outputs</h2>
 <h3>Environmental suitability</h3>
 <p>Raster layer ranging from 1 (More suitable) to 4 (Less suitable).</p>
-<br><p>Algorithm author: Development team (development@iiep.unesco.org)</p><p>Help author: Development team (development@iiep.unesco.org)</p><p>Algorithm version: 1.0</p></body></html>
+<br><p>Algorithm author: Development team (development@iiep.unesco.org)</p>
+<p>Help author: Development team (development@iiep.unesco.org)</p>
+<p>Algorithm version: 1.0</p></body></html>
 """
 
     def createInstance(self):  # noqa: N802

@@ -198,36 +198,74 @@ class EconomicSuitability(BaseModel):
     @classmethod
     def shortHelpString(cls):  # noqa: N802
         return """<html><body><h2>Algorithm description</h2>
-<p>This algorithm creates a composite economic suitability index for the education system of a particular region. It considers the suitability of a location depending on its proximity to the road network and to waterways. The user can define custom weights for each input. The result produces a raster ranging from 1 to 4, where 1 is Less suitable and 4 is More suitable.</p>
+<p>This algorithm creates a composite economic suitability 
+index for the education system of a particular region. It 
+considers the suitability of a location depending on its 
+proximity to the road network and to waterways. The user can 
+define custom weights for each input. The result produces a 
+raster ranging from 1 to 4, where 1 is Less suitable and 4 is 
+More suitable.</p>
 <h2>Input parameters</h2>
 <h3>Roads</h3>
-<p>A vector layer containing the road network for a particular region. The program assumes that all roads are equally useful for learners to go to school, so the user should only include those that suit this use before using this algorithm. The use of OpenStreetMap is encouraged when possible.</p>
+<p>A vector layer containing the road network for a particular 
+region. The program assumes that all roads are equally useful 
+for learners to go to school, so the user should only include 
+those that suit this use before using this algorithm. The use 
+of OpenStreetMap is encouraged when possible.</p>
 <h3>Maximum suitable distance to a road</h3>
-<p>Positive number describing the maximum Euclidian distance from the road where a school can be (or still be) considered a suitable location. If no such distance exists, the user can input a very large number.</p>
+<p>Positive number describing the maximum Euclidian distance 
+from the road where a school can be (or still be) considered a 
+suitable location. If no such distance exists, the user can input 
+a very large number.</p>
 <h3>Minimum suitable distance to the road</h3>
-<p>Positive number describing the minimum Euclidian distance from the road a school can be (or still be) considered a suitable location. If no such distance exists, the user can input 0.</p>
-<h3>Are locations close to roads more suitable than locations further away from roads?</h3>
-<p>This dichotomous option will take the suitable range (between the minimum and maximum distance from the road specified above) and determine whether high suitability should start closer or further to the road network. An illustrated example of this is presented in Figure 15 of  Vargas Mesa, Sheldon, Gagnon (forthcoming).</p>
+<p>Positive number describing the minimum Euclidian distance from 
+the road a school can be (or still be) considered a suitable location. 
+If no such distance exists, the user can input 0.</p>
+<h3>Are locations close to roads more suitable than locations further 
+away from roads?</h3>
+<p>This dichotomous option will take the suitable range (between the 
+minimum and maximum distance from the road specified above) and determine 
+whether high suitability should start closer or further to the road network. 
+An illustrated example of this is presented in Figure 15 of  Vargas Mesa, 
+Sheldon, Gagnon (forthcoming).</p>
 <h3>Weight for the road sub-component</h3>
-<p>Make sure that the sum of "Weight for the road sub-component" and "Weight for waterways sub-component" is equal to 100%.</p>
+<p>Make sure that the sum of "Weight for the road sub-component" and "Weight 
+for waterways sub-component" is equal to 100%.</p>
 <h3>Waterways</h3>
-<p>A vector layer containing the waterways network for a particular region. The program assumes that all waterways are equally useful for learners to go to school, fetching water, etc., so the user should only include those that suit this use before using this algorithm. The use of OpenStreetMap is encouraged when possible.</p>
+<p>A vector layer containing the waterways network for a particular region. 
+The program assumes that all waterways are equally useful for learners to go 
+to school, fetching water, etc., so the user should only include those that 
+suit this use before using this algorithm. The use of OpenStreetMap is 
+encouraged when possible.</p>
 <h3>Maximum suitable distance to a waterway</h3>
-<p>Positive number describing the maximum Euclidian distance from the waterway a school can be to still be considered a suitable condition. If no such distance exists, the user can input a very large number. </p>
+<p>Positive number describing the maximum Euclidian distance from the waterway 
+a school can be to still be considered a suitable condition. If no such distance 
+exists, the user can input a very large number. </p>
 <h3>Minimum suitable distance to a waterway</h3>
-<p>Positive number describing the minimum Euclidian distance from the waterway a school can be to still be considered a suitable condition. If no such distance exists, the user can input 0.</p>
-<h3>Are locations close to waterways more suitable than locations further away from waterways?</h3>
-<p>This dichotomous option will take the suitable range (between the minimum and maximum distance from the waterway specified above) and determine whether suitability should start closer or further to the waterway network. An illustrated example of this is presented in Figure 15 of Vargas Mesa, Sheldon, Gagnon (forthcoming).</p>
+<p>Positive number describing the minimum Euclidian distance from the waterway a 
+school can be to still be considered a suitable condition. If no such distance 
+exists, the user can input 0.</p>
+<h3>Are locations close to waterways more suitable than locations further 
+away from waterways?</h3>
+<p>This dichotomous option will take the suitable range (between the minimum 
+and maximum distance from the waterway specified above) and determine whether 
+suitability should start closer or further to the waterway network. An illustrated 
+example of this is presented in Figure 15 of Vargas Mesa, Sheldon, 
+Gagnon (forthcoming).</p>
 <h3>Weight for the waterways sub-component</h3>
-<p>Make sure that the sum of "Weight for the road sub-component" and "Weight for waterways sub-component" is equal to 100%.</p>
+<p>Make sure that the sum of "Weight for the road sub-component" and "Weight for 
+waterways sub-component" is equal to 100%.</p>
 <h3>Area of analysis</h3>
 <p>A polygon vector layer delimiting the area of analysis.</p>
 <h3>Projected reference system</h3>
-<p>Select a local projected reference system. Note that failing to do so might lead to inaccuracies when calculations are performed far from the equator. </p>
+<p>Select a local projected reference system. Note that failing to do so might 
+lead to inaccuracies when calculations are performed far from the equator. </p>
 <h2>Outputs</h2>
 <h3>Economic suitability</h3>
 <p>Raster layer ranging from 1 (More suitable) to 4 (Less suitable)</p>
-<br><p>Algorithm author: Development team (development@iiep.unesco.org)</p><p>Help author: Development team (development@iiep.unesco.org)</p><p>Algorithm version: 1.0</p></body></html>"""
+<br><p>Algorithm author: Development team (development@iiep.unesco.org)</p>
+<p>Help author: Development team (development@iiep.unesco.org)</p>
+<p>Algorithm version: 1.0</p></body></html>"""
 
     def helpUrl(self):  # noqa: N802
         return (
