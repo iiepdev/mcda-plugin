@@ -13,24 +13,6 @@ class Panels(enum.Enum):
     # Note that we cannot use the same icon twice!
     # The icon serves as the enum here. Reusing an icon
     # will redefine the enum, not create a new one.
-    # HazardRiskIndex = {"icon": "/mActionMapSettings.svg"}
-    # Infrastructure = {"icon": "/mIconPolygonLayer.svg"}
-    # EconomicSuitability = {"icon": "/mIconLineLayer.svg"}
-    # EnvironmentalSuitability = {"icon": "/mIconRaster.svg"}
-    # MultiCriteriaSuitability = {"icon": "/mActionShowRasterCalculator.png"}
-    # Help = {"icon": "/mActionHelpContents.svg"}
-    # About = {"icon": "/mIconInfo.svg"}
-    """HazardRiskIndex = {"icon": "hazardIndex2.png"}
-    Infrastructure = {"icon": "infra2optimized.svg"}
-    EconomicSuitability = {"icon": "g3825.png"}
-    EnvironmentalSuitability = {"icon": "environmental2.svg"}
-    MultiCriteriaSuitability = {"icon": "help2help.svg"}
-    Help = {"icon": "iiepLogo2plain.svg"}
-    About = {"icon": "contactUS2.svg"}"""
-
-    # Note that we cannot use the same icon twice!
-    # The icon serves as the enum here. Reusing an icon
-    # will redefine the enum, not create a new one.
     HazardRiskIndex = {"icon": "hri.png"}
     Infrastructure = {"icon": "infrastructure.png"}
     EconomicSuitability = {"icon": "economic.png"}
