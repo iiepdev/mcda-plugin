@@ -144,7 +144,7 @@
     </sizepolicy>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>5</number>
    </property>
    <widget class="QWidget" name="hazard_risk_index">
     <layout class="QVBoxLayout" name="hazard_risk_vlayout">
@@ -210,7 +210,7 @@
              <height>16</height>
             </size>
            </property>
-           <property name="allowEmptyLayer" stdset="0">
+           <property name="allowEmptyLayer">
             <bool>true</bool>
            </property>
           </widget>
@@ -248,7 +248,7 @@
              <height>16</height>
             </size>
            </property>
-           <property name="allowEmptyLayer" stdset="0">
+           <property name="allowEmptyLayer">
             <bool>true</bool>
            </property>
           </widget>
@@ -292,7 +292,7 @@
          <rect>
           <x>10</x>
           <y>30</y>
-          <width>541</width>
+          <width>549</width>
           <height>280</height>
          </rect>
         </property>
@@ -761,7 +761,7 @@
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="QgsFileWidget" name="hri_save_hri_file_widget" native="true"/>
+          <widget class="QgsFileWidget" name="hri_save_hri_file_widget"/>
          </item>
          <item row="1" column="0">
           <widget class="QLabel" name="label_10">
@@ -771,7 +771,7 @@
           </widget>
          </item>
          <item row="1" column="1">
-          <widget class="QgsFileWidget" name="hri_save_hri_schools_file_widget" native="true"/>
+          <widget class="QgsFileWidget" name="hri_save_hri_schools_file_widget"/>
          </item>
         </layout>
        </widget>
@@ -1025,7 +1025,7 @@
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="QgsProjectionSelectionWidget" name="infra_crs_widget" native="true">
+          <widget class="QgsProjectionSelectionWidget" name="infra_crs_widget">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -1226,7 +1226,7 @@
         </property>
         <layout class="QGridLayout" name="gridLayout_12">
          <item row="0" column="1">
-          <widget class="QgsFileWidget" name="infra_file_wdgt_save_output" native="true"/>
+          <widget class="QgsFileWidget" name="infra_file_wdgt_save_output"/>
          </item>
          <item row="0" column="0">
           <widget class="QLabel" name="label_23">
@@ -1542,7 +1542,7 @@
           </widget>
          </item>
          <item row="1" column="1">
-          <widget class="QgsProjectionSelectionWidget" name="econ_crs_widget" native="true">
+          <widget class="QgsProjectionSelectionWidget" name="econ_crs_widget">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -1768,7 +1768,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QgsFileWidget" name="econ_file_wdgt_save_output" native="true"/>
+          <widget class="QgsFileWidget" name="econ_file_wdgt_save_output"/>
          </item>
         </layout>
        </widget>
@@ -1915,7 +1915,7 @@
           </widget>
          </item>
          <item row="1" column="1">
-          <widget class="QgsProjectionSelectionWidget" name="env_crs_widget" native="true">
+          <widget class="QgsProjectionSelectionWidget" name="env_crs_widget">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -2200,7 +2200,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QgsFileWidget" name="env_file_wdgt_save_output" native="true">
+          <widget class="QgsFileWidget" name="env_file_wdgt_save_output">
            <property name="minimumSize">
             <size>
              <width>80</width>
@@ -2318,7 +2318,7 @@
          <rect>
           <x>10</x>
           <y>30</y>
-          <width>541</width>
+          <width>550</width>
           <height>171</height>
          </rect>
         </property>
@@ -2610,7 +2610,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QgsFileWidget" name="mcda_file_wdgt_save_output" native="true">
+          <widget class="QgsFileWidget" name="mcda_file_wdgt_save_output">
            <property name="minimumSize">
             <size>
              <width>80</width>
@@ -2711,20 +2711,26 @@
     </layout>
    </widget>
    <widget class="QWidget" name="help">
-    <widget class="QWidget" name="layoutWidget">
+    <widget class="QWidget" name="">
      <property name="geometry">
       <rect>
-       <x>20</x>
-       <y>80</y>
-       <width>601</width>
-       <height>501</height>
+       <x>21</x>
+       <y>42</y>
+       <width>541</width>
+       <height>541</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_8">
+       <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
          <widget class="QLabel" name="label_3">
+          <property name="maximumSize">
+           <size>
+            <width>300</width>
+            <height>16777215</height>
+           </size>
+          </property>
           <property name="text">
            <string>Documentation for model: </string>
           </property>
@@ -2732,14 +2738,20 @@
         </item>
         <item>
          <widget class="QComboBox" name="comboBox">
+          <property name="maximumSize">
+           <size>
+            <width>300</width>
+            <height>16777215</height>
+           </size>
+          </property>
           <item>
            <property name="text">
-            <string>Infrastructure</string>
+            <string>Hazard Risk Index</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Hazard Risk Index</string>
+            <string>Infrastructure</string>
            </property>
           </item>
           <item>
@@ -2950,14 +2962,14 @@
    <header>qgsmaplayercombobox.h</header>
   </customwidget>
   <customwidget>
-   <class>QgsSpinBox</class>
-   <extends>QSpinBox</extends>
-   <header>qgsspinbox.h</header>
-  </customwidget>
-  <customwidget>
    <class>QgsProjectionSelectionWidget</class>
    <extends>QWidget</extends>
    <header>qgsprojectionselectionwidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QgsSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>qgsspinbox.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
