@@ -211,58 +211,58 @@ class InfrastructureSuitability(BaseModel):
     @classmethod
     def shortHelpString(cls):  # noqa: N802
         return """<html><body><h2>Algorithm description</h2>
-<p>This algorithm creates a composite social suitability index for educational 
-facilities in a particular region. It considers the suitability of a location 
-depending on the proximity (or not) to existing schools and to densely 
-populated centres. The user can define custom weights for each input. The result 
-produces a raster ranging from 1 to 4, where 1 is Less suitable and 4 is More 
+<p>This algorithm creates a composite social suitability index for educational
+facilities in a particular region. It considers the suitability of a location
+depending on the proximity (or not) to existing schools and to densely
+populated centres. The user can define custom weights for each input. The result
+produces a raster ranging from 1 to 4, where 1 is Less suitable and 4 is More
 suitable.</p>
 <h2>Input parameters</h2>
 <h3>Existing school locations</h3>
-<p>A point vector layer with one observation for each school in the area of 
+<p>A point vector layer with one observation for each school in the area of
 analysis.</p>
 <h3>Identifying school variable</h3>
-<p>Variable that uniquely identifies each observation from the Existing school 
+<p>Variable that uniquely identifies each observation from the Existing school
 locations' point layer. </p>
 <h3>Maximum suitable distance to another school</h3>
-<p>Positive number describing the maximum distance from a particular location 
-to an existing school (from the Existing school locations' layer). If no such 
+<p>Positive number describing the maximum distance from a particular location
+to an existing school (from the Existing school locations' layer). If no such
 distance exists, the user can input a very large number. </p>
 <h3>Minimum suitable distance to another school</h3>
-<p>Positive number describing the minimum distance from a particular location 
-to an existing school (from the Existing school locations' layer). If no such 
+<p>Positive number describing the minimum distance from a particular location
+to an existing school (from the Existing school locations' layer). If no such
 distance exists, the user can input 0. </p>
-<h3>New schools should be located further from existing schools, rather than 
+<h3>New schools should be located further from existing schools, rather than
 close to them</h3>
-<p>This option will take the suitable range (between the minimum and maximum 
-distance to existing schools specified above) and determine that suitability 
-should start further away from these schools. An illustrated example of this 
+<p>This option will take the suitable range (between the minimum and maximum
+distance to existing schools specified above) and determine that suitability
+should start further away from these schools. An illustrated example of this
 is presented in Figure 15 of Vargas Mesa, Sheldon, Gagnon (forthcoming). </p>
 <h3>Weight for schools</h3>
-<p>Make sure that the sum of "Weight for schools" and "Weight for population 
+<p>Make sure that the sum of "Weight for schools" and "Weight for population
 density" is equal to 100%.</p>
 <h3>Population density</h3>
-<p>Raster layer containing a spatialized population estimate for the country. 
-This population estimate can be for the whole population or for the relevant 
+<p>Raster layer containing a spatialized population estimate for the country.
+This population estimate can be for the whole population or for the relevant
 school age population. </p>
 <h3>New schools should ideally be located in sparsely populated areas</h3>
-<p>This option will determine a positive value to sparsely populated areas 
+<p>This option will determine a positive value to sparsely populated areas
 opposed to dense, urban areas. </p>
 <h3>Weight for population</h3>
-<p>Make sure that the sum of "Weight for schools" and "Weight for population 
+<p>Make sure that the sum of "Weight for schools" and "Weight for population
 density" is equal to 100%.</p>
 <h3>Site Area (vector)</h3>
 <p>A polygon vector layer delimiting the area of analysis.</p>
 <h3>Social suitability</h3>
 <p>Raster layer ranging from 1 (More suitable) to 4 (Less suitable).</p>
 <h3>Projected reference system</h3>
-<p>Select a local projected reference system. Note that failing to do so might 
+<p>Select a local projected reference system. Note that failing to do so might
 lead to inaccuracies when calculations are performed far from the equator. </p>
 <h2>Outputs</h2>
 <h3>Social suitability</h3>
 <p>Raster layer ranging from 1 (More suitable) to 4 (Less suitable).</p>
-<br><p>Algorithm author: Development unit at IIEP-UNESCO 
-(development@iiep.unesco.org)</p><p>Help author: Development unit at IIEP-UNESCO 
+<br><p>Algorithm author: Development unit at IIEP-UNESCO
+(development@iiep.unesco.org)</p><p>Help author: Development unit at IIEP-UNESCO
 (development@iiep.unesco.org)</p><p>Algorithm version: 1.0</p></body></html>
 """
 
