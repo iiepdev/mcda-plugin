@@ -17,7 +17,6 @@ class HelpPanel(BasePanel):
 
     def setup_panel(self) -> None:
 
-        # self.dlg.hri_help: str()
         self.dlg.hri_help_string = NaturalHazardRisksForSchools.shortHelpString()
         self.dlg.infrastructure_help_string = (
             InfrastructureSuitability.shortHelpString()
@@ -35,7 +34,6 @@ class HelpPanel(BasePanel):
             3: self.dlg.environmental_help_string,
             4: self.dlg.mcda_help_string,
         }
-        print(self.help_string_dict)
 
         def _update_content(index):
             self.dlg.textBrowser.setHtml(self.help_string_dict.get(index))

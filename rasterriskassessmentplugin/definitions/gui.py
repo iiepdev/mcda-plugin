@@ -20,14 +20,24 @@ class Panels(enum.Enum):
     # MultiCriteriaSuitability = {"icon": "/mActionShowRasterCalculator.png"}
     # Help = {"icon": "/mActionHelpContents.svg"}
     # About = {"icon": "/mIconInfo.svg"}
+    """HazardRiskIndex = {"icon": "hazardIndex2.png"}
+    Infrastructure = {"icon": "infra2optimized.svg"}
+    EconomicSuitability = {"icon": "g3825.png"}
+    EnvironmentalSuitability = {"icon": "environmental2.svg"}
+    MultiCriteriaSuitability = {"icon": "help2help.svg"}
+    Help = {"icon": "iiepLogo2plain.svg"}
+    About = {"icon": "contactUS2.svg"}"""
 
-    HazardRiskIndex = {"icon": "hazardIndex.svg"}
-    Infrastructure = {"icon": "infra.png"}
-    EconomicSuitability = {"icon": "economic.svg"}
-    EnvironmentalSuitability = {"icon": "environmental.svg"}
-    MultiCriteriaSuitability = {"icon": "mCDALogo.png"}
-    Help = {"icon": "help.svg"}
-    About = {"icon": "contactUS.svg"}
+    # Note that we cannot use the same icon twice!
+    # The icon serves as the enum here. Reusing an icon
+    # will redefine the enum, not create a new one.
+    HazardRiskIndex = {"icon": "hri.png"}
+    Infrastructure = {"icon": "infrastructure.png"}
+    EconomicSuitability = {"icon": "economic.png"}
+    EnvironmentalSuitability = {"icon": "environmental.png"}
+    MultiCriteriaSuitability = {"icon": "mcda.png"}
+    Help = {"icon": "help.png"}
+    About = {"icon": "contact_us.png"}
 
     @property
     def icon(self) -> QIcon:
