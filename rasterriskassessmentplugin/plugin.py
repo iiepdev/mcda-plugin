@@ -11,7 +11,10 @@ from rasterriskassessmentplugin.qgis_plugin_tools.tools.custom_logging import (
     teardown_logger,
 )
 from rasterriskassessmentplugin.qgis_plugin_tools.tools.i18n import setup_translation
-from rasterriskassessmentplugin.qgis_plugin_tools.tools.resources import plugin_name
+from rasterriskassessmentplugin.qgis_plugin_tools.tools.resources import (
+    plugin_name,
+    resources_path,
+)
 
 # from rasterriskassessmentplugin.qgis_plugin_tools.tools.settings import (
 #     get_setting,
@@ -114,7 +117,8 @@ class Plugin:
     def initGui(self) -> None:  # noqa N802
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
         self.add_action(
-            "",
+            # "",
+            resources_path("icons", "iiep.png"),
             text=Plugin.name,
             callback=self.run,
             parent=self.iface.mainWindow(),
