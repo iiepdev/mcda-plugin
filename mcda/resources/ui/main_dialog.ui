@@ -72,7 +72,7 @@
        background-color:palette(Window);
        padding-right: 0px;
        }
-      </string>
+    </string>
    </property>
    <property name="frameShape">
     <enum>QFrame::Box</enum>
@@ -144,7 +144,7 @@
     </sizepolicy>
    </property>
    <property name="currentIndex">
-    <number>5</number>
+    <number>6</number>
    </property>
    <widget class="QWidget" name="hazard_risk_index">
     <layout class="QVBoxLayout" name="hazard_risk_vlayout">
@@ -210,7 +210,7 @@
              <height>16</height>
             </size>
            </property>
-           <property name="allowEmptyLayer">
+           <property name="allowEmptyLayer" stdset="0">
             <bool>true</bool>
            </property>
           </widget>
@@ -248,7 +248,7 @@
              <height>16</height>
             </size>
            </property>
-           <property name="allowEmptyLayer">
+           <property name="allowEmptyLayer" stdset="0">
             <bool>true</bool>
            </property>
           </widget>
@@ -761,7 +761,7 @@
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="QgsFileWidget" name="hri_save_hri_file_widget"/>
+          <widget class="QgsFileWidget" name="hri_save_hri_file_widget" native="true"/>
          </item>
          <item row="1" column="0">
           <widget class="QLabel" name="label_10">
@@ -771,7 +771,7 @@
           </widget>
          </item>
          <item row="1" column="1">
-          <widget class="QgsFileWidget" name="hri_save_hri_schools_file_widget"/>
+          <widget class="QgsFileWidget" name="hri_save_hri_schools_file_widget" native="true"/>
          </item>
         </layout>
        </widget>
@@ -1025,7 +1025,7 @@
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="QgsProjectionSelectionWidget" name="infra_crs_widget">
+          <widget class="QgsProjectionSelectionWidget" name="infra_crs_widget" native="true">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -1226,7 +1226,7 @@
         </property>
         <layout class="QGridLayout" name="gridLayout_12">
          <item row="0" column="1">
-          <widget class="QgsFileWidget" name="infra_file_wdgt_save_output"/>
+          <widget class="QgsFileWidget" name="infra_file_wdgt_save_output" native="true"/>
          </item>
          <item row="0" column="0">
           <widget class="QLabel" name="label_23">
@@ -1542,7 +1542,7 @@
           </widget>
          </item>
          <item row="1" column="1">
-          <widget class="QgsProjectionSelectionWidget" name="econ_crs_widget">
+          <widget class="QgsProjectionSelectionWidget" name="econ_crs_widget" native="true">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -1768,7 +1768,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QgsFileWidget" name="econ_file_wdgt_save_output"/>
+          <widget class="QgsFileWidget" name="econ_file_wdgt_save_output" native="true"/>
          </item>
         </layout>
        </widget>
@@ -1915,7 +1915,7 @@
           </widget>
          </item>
          <item row="1" column="1">
-          <widget class="QgsProjectionSelectionWidget" name="env_crs_widget">
+          <widget class="QgsProjectionSelectionWidget" name="env_crs_widget" native="true">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -2200,7 +2200,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QgsFileWidget" name="env_file_wdgt_save_output">
+          <widget class="QgsFileWidget" name="env_file_wdgt_save_output" native="true">
            <property name="minimumSize">
             <size>
              <width>80</width>
@@ -2610,7 +2610,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QgsFileWidget" name="mcda_file_wdgt_save_output">
+          <widget class="QgsFileWidget" name="mcda_file_wdgt_save_output" native="true">
            <property name="minimumSize">
             <size>
              <width>80</width>
@@ -2711,7 +2711,7 @@
     </layout>
    </widget>
    <widget class="QWidget" name="help">
-    <widget class="QWidget" name="">
+    <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
        <x>21</x>
@@ -2780,168 +2780,124 @@
     </widget>
    </widget>
    <widget class="QWidget" name="about">
-    <widget class="QWidget" name="layoutWidget">
-     <property name="geometry">
-      <rect>
-       <x>9</x>
-       <y>9</y>
-       <width>414</width>
-       <height>335</height>
-      </rect>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
-      <item>
-       <layout class="QVBoxLayout" name="verticalLayout">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QGroupBox" name="groupBox_3">
+       <property name="title">
+        <string>Attributions</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_6">
         <item>
-         <widget class="QGroupBox" name="groupBox_3">
-          <property name="title">
-           <string>Attributions</string>
+         <layout class="QGridLayout" name="gridLayout_3">
+          <property name="sizeConstraint">
+           <enum>QLayout::SetNoConstraint</enum>
           </property>
-          <layout class="QVBoxLayout" name="verticalLayout_6">
-           <item>
-            <layout class="QGridLayout" name="gridLayout_3">
-             <property name="sizeConstraint">
-              <enum>QLayout::SetNoConstraint</enum>
-             </property>
-             <item row="0" column="0">
-              <widget class="QLabel" name="label_development">
-               <property name="text">
-                <string>Main development</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QLabel" name="label_gispo">
-               <property name="text">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;http://www.iiep.unesco.org/geo&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;IIEP-UNESCO&lt;/span&gt;&lt;/a&gt; and &lt;a href=&quot;https://www.gispo.fi/en/home/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Gispo Ltd.&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
-                    </string>
-               </property>
-               <property name="openExternalLinks">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item>
-         <widget class="QGroupBox" name="groupBox_2">
-          <property name="title">
-           <string>Source code</string>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout_5">
-           <item>
-            <widget class="QLabel" name="label_13">
-             <property name="text">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;a href=&quot;https://github.com/iiepdev/mcda-plugin&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/iiepdev/mcda-plugin&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item>
-         <widget class="QGroupBox" name="groupBox_4">
-          <property name="title">
-           <string>Versions</string>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout_7">
-           <item>
-            <layout class="QGridLayout" name="gridLayout_4">
-             <item row="0" column="1">
-              <widget class="QLabel" name="label_version">
-               <property name="text">
-                <string>&lt;placeholder&gt;</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="0">
-              <widget class="QLabel" name="label_version_txt">
-               <property name="text">
-                <string>MCDA Plugin</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item>
-         <widget class="QGroupBox" name="groupBox">
-          <property name="font">
-           <font>
-            <weight>50</weight>
-            <bold>false</bold>
-           </font>
-          </property>
-          <property name="title">
-           <string>License</string>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout_4">
-           <item>
-            <widget class="QLabel" name="label_gpl3_2">
-             <property name="text">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://www.gnu.org/licenses/gpl-3.0.en.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;GNU General Public License v3.0&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
-                    </string>
-             </property>
-             <property name="openExternalLinks">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="verticalSpacer">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>40</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
-         </widget>
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_development">
+            <property name="text">
+             <string>Main development</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLabel" name="label_gispo">
+            <property name="text">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;http://www.iiep.unesco.org/geo&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;IIEP-UNESCO&lt;/span&gt;&lt;/a&gt; and &lt;a href=&quot;https://www.gispo.fi/en/home/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Gispo Ltd.&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+             </string>
+            </property>
+            <property name="openExternalLinks">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
        </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_5">
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="groupBox_2">
+       <property name="title">
+        <string>Source code</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_5">
         <item>
-         <spacer name="horizontalSpacer_6">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>238</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QPushButton" name="about_btn_close">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
+         <widget class="QLabel" name="label_13">
           <property name="text">
-           <string>Close</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/iiepdev/mcda-plugin&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/iiepdev/mcda-plugin&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
         </item>
        </layout>
-      </item>
-     </layout>
-    </widget>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="groupBox_4">
+       <property name="title">
+        <string>Versions</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_7">
+        <item>
+         <layout class="QGridLayout" name="gridLayout_4">
+          <item row="0" column="1">
+           <widget class="QLabel" name="label_version">
+            <property name="text">
+             <string>&lt;placeholder&gt;</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_version_txt">
+            <property name="text">
+             <string>MCDA Plugin</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="groupBox">
+       <property name="font">
+        <font>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="title">
+        <string>License</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <item>
+         <widget class="QLabel" name="label_gpl3_2">
+          <property name="text">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://www.gnu.org/licenses/gpl-3.0.en.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;GNU General Public License v3.0&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+           </string>
+          </property>
+          <property name="openExternalLinks">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <spacer name="verticalSpacer">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
    </widget>
   </widget>
  </widget>
@@ -2962,14 +2918,14 @@
    <header>qgsmaplayercombobox.h</header>
   </customwidget>
   <customwidget>
-   <class>QgsProjectionSelectionWidget</class>
-   <extends>QWidget</extends>
-   <header>qgsprojectionselectionwidget.h</header>
-  </customwidget>
-  <customwidget>
    <class>QgsSpinBox</class>
    <extends>QSpinBox</extends>
    <header>qgsspinbox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QgsProjectionSelectionWidget</class>
+   <extends>QWidget</extends>
+   <header>qgsprojectionselectionwidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
