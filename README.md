@@ -1,7 +1,7 @@
-# Raster Risk Assessment Plugin
-![tests](https://github.com/GispoCoding/raster-risk-assessment-plugin/workflows/Tests/badge.svg)
-[![codecov.io](https://codecov.io/github/GispoCoding/raster-risk-assessment-plugin/coverage.svg?branch=main)](https://codecov.io/github/GispoCoding/raster-risk-assessment-plugin?branch=main)
-![release](https://github.com/GispoCoding/raster-risk-assessment-plugin/workflows/Release/badge.svg)
+# School placement multi-criteria decision analysis (MCDA) plugin
+![tests](https://github.com/GispoCoding/mcda-plugin/workflows/Tests/badge.svg)
+[![codecov.io](https://codecov.io/github/GispoCoding/mcda-plugin/coverage.svg?branch=main)](https://codecov.io/github/GispoCoding/mcda-plugin?branch=main)
+![release](https://github.com/GispoCoding/mcda-plugin/workflows/Release/badge.svg)
 
 [![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.html)
 

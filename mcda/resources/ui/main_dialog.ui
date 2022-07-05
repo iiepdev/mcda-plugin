@@ -29,7 +29,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Raster Risk Assessment Plugin</string>
+   <string>School placement multi-criteria decision analysis </string>
   </property>
   <widget class="QListWidget" name="menu_widget">
    <property name="geometry">
@@ -2835,7 +2835,7 @@
            <item>
             <widget class="QLabel" name="label_13">
              <property name="text">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;a href=&quot;https://github.com/GispoCoding/raster-risk-assessment-plugin&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/GispoCoding/raster-risk-assessment-plugin&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;a href=&quot;https://github.com/iiepdev/mcda-plugin&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/iiepdev/mcda-plugin&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
             </widget>
            </item>
@@ -2860,7 +2860,7 @@
              <item row="0" column="0">
               <widget class="QLabel" name="label_version_txt">
                <property name="text">
-                <string>Raster Risk Assessment Plugin</string>
+                <string>MCDA Plugin</string>
                </property>
               </widget>
              </item>

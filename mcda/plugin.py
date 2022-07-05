@@ -6,21 +6,15 @@ from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction, QWidget
 from qgis.utils import iface
 
-from rasterriskassessmentplugin.qgis_plugin_tools.tools.custom_logging import (
-    setup_logger,
-    teardown_logger,
-)
-from rasterriskassessmentplugin.qgis_plugin_tools.tools.i18n import setup_translation
-from rasterriskassessmentplugin.qgis_plugin_tools.tools.resources import (
-    plugin_name,
-    resources_path,
-)
+from mcda.qgis_plugin_tools.tools.custom_logging import setup_logger, teardown_logger
+from mcda.qgis_plugin_tools.tools.i18n import setup_translation
+from mcda.qgis_plugin_tools.tools.resources import plugin_name, resources_path
 
 # from rasterriskassessmentplugin.qgis_plugin_tools.tools.settings import (
 #     get_setting,
 #     set_setting,
 # )
-from rasterriskassessmentplugin.ui.maindialog import MainDialog
+from mcda.ui.maindialog import MainDialog
 
 
 class Plugin:
@@ -119,7 +113,7 @@ class Plugin:
         self.add_action(
             # "",
             resources_path("icons", "iiep.png"),
-            text=Plugin.name,
+            text="School placement multi-criteria decision analysis (MCDA)",
             callback=self.run,
             parent=self.iface.mainWindow(),
             add_to_toolbar=True,

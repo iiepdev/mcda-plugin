@@ -1,8 +1,11 @@
-raster-risk-assessment-plugin/i18n
+mcda/i18n
 venv/
 .venv/
 start_ide.bat
 .vscode
 */.pytest_cache
 __pycache__
-raster-risk-assessment-plugin.code-workspace
+mcda.code-workspace
+.DS_Store
+.coverage
+.python-version

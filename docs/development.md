@@ -1,11 +1,11 @@
-Development of raster-risk-assessment-plugin plugin
+Development of mcda-plugin plugin
 ===========================
 
 This project uses [qgis_plugin_tools](https://github.com/GispoCoding/qgis_plugin_tools) submodule,
 so set git setting value: `git config --global submodule.recurse true`.
 
 When cloning use `--recurse-submodules` like so:
-`git clone --recurse-submodules https://github.com/GispoCoding/raster-risk-assessment-plugin.git`
+`git clone --recurse-submodules https://github.com/GispoCoding/mcda-plugin.git`
 
 When pulling from existing repo:
 ```sh
@@ -14,17 +14,17 @@ git submodule update
 ```
 
 
-The code for the plugin is in the [rasterriskassessmentplugin](../raster-risk-assessment-plugin) folder. Make sure you have required tools, such as
+The code for the plugin is in the [mcda](../mcda) folder. Make sure you have required tools, such as
 Qt with Qt Editor and Qt Linquist installed by following this
 [tutorial](https://www.qgistutorials.com/en/docs/3/building_a_python_plugin.html#get-the-tools).
 
-For building the plugin use platform independent [build.py](../raster-risk-assessment-plugin/build.py) script.
+For building the plugin use platform independent [build.py](../mcda/build.py) script.
 
 ## Setting up development environment
 
 To get started with the development, follow these steps:
 
-1. Go to the  [rasterriskassessmentplugin](../raster-risk-assessment-plugin) directory with a terminal
+1. Go to the [mcda](../mcda) directory with a terminal
 1. Create a new Python virtual environment with pre-commit using Python aware of QGIS libraries:
    ```shell
     python build.py venv
@@ -63,17 +63,17 @@ If you create or edit source files make sure that:
 
 * they contain absolute imports:
     ```python
-    from rasterriskassessmentplugin.utils.exceptions import TestException # Good
+    from mcda.utils.exceptions import TestException # Good
 
     from ..utils.exceptions import TestException # Bad
 
     ```
-* they will be found by [build.py](../rasterriskassessmentplugin/build.py) script (`py_files` and `ui_files` values)
+* they will be found by [build.py](../mcda/build.py) script (`py_files` and `ui_files` values)
 
 * you consider adding test files for the new functionality
 ## Deployment
 
-Edit [build.py](../rasterriskassessmentplugin/build.py) to contain working values for *profile*, *lrelease* and *pyrcc*. If you are
+Edit [build.py](../mcda/build.py) to contain working values for *profile*, *lrelease* and *pyrcc*. If you are
 running on Windows, make sure the value *QGIS_INSTALLATION_DIR* points to right folder
 
 Run the deployment with:
@@ -119,7 +119,7 @@ For step-by-step instructions, read the [translation tutorial](./translation_tut
 * Go to your Transifex site, add some languages and start translating
 * Copy [push_translations.yml](push_translations.yml) file to [workflows](../.github/workflows) folder to enable
   automatic pushing after commits to master
-* Add this badge ![](https://github.com/GispoCoding/raster-risk-assessment-plugin/workflows/Translations/badge.svg) to
+* Add this badge ![](https://github.com/GispoCoding/mcda-plugin/workflows/Translations/badge.svg) to
   the [README](../README.md)
 
 ##### Pulling
@@ -130,7 +130,7 @@ lrelease section as well. You can however pull manually to test the process.
 
 * Run `qgis-plugin-ci pull-translation --compile <your-transifex-token>`#### Translating with QT Linguistic (if Transifex not available)
 
-The translation files are in [i18n](../raster-risk-assessment-plugin/resources/i18n) folder. Translatable content in python files is
+The translation files are in [i18n](../mcda-plugin/resources/i18n) folder. Translatable content in python files is
 code such as `tr(u"Hello World")`.
 
 To update language *.ts* files to contain newest lines to translate, run
@@ -168,6 +168,6 @@ plugin to QGIS plugin repository.
 For local release install [qgis-plugin-ci](https://github.com/opengisch/qgis-plugin-ci) (possibly to different venv
 to avoid Qt related problems on some environments) and follow these steps:
 ```shell
-cd raster-risk-assessment-plugin
+cd mcda-plugin
 qgis-plugin-ci package --disable-submodule-update 0.1.0
 ```

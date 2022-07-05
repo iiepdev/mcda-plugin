@@ -2,7 +2,7 @@ import os
 
 from qgis.gui import QgisInterface
 
-from rasterriskassessmentplugin.qgis_plugin_tools.infrastructure.debugging import (  # noqa F401
+from mcda.qgis_plugin_tools.infrastructure.debugging import (  # noqa F401
     setup_debugpy,
     setup_ptvsd,
     setup_pydevd,
@@ -14,6 +14,6 @@ if debugger in {"debugpy", "ptvsd", "pydevd"}:
 
 
 def classFactory(iface: QgisInterface):  # noqa N802
-    from rasterriskassessmentplugin.plugin import Plugin
+    from mcda.plugin import Plugin
 
     return Plugin()

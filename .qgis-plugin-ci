@@ -1,5 +1,5 @@
-plugin_path: rasterriskassessmentplugin
+plugin_path: mcda
 github_organization_slug: GispoCoding
-project_slug: raster-risk-assessment-plugin
+project_slug: mcda-plugin
 transifex_coordinator: replace-me
 transifex_organization: replace-me
