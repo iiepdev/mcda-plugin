@@ -112,7 +112,7 @@ class Plugin:
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
         self.add_action(
             # "",
-            resources_path("icons", "iiep.png"),
+            resources_path("icons", "iiep_logo.svg"),
             text="School placement multi-criteria decision analysis (MCDA)",
             callback=self.run,
             parent=self.iface.mainWindow(),
