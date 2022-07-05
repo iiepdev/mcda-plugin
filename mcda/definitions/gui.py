@@ -13,13 +13,13 @@ class Panels(enum.Enum):
     # Note that we cannot use the same icon twice!
     # The icon serves as the enum here. Reusing an icon
     # will redefine the enum, not create a new one.
-    HazardRiskIndex = {"icon": "hri.png"}
-    Infrastructure = {"icon": "infrastructure.png"}
+    HazardRiskIndex = {"icon": "hazard_index.svg"}
+    Infrastructure = {"icon": "infrastructure.svg"}
     EconomicSuitability = {"icon": "economic.png"}
     EnvironmentalSuitability = {"icon": "environmental.png"}
-    MultiCriteriaSuitability = {"icon": "mcda.png"}
+    MultiCriteriaSuitability = {"icon": "mcda_logo.svg"}
     Help = {"icon": "help.png"}
-    About = {"icon": "contact_us.png"}
+    About = {"icon": "contact_us.svg"}
 
     @property
     def icon(self) -> QIcon:
