@@ -49,6 +49,11 @@ class MultiCriteriaSuitabilityPanel(BasePanel):
         self.dlg.mcda_dbl_spn_bx_infra_weight.clear()
 
         self.dlg.mcda_file_wdgt_save_output.setStorageMode(QgsFileWidget.SaveFile)
+        self.dlg.mcda_file_wdgt_save_output.fileChanged.connect(
+            lambda: self._set_file_extension(
+                self.dlg.mcda_file_wdgt_save_output, ".tif"
+            )
+        )
 
     def _get_params(self) -> dict:
         params: Dict[str, Any] = {}

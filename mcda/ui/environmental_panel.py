@@ -53,6 +53,9 @@ class EnvironmentalSuitabilityPanel(BasePanel):
         self.dlg.env_dbl_spn_bx_forest_weight.clear()
 
         self.dlg.env_file_wdgt_save_output.setStorageMode(QgsFileWidget.SaveFile)
+        self.dlg.env_file_wdgt_save_output.fileChanged.connect(
+            lambda: self._set_file_extension(self.dlg.env_file_wdgt_save_output, ".tif")
+        )
 
     def _get_params(self) -> dict:
         params: Dict[str, Any] = {}

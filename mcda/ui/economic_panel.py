@@ -74,6 +74,11 @@ class EconomicSuitabilityPanel(BasePanel):
         )
 
         self.dlg.econ_file_wdgt_save_output.setStorageMode(QgsFileWidget.SaveFile)
+        self.dlg.econ_file_wdgt_save_output.fileChanged.connect(
+            lambda: self._set_file_extension(
+                self.dlg.econ_file_wdgt_save_output, ".tif"
+            )
+        )
 
     def _get_params(self) -> dict:
         params: Dict[str, Any] = {}

@@ -53,7 +53,15 @@ class HazardRiskIndexPanel(BasePanel):
         self.dlg.groupbox_rasters.setLayout(self.dlg.hri_risk_layer_gridlayout)
 
         self.dlg.hri_save_hri_file_widget.setStorageMode(QgsFileWidget.SaveFile)
+        self.dlg.hri_save_hri_file_widget.fileChanged.connect(
+            lambda: self._set_file_extension(self.dlg.hri_save_hri_file_widget, ".tif")
+        )
         self.dlg.hri_save_hri_schools_file_widget.setStorageMode(QgsFileWidget.SaveFile)
+        self.dlg.hri_save_hri_schools_file_widget.fileChanged.connect(
+            lambda: self._set_file_extension(
+                self.dlg.hri_save_hri_schools_file_widget, ".gpkg"
+            )
+        )
 
     def __set_combobox(self, combobox: QgsMapLayerComboBox, layer_number: int) -> None:
         combobox.setFilters(QgsMapLayerProxyModel.RasterLayer)

@@ -12,6 +12,7 @@ from qgis.core import (
     QgsRasterLayer,
     QgsVectorLayer,
 )
+from qgis.gui import QgsFileWidget
 from qgis.PyQt.QtWidgets import QDialog, QProgressBar, QPushButton
 
 from ..definitions.gui import Panels
@@ -135,6 +136,10 @@ class BasePanel:
         """
         total = sum(weights)
         return [value / total for value in weights]
+
+    def _set_file_extension(self, widget: QgsFileWidget, extension: str) -> None:
+        if not widget.filePath().endswith(extension):
+            widget.setFilePath(widget.filePath() + extension)
 
     def _get_params(self) -> dict:
         """Get algorithm parameters from the UI."""
