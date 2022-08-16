@@ -2,7 +2,7 @@
 name=School placement multi-criteria decision analysis (MCDA)
 description=This plugin generates a customized site classification raster layer for educational facilities (schools).
 about=This algorithm aims at creating multiple intermediate suitability analyses for school sites, merging the results into a single, customizable multi-criteria suitability index. It's based on the paper by <a href="http://www.iiep.unesco.org/en/our-expertise/geospatial-data-educational-planning-and-management">Vargas Mesa, Sheldon, Gagnon (2022)</a>.
-version=0.1.0
+version=0.1.2
 qgisMinimumVersion=3.16
 author=IIEP-UNESCO & UNOSAT
 email=development@iiep.unesco.org
