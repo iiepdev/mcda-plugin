@@ -3,7 +3,7 @@ from typing import Any, Dict, Optional
 
 from qgis.core import QgsMapLayerProxyModel, QgsRasterLayer, QgsVectorLayer
 from qgis.gui import QgsDoubleSpinBox, QgsFileWidget, QgsMapLayerComboBox
-from qgis.PyQt.QtWidgets import QDialog, QLabel
+from qgis.PyQt.QtWidgets import QDialog
 
 from ..core.hri_model import NaturalHazardRisksForSchools
 from ..definitions.gui import Panels
@@ -83,30 +83,30 @@ class HazardRiskIndexPanel(BasePanel):
         """
         layout = self.dlg.hri_risk_layer_gridlayout
         if nr_of_risks < self.current_number_of_hazards:
-            # remove layers
+            # remove layers from layout
             while layout.count() > 2 + 3 * nr_of_risks:
                 widget = layout.itemAt(layout.count() - 1).widget()
+                widget.hide()
                 layout.removeWidget(widget)
-                widget.deleteLater()
+                # do not delete the widgets, they will be reused!
         if nr_of_risks > self.current_number_of_hazards:
-            # add layers
+            # add layers to layout
             layer_number = int((layout.count() - 2) / 3) + 1
             while layer_number <= nr_of_risks:
+                # add existing widgets back to layout
                 # label
-                label = QLabel(f"Layer {layer_number}", self.dlg)
-                label.setObjectName(f"hri_raster_layer_label_{layer_number}")
+                label = getattr(self.dlg, f"hri_raster_layer_label_{layer_number}")
+                label.show()
                 self.dlg.hri_risk_layer_gridlayout.addWidget(label, layer_number, 0)
 
                 # combobox
-                combobox = QgsMapLayerComboBox()
-                combobox.setObjectName(f"hri_raster_layer_cb_{layer_number}")
-                self.__set_combobox(combobox, layer_number)
+                combobox = getattr(self.dlg, f"hri_raster_layer_cb_{layer_number}")
+                combobox.show()
                 self.dlg.hri_risk_layer_gridlayout.addWidget(combobox, layer_number, 1)
 
                 # spinbox
-                spinbox = QgsDoubleSpinBox()
-                spinbox.setObjectName(f"hri_raster_layer_dspnb_{layer_number}")
-                self.__set_spinbox(spinbox)
+                spinbox = getattr(self.dlg, f"hri_raster_layer_dspnb_{layer_number}")
+                spinbox.show()
                 self.dlg.hri_risk_layer_gridlayout.addWidget(spinbox, layer_number, 2)
                 layer_number = int((layout.count() - 2) / 3) + 1
         self.current_number_of_hazards = nr_of_risks

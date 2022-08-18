@@ -408,7 +408,7 @@
           </widget>
          </item>
          <item row="2" column="0">
-          <widget class="QLabel" name="hri_raster">
+          <widget class="QLabel" name="hri_raster_layer_label_2">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -471,7 +471,7 @@
           </widget>
          </item>
          <item row="3" column="0">
-          <widget class="QLabel" name="hri_label_number_of_hazards">
+          <widget class="QLabel" name="hri_raster_layer_label_3">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -534,7 +534,7 @@
           </widget>
          </item>
          <item row="4" column="0">
-          <widget class="QLabel" name="hri_label_number_of_hazards">
+          <widget class="QLabel" name="hri_raster_layer_label_4">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -597,7 +597,7 @@
           </widget>
          </item>
          <item row="5" column="0">
-          <widget class="QLabel" name="hri_label_number_of_hazards">
+          <widget class="QLabel" name="hri_raster_layer_label_5">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -660,7 +660,7 @@
           </widget>
          </item>
          <item row="6" column="0">
-          <widget class="QLabel" name="hri_label_number_of_hazards">
+          <widget class="QLabel" name="hri_raster_layer_label_6">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
              <horstretch>0</horstretch>
