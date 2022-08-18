@@ -6,9 +6,17 @@ from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction, QWidget
 from qgis.utils import iface
 
-from mcda.qgis_plugin_tools.tools.custom_logging import setup_logger, teardown_logger
+from mcda.qgis_plugin_tools.tools.custom_logging import (
+    PLUGIN_NAME,
+    setup_logger,
+    teardown_logger,
+)
 from mcda.qgis_plugin_tools.tools.i18n import setup_translation
-from mcda.qgis_plugin_tools.tools.resources import plugin_name, resources_path
+from mcda.qgis_plugin_tools.tools.resources import (
+    metadata_config,
+    plugin_name,
+    resources_path,
+)
 
 # from rasterriskassessmentplugin.qgis_plugin_tools.tools.settings import (
 #     get_setting,
@@ -20,12 +28,19 @@ from mcda.ui.maindialog import MainDialog
 class Plugin:
     """QGIS Plugin Implementation."""
 
-    name = plugin_name()
+    # This will set the global PLUGIN_NAME variable without spaces
+    # Used for settings, logging etc.
+    global PLUGIN_NAME
+    plugin_name()
+
+    # this will get the plugin name *with* spaces
+    metadata = metadata_config()
+    name: str = metadata["general"]["name"]
 
     def __init__(self) -> None:
 
         self.iface = iface
-        setup_logger(Plugin.name)
+        setup_logger(PLUGIN_NAME)
 
         # initialize locale
         locale, file_path = setup_translation()
@@ -128,7 +143,7 @@ class Plugin:
         for action in self.actions:
             iface.removePluginMenu(Plugin.name, action)
             iface.removeToolBarIcon(action)
-        teardown_logger(Plugin.name)
+        teardown_logger(PLUGIN_NAME)
 
     def run(self) -> None:
         """Run method that performs all the real work"""
