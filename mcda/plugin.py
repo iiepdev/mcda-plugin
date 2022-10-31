@@ -7,12 +7,12 @@ from qgis.PyQt.QtWidgets import QAction, QWidget
 from qgis.utils import iface
 
 from mcda.qgis_plugin_tools.tools.custom_logging import (
-    PLUGIN_NAME,
     setup_logger,
     teardown_logger,
 )
 from mcda.qgis_plugin_tools.tools.i18n import setup_translation
 from mcda.qgis_plugin_tools.tools.resources import (
+    PLUGIN_NAME,
     metadata_config,
     plugin_name,
     resources_path,
