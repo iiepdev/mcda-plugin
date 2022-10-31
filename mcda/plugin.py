@@ -6,10 +6,7 @@ from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction, QWidget
 from qgis.utils import iface
 
-from mcda.qgis_plugin_tools.tools.custom_logging import (
-    setup_logger,
-    teardown_logger,
-)
+from mcda.qgis_plugin_tools.tools.custom_logging import setup_logger, teardown_logger
 from mcda.qgis_plugin_tools.tools.i18n import setup_translation
 from mcda.qgis_plugin_tools.tools.resources import (
     PLUGIN_NAME,
